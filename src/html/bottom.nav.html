@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>蓝海豚-导航栏</title>
+    <!-- css -->
+    <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/StyleDepend/mReset.css">
+    <link rel="stylesheet" href="../css/index.css?t=<?php echo time();?>">
+    <link rel="stylesheet" href="../css/common.css?t=<?php echo time();?>">
+    <!-- js -->
+    <script type='text/javascript' src="../js/JsDepend/jQuery.min.js"></script>
+    <!-- <script type='text/javascript' src="../js/JsDepend/swiper.min.js"></script> -->
+</head>
+<style>
+    body {
+        background-color: #f0f0f0;
+    }
+    .my-nav-bx::before {
+        border-color: #ddd;
+    }
+    .my-nav-bx {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 999999;
+        display: flex;
+        padding: 6px 0;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+        background-color: #fff;
+    }
+    .my-nav-bx  a {
+        color: #999;
+    }
+    .my-nav-bx .active a {
+        color: #6ec7ff;
+    }
+    .my-nav-bx span {
+        display: inline-block;
+        width: 100%;
+    }
+    .my-nav img {
+        width: 50px;
+        height: 50px;
+    }
+</style>
+
+<body>
+    <ul id="dian" class="my-nav-bx mob_1px_t">
+        <li class="my-nav active">
+            <a href="#">
+                <img src="../img/home_icon_selected@2x.png">
+                <span class="lht-home">海豚之家</span>
+            </a>
+        </li>
+        <li class="my-nav">
+            <a href="#">
+                <img src="../img/radio_icon_default@2x.png">
+                <span class="lht-home">海豚电台</span>
+            </a>
+        </li>
+        <li class="my-nav">
+            <a href="#">
+                <img src="../img/me_icon_default@2x.png">
+                <span class="lht-home">个人中心</span>
+            </a>
+        </li>
+    </ul>
+
+</body>
+
+</html>
+<!-- js -->
+<!-- <script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script> -->
+<script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>

@@ -1,0 +1,92 @@
+body{
+    background-color: #fff;
+    color: #333;  
+}
+@font-face {
+    font-family: PingFang-SC-Bold;
+    src: url('../font/PingFang-SC-Bold.ttf')
+}
+@font-face {
+    font-family:  PingFang Medium;
+    src: url('../font/PingFang Medium.ttf')
+}
+
+// layui 表单label样式
+.my-input {
+    .layui-form-label {
+        width: 50%;
+        padding: 18px 0;
+        font-size: 18px;
+        text-align: left;
+        // text-overflow: none;
+        overflow: auto;
+    }
+}
+
+// layui 输入框样式整理
+.my-input {
+    margin-bottom: 0;
+    padding-bottom: 15px;
+    .layui-input-block {
+        margin-left: 0;
+    }
+    .layui-form-danger {
+        color: rgb(255, 45, 45)!important;
+    }
+    .layui-form-danger::placeholder {
+        color: rgb(255, 45, 45)!important;
+    }
+}
+
+// layui 登陆提交按钮
+.my-submit {
+    padding-top: 12px;
+    margin-bottom: 0;
+    .layui-input-block {
+        margin-left: 0;
+    }
+    button {
+        width: 100%;
+        height: 54px;
+        line-height: 54px;
+        border-radius: 27px;
+        padding: 0 16px;
+        border: none;
+        font-family: PingFang-SC-Bold;
+        font-size: 20px;
+        color: #6ec7ff;
+        background-color: #fff;
+    }
+    .layui-btn:hover {
+        color: rgb(255, 45, 45)!important;
+    }
+}
+
+// layui 忘记密码提交按钮
+.my-forget-submit {
+    padding: 30px 30px 0;
+    margin-bottom: 0;
+    .layui-input-block {
+        margin-left: 0;
+    }
+    button {
+        width: 100%;
+        height: 54px;
+        line-height: 54px;
+        border-radius: 27px;
+        padding: 0 16px;
+        border: none;
+        font-family: PingFang-SC-Bold;
+        font-size: 16px;
+        color: #fff;
+        background-color: #6ec7ff;
+    }
+}
+
+// 登陆头
+.login-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+}

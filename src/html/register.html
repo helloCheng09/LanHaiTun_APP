@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>蓝海豚-登陆</title>
+    <!-- css -->
+    <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/StyleDepend/mReset.css">
+    <link rel="stylesheet" href="../css/index.css?t=<?php echo time();?>">
+    <link rel="stylesheet" href="../css/common.css?t=<?php echo time();?>">
+    <!-- js -->
+    <script type='text/javascript' src="../js/JsDepend/jQuery.min.js"></script>
+    <!-- <script type='text/javascript' src="../js/JsDepend/swiper.min.js"></script> -->
+</head>
+
+<body>
+
+    <div id="regitser" style="background-image:url(../img/bg@2x.png);display: block;">
+        <div class="login-head">
+            <div class="left-icon">
+                <img src="../img/close@2x.png">
+            </div>
+            <div class="right-link">
+                <a href="./login.html">
+                    账号登陆
+                </a>
+            </div>
+        </div>
+        <div class="form-bx">
+            <form class="layui-form" action="">
+                <div class="layui-form-item my-input">
+                    <div class="layui-input-block">
+                        <input type="text" name="telephone" required lay-verify="required|phone|number" placeholder="请输入手机号码"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item my-input img-code">
+                    <div class="layui-input-block">
+                        <input type="text" name="tx_code" required lay-verify="require" placeholder="请输入图形验证码"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="code-bx">
+                        <img src="../img/yzmimg.png">
+                    </div>
+                </div>
+                <div class="layui-form-item my-input tel-code">
+                    <div class="layui-input-block">
+                        <input type="text" name="tel_code" required lay-verify="require" placeholder="请输入手机验证码"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="get-tel-code">
+                        获取验证码
+                    </div>
+                </div>
+                <div class="layui-form-item my-input">
+                    <div class="layui-input-block">
+                        <input type="text" name="psw" required lay-verify="require|pass" placeholder="请输入密码"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item my-input">
+                    <div class="layui-input-block">
+                        <input type="text" name="re_psw" required lay-verify="require|rePass" placeholder="请输入密码"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item my-submit">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">注 册</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tiaokuan-link">
+            <a href="javacript:void(0);">注册即代表您同意 <em class="mob_1px_b">《蓝海豚卡车之声》</em>注册协议</a>
+        </div>
+    </div>
+    <div id="registerText" style="display:none;">
+        <img class="close-btn" src="../img/close.png">
+        <h1>用户协议</h1>
+        <p>尊敬的用户：</p>
+        <p>尊敬的用户（亦称“您”），欢迎您与我方平台经营者（详见定义条款）共同签署本《用户服务协议》（下称“本协议”）并使用我方平台服务！</p>
+        <p>各条款标题仅为帮助您理解该条款表达的主旨之用，不影响或限制本协议条款的含义或解释。为维护您自身权益，建议您仔细阅读各条款具体表述</p>
+        <p>您在申请注册流程中点击同意本协议之前，应当认真阅读本协议。请您务必审慎阅读、充分理解各条款内容，特别是免除或者限制责任的条款、法律适用和争议解决条款。免除或者限制责任的条款将以粗体下划线标识，您应重点阅读。如您对协议有任何疑问，可向我方平台客服咨询。</p>
+        <p>当您按照注册页面提示填写信息、阅读并同意本协议且完成全部注册程序后，即表示您已充分阅读、理解并接受本协议的全部内容，并与我方达成一致，成为我方平台“用户”。阅读本协议的过程中，如果您不同意本协议或其中任何条款约定，您应立即停止注册程序。</p>
+        <p>如果您未申请注册流程，或者在本协议生效前已成为我方平台的注册用户，则您通过访问和/或使用我方平台，即视为您表示同意接受本协议的全部内容，否则请您不要访问或使用我方平台。</p>
+        <p>2.2
+            本站仅提供相关的网络服务，除此之外与相关网络服务有关的设备(如个人电脑、手机、及其他与接入互联网或移动网有关的装置)及所需的费用(如为接入互联网而支付的电话费及上网费、为使用移动网而支付的手机费)均应由用户自行负担。</p>
+        <p>三、用户帐号</p>
+        <p>3.1 经本站注册系统完成注册程序并通过身份认证的用户即成为正式用户，可以获得本站规定用户所应享有的一切权限；未经认证仅享有本站规定的部分会员权限。保宝网有权对会员的权限设计进行变更。</p>
+        <p>3.2
+            用户只能按照注册要求使用真实姓名，及身份证号注册。用户有义务保证密码和帐号的安全，用户利用该密码和帐号所进行的一切活动引起的任何损失或损害，由用户自行承担全部责任，本站不承担任何责任。如用户发现帐号遭到未授权的使用或发生其他任何安全问题，应立即修改帐号密码并妥善保管，如有必要，请通知本站。因黑客行为或用户的保管疏忽导致帐号非法使用，本站不承担任何责任。
+        </p>
+        <p>四、使用规则同意本协议且完成全部注册程序后，即表示您已充分阅读、理解并接受本协议的全部内容，并与我方达成一致，成为我方平台“用户”。阅读本协议的过程中，如果您不同意本协议或其中任何条款约定，您应立即停止注册程序。</p>
+        <p>如果您未申请注册流程，或者在本协议生效前已成为我方平台的注册用户，则您通过访问和/或使用我方平台，即视为您表示同意接受本协议的全部内容，否则请您不要访问或使用我方平台。</p>
+    </div>
+</body>
+
+</html>
+<!-- js -->
+<script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script>
+<script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>
+<script>
+</script>

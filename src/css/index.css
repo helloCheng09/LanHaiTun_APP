@@ -1,0 +1,223 @@
+@import 'StyleDepend/mReset.css';
+@import 'common.css';
+#login {
+  font-family: PingFang Medium;
+  min-height: 100vh;
+  padding-top: 40px;
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  color: #fff;
+}
+#login .login-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+#login .left-icon {
+  width: 20px;
+  height: 20px;
+}
+#login .left-icon img {
+  width: 20px;
+  height: 20px;
+}
+#login .right-link a {
+  font-family: PingFang-SC-Bold;
+  color: #fff;
+}
+#login .logo-img {
+  padding: 40px 30px 36px;
+  width: 170px;
+  height: 170px;
+  box-sizing: content-box;
+  display: inline-block;
+}
+#login .logo-img img {
+  width: 170px;
+  height: 170px;
+}
+#login .layui-form {
+  padding: 0 30px;
+}
+#login .layui-form .my-input input {
+  height: 54px;
+  line-height: 54px;
+  border-radius: 27px;
+  padding: 0 16px;
+  border: none;
+  color: #fff;
+  background-color: #1690e5;
+}
+#login .layui-form .my-input input::placeholder {
+  color: #fff;
+}
+#login .forget-link {
+  padding-top: 12px;
+  text-align: center;
+}
+#login .forget-link a {
+  color: #fff;
+}
+#forget {
+  padding-top: 32px;
+  min-height: 100vh;
+}
+#forget .my-input {
+  padding: 0 30px;
+}
+#forget .my-input {
+  flex: 1;
+}
+#forget .my-input .layui-form-label {
+  font-family: PingFang-SC-Bold;
+}
+#forget .my-input input {
+  border: none;
+  height: auto;
+  line-height: 1em;
+  padding-bottom: 20px;
+  padding-left: 0;
+}
+#forget .my-input input:placeholder {
+  color: #999;
+}
+#forget .my-input .layui-input-block::after {
+  border-color: #c6cacc;
+}
+#forget .yz-bx {
+  display: flex;
+  align-items: flex-end;
+  padding: 0 30px;
+}
+#forget .yz-bx .my-input {
+  padding: 0;
+}
+#forget .img-code {
+  width: 120px;
+  height: 46px;
+  margin-left: 10px;
+  margin-bottom: 15px;
+  background-color: #ddd;
+}
+#forget .img-code img {
+  width: 120px;
+  height: 46px;
+}
+#forget .get-tel-code {
+  margin-bottom: 15px;
+  line-height: 2.6em;
+  padding: 0 12px ;
+  margin-left: 10px;
+  border: 0.5px solid #bdbdbd;
+  border-radius: 18px;
+  font-size: 12px;
+  color: #999;
+}
+#regitser {
+  min-height: 100vh;
+  padding-top: 40px;
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  color: #fff;
+}
+#regitser .login-head {
+  padding-bottom: 76px;
+}
+#regitser .left-icon {
+  width: 20px;
+  height: 20px;
+}
+#regitser .left-icon img {
+  width: 20px;
+  height: 20px;
+}
+#regitser .right-link a {
+  font-family: PingFang-SC-Bold;
+  color: #fff;
+}
+#regitser .layui-form {
+  padding: 0 30px;
+}
+#regitser .layui-form .my-input input {
+  height: 54px;
+  line-height: 54px;
+  border-radius: 27px;
+  padding: 0 16px;
+  border: none;
+  color: #fff;
+  background-color: #1690e5;
+}
+#regitser .layui-form .my-input input::placeholder {
+  color: #fff;
+}
+#regitser .tiaokuan-link {
+  padding-top: 12px;
+  text-align: center;
+  cursor: pointer;
+}
+#regitser .tiaokuan-link a {
+  color: #fff;
+}
+#regitser .tiaokuan-link a em {
+  margin: 0 4px;
+  line-height: 1.4em;
+  font-style: normal;
+}
+#regitser .tiaokuan-link a em::after {
+  border-color: #fff;
+}
+#regitser .img-code {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#regitser .img-code .code-bx {
+  width: 120px;
+  height: 46px;
+}
+#regitser .img-code .code-bx img {
+  width: 120px;
+  height: 46px;
+}
+#regitser .tel-code {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#regitser .get-tel-code {
+  height: 54px;
+  line-height: 54px;
+  border-radius: 27px;
+  padding: 0 16px;
+  border: none;
+  color: #fff;
+  background-color: #1690e5;
+}
+#registerText {
+  position: relative;
+  padding-bottom: 30px;
+}
+#registerText .close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+}
+#registerText h1 {
+  padding: 30px 30px 0;
+  text-align: center;
+  font-family: PingFang-SC-Bold;
+  font-size: 20px;
+  color: #000;
+}
+#registerText p {
+  padding: 0 30px;
+  margin-top: 30px;
+  line-height: 1.4em;
+  text-indent: 2em;
+  color: #000;
+}
