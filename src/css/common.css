@@ -33,6 +33,7 @@ body {
 .my-submit {
   padding-top: 12px;
   margin-bottom: 0;
+  cursor: pointer;
 }
 .my-submit .layui-input-block {
   margin-left: 0;

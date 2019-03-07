@@ -1,7 +1,6 @@
 @import 'StyleDepend/mReset.css';
 @import 'common.css';
 #login {
-  font-family: PingFang Medium;
   min-height: 100vh;
   padding-top: 40px;
   background-size: cover;
@@ -28,11 +27,16 @@
   color: #fff;
 }
 #login .logo-img {
-  padding: 40px 30px 36px;
+  display: inline-block;
+  width: 100%;
+  box-sizing: content-box;
+}
+#login .logo-img h1 {
   width: 170px;
   height: 170px;
+  padding: 40px 30px;
   box-sizing: content-box;
-  display: inline-block;
+  margin: 0 auto;
 }
 #login .logo-img img {
   width: 170px;
@@ -106,14 +110,17 @@
   height: 46px;
 }
 #forget .get-tel-code {
+  width: 85px;
   margin-bottom: 15px;
   line-height: 2.6em;
-  padding: 0 12px ;
+  padding: 0 12px;
   margin-left: 10px;
-  border: 0.5px solid #bdbdbd;
+  border: 0.5px solid #1690e5;
+  background-color: #1690e5;
   border-radius: 18px;
+  text-align: center;
   font-size: 12px;
-  color: #999;
+  color: #fff;
 }
 #regitser {
   min-height: 100vh;
@@ -189,12 +196,15 @@
 }
 #regitser .get-tel-code {
   height: 54px;
+  width: 112px;
+  text-align: center;
   line-height: 54px;
   border-radius: 27px;
   padding: 0 16px;
   border: none;
   color: #fff;
   background-color: #1690e5;
+  cursor: pointer;
 }
 #registerText {
   position: relative;

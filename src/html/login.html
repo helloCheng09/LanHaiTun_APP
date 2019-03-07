@@ -44,7 +44,7 @@
                 </div>
                 <div class="layui-form-item my-input">
                     <div class="layui-input-block">
-                        <input type="text" name="psw" required lay-verify="require|pass" placeholder="请输入密码"
+                        <input type="password" name="psw" required lay-verify="require|pass" placeholder="请输入密码"
                             autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -66,19 +66,3 @@
 <!-- js -->
 <script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script>
 <script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>
-<script>
-    //Demo
-    layui.use('form', function () {
-        var form = layui.form;
-        form.verify({
-            pass: [
-                /^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'
-            ]
-        });
-        //监听提交
-        form.on('submit(formDemo)', function (data) {
-            layer.msg(JSON.stringify(data.field));
-            return false;
-        });
-    });
-</script>

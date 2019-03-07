@@ -25,7 +25,7 @@
                     <label class="layui-form-label">手机</label>
                     <div class="layui-input-block mob_1px_b">
                         <input type="text" name="telephone" required lay-verify="required|phone|number" placeholder="请输入手机号码"
-                            autocomplete="off" class="layui-input">
+                            autocomplete="off" class="layui-input" value="18801765964">
                     </div>
                 </div>
                 <div class="yz-bx">
@@ -33,10 +33,10 @@
                         <label class="layui-form-label">图形验证码</label>
                         <div class="layui-input-block mob_1px_b">
                             <input type="text" name="tx_code" required lay-verify="required" placeholder="输入图形验证码"
-                                autocomplete="off" class="layui-input">
+                                autocomplete="off" class="layui-input" value="123456">
                         </div>
                     </div>
-                    <div class="img-code">
+                    <div class="img-code code-bx">
                         <img src="../img/yzmimg.png">
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                         <label class="layui-form-label">手机验证码</label>    
                         <div class="layui-input-block mob_1px_b">
                             <input type="text" name="tel_code" required lay-verify="required" placeholder="输入手机验证码"
-                                autocomplete="off" class="layui-input">
+                                autocomplete="off" class="layui-input" value="123456">
                         </div>
                     </div>
                     <div class="get-tel-code">
@@ -56,15 +56,15 @@
                 <div class="layui-form-item my-input">
                     <label class="layui-form-label">新密码</label>
                     <div class="layui-input-block mob_1px_b">
-                        <input type="text" name="psw" required lay-verify="require|pass" placeholder="请输入密码"
-                            autocomplete="off" class="layui-input">
+                        <input type="text" name="psw" required lay-verify="required|pass" placeholder="请输入密码"
+                            autocomplete="off" class="layui-input" value="b1234567">
                     </div>
                 </div>
                 <div class="layui-form-item my-input">
                     <label class="layui-form-label">确认新密码</label>
                     <div class="layui-input-block mob_1px_b" >
-                        <input type="text" name="re_psw" required lay-verify="require|rePass" placeholder="再次输入密码"
-                            autocomplete="off" class="layui-input">
+                        <input type="text" name="re_psw" required lay-verify="required|rePass" placeholder="再次输入密码"
+                            autocomplete="off" class="layui-input" value="b1234567">
                     </div>
                 </div>
                 <div class="layui-form-item my-forget-submit">
@@ -82,22 +82,3 @@
 <!-- js -->
 <script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script>
 <script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>
-<script>
-    //Demo
-    layui.use('form', function () {
-        var form = layui.form;
-        form.verify({
-            pass: [
-                /^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'
-            ],
-            rePass: [
-                /^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'
-            ]
-        });
-        //监听提交
-        form.on('submit(formDemo)', function (data) {
-            layer.msg(JSON.stringify(data.field));
-            return false;
-        });
-    });
-</script>
