@@ -231,3 +231,66 @@
   text-indent: 2em;
   color: #000;
 }
+.top-head {
+  height: 210px;
+  width: 100vw;
+  padding: 16px 16px 10px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.top-head .msg-bx a {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+}
+.top-head .msg-bx a .msg-num {
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  color: #fff;
+  background-color: #1690e5;
+  padding: 0 4px;
+  line-height: 1.6em;
+  font-size: 12px;
+}
+.top-head .msg-bx a img {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+}
+.top-head .user-pic {
+  display: block;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+}
+.top-head .des-bx {
+  position: relative;
+  margin-top: 20px;
+  text-align: center;
+  color: #fff;
+}
+.top-head .des-bx .user-des .name {
+  width: 100px;
+  margin: 0 auto;
+  font-size: 18px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 2;
+  padding: 0 4px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.top-head .des-bx .add-fr {
+  position: absolute;
+  border: 0.5px solid #fff;
+  line-height: 2em;
+  padding: 0 8px;
+  right: 10px;
+  top: 50%;
+  line-height: 33px;
+  transform: translateY(-50%);
+}

@@ -15,8 +15,11 @@
     <script type='text/javascript' src="../js/JsDepend/jQuery.min.js"></script>
     <!-- <script type='text/javascript' src="../js/JsDepend/swiper.min.js"></script> -->
 </head>
+
 <style>
     body {
+        position: relative;
+        min-height: 100vh;
         background-color: #f0f0f0;
     }
     .my-nav-bx::before {
@@ -49,9 +52,41 @@
         width: 50px;
         height: 50px;
     }
+
+    /* 发帖 */
+    .button-fatie {
+
+    }
+    #dragCircle {
+        width: 60px;
+        height: 60px; 
+        border-radius: 50%;
+        background: #bcbcbc;
+        position: absolute;
+        bottom: 90px;
+        right: 10px;
+        text-align: center; 
+        line-height: 100px;
+        
+    }
+    #dragCircle  a {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+    }
+    #dragCircle  img {
+        width: 60px;
+        height: 60px;
+    }
 </style>
 
+
 <body>
+    <div id="dragCircle">
+        <a href="#">
+            <img src="../img/home_icon_post@2x.png">
+        </a>
+    </div>
     <ul id="dian" class="my-nav-bx mob_1px_t">
         <li class="my-nav active">
             <a href="#">
@@ -79,3 +114,26 @@
 <!-- js -->
 <!-- <script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script> -->
 <script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>
+
+<script>
+    var dragCircle = document.getElementById('dragCircle');
+    // 获取鼠标点击时在div中的相对位置
+    dragCircle.addEventListener('touchstart', function (ev) {
+        var ev = ev || window.event;
+        var relaX = ev.changedTouches[0].clientX - this.offsetLeft;
+        var relaY = ev.changedTouches[0].clientY - this.offsetTop;
+
+        // 获取当前鼠标位置，减去与div的相对位置得到当前div应该被拖拽的位置
+        dragCircle.addEventListener('touchmove', function (ev) {
+            var ev = ev || window.event
+            console.log(dragCircle)
+            dragCircle.style.left = ev.changedTouches[0].clientX - relaX + 'px';
+            dragCircle.style.top = ev.changedTouches[0].clientY - relaY + 'px';
+        })
+        dragCircle.addEventListener('touchend', function () {
+            var ev = ev || window.event;
+            document.touchmove = null;
+            document.touchend = null;
+        })
+    })
+</script>

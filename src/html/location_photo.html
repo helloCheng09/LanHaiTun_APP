@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>蓝海豚-导航栏</title>
+    <!-- css -->
+    <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/StyleDepend/mReset.css">
+    <link rel="stylesheet" href="../css/index.css?t=<?php echo time();?>">
+    <link rel="stylesheet" href="../css/common.css?t=<?php echo time();?>">
+    <!-- js -->
+    <script type='text/javascript' src="../js/JsDepend/jQuery.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=iP2aFPVTSXGP037vlyVFFOmQDwPpCn4v"></script>
+</head>
+
+<style>
+    .loc {
+        width: 100px;
+        height: 100px;
+        margin: 20px;
+    }
+</style>
+
+
+<body>
+    <div id="allmap"></div>
+    <button class="loc">定位</button>
+    <input type="text" class="my-loc">
+
+</body>
+
+</html>
+<!-- js -->
+<!-- <script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script> -->
+<script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>
+<script type='text/javascript' src="../js/lanhaitun.js?t=<?php echo time();?>"></script>
+<script>
+     function getMyloc() {
+        // 百度地图API功能
+        var map = new BMap.Map("allmap");
+        var point = new BMap.Point(116.331398, 39.897445);
+        map.centerAndZoom(point, 12);
+        var foo
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                var mk = new BMap.Marker(r.point);
+                map.addOverlay(mk);
+                map.panTo(r.point);
+                console.log(r);
+                var address = r.address
+                foo = address.province + address.city + address.district + address.street + address.street_number
+                $('.my-loc').val(foo)
+                console.log(foo)
+            } else {
+                alert('failed' + this.getStatus());
+                $('.my-loc').text('无法获取您的位置~')
+            }
+        }, {
+            enableHighAccuracy: true
+        })
+    }
+    getMyloc()
+</script>
