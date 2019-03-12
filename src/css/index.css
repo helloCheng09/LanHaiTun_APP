@@ -71,6 +71,13 @@
 #forget .my-input {
   padding: 0 30px;
 }
+#forget .back-login {
+  padding: 0 10px;
+  line-height: 20px;
+}
+#forget .back-login a {
+  color: #6ec7ff;
+}
 #forget .my-input {
   flex: 1;
 }
@@ -118,6 +125,7 @@
   border: 0.5px solid #1690e5;
   background-color: #1690e5;
   border-radius: 18px;
+  margin: 0 5px;
   text-align: center;
   font-size: 12px;
   color: #fff;
@@ -164,8 +172,16 @@
   padding-top: 12px;
   text-align: center;
   cursor: pointer;
+  font-size: 12px;
+}
+#regitser .tiaokuan-link .xuanzhong-icon {
+  width: 12px;
+  height: 12px;
 }
 #regitser .tiaokuan-link a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
 }
 #regitser .tiaokuan-link a em {
@@ -184,6 +200,7 @@
 #regitser .img-code .code-bx {
   width: 120px;
   height: 46px;
+  margin: 0 5px;
 }
 #regitser .img-code .code-bx img {
   width: 120px;
@@ -202,6 +219,7 @@
   border-radius: 27px;
   padding: 0 16px;
   border: none;
+  margin: 0 5px;
   color: #fff;
   background-color: #1690e5;
   cursor: pointer;
@@ -232,12 +250,15 @@
   color: #000;
 }
 .top-head {
-  height: 210px;
+  height: 150px;
   width: 100vw;
   padding: 16px 16px 10px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+.top-head .msg-bx {
+  height: 37px;
 }
 .top-head .msg-bx a {
   position: relative;
@@ -260,11 +281,28 @@
   width: 36px;
   height: 36px;
 }
+.top-head .head-bx {
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+.top-head .head-bx span {
+  padding-left: 10px;
+  font-size: 16px;
+}
+.top-head .logo-bx {
+  width: 80px;
+  height: 80px;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid #1690e5;
+}
 .top-head .user-pic {
   display: block;
   width: 70px;
   height: 70px;
-  margin: 0 auto;
+  object-fit: cover;
 }
 .top-head .des-bx {
   position: relative;
@@ -295,8 +333,11 @@
   transform: translateY(-50%);
 }
 #setUserInfo {
-  min-height: 100vh;
+  min-height: calc(100vh - 50px);
   background-color: #f2f2f2;
+}
+#setUserInfo form {
+  padding-top: 1px;
 }
 #setUserInfo form .item {
   display: flex;
@@ -308,6 +349,13 @@
 }
 #setUserInfo form .item .pic {
   position: relative;
+}
+#setUserInfo form .item .preview {
+  object-fit: cover;
+}
+#setUserInfo form .item .upload-area {
+  width: 70px;
+  height: 70px;
 }
 #setUserInfo form .item .bianji {
   display: flex;
@@ -321,6 +369,18 @@
   color: #fff;
   background-color: rgba(0, 0, 0, 0.4);
 }
+#setUserInfo form .item .file-input {
+  border: none;
+  background-color: transparent;
+  width: 70px;
+  height: 70px;
+  opacity: 0;
+  position: absolute;
+  top: 61px;
+  right: 15px;
+  z-index: 99;
+  font-size: 6.5rem;
+}
 #setUserInfo form .item .pic-bx {
   width: 70px;
   height: 70px;
@@ -331,6 +391,8 @@
   border-radius: 100%;
 }
 #setUserInfo form .item .user-name {
+  border: none;
+  text-align: right;
   color: #808080;
 }
 #setUserInfo form .sub-bx {
@@ -345,3 +407,5 @@
   border-radius: 4px;
   background-color: #6ec7ff;
 }
+/* uploadImage css begin*/
+/* uploadImage css end*/

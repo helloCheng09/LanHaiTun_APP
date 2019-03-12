@@ -5,10 +5,12 @@
      */
     var baseUrl = 'http://lanhaitun.zanhf.com/app/'
     var urlObj = {
-        loginUrl: 'index.php?i=2&c=entry&do=login_post&m=wyt_luntan', // 登陆
-        registerUrl: 'index.php?i=2&c=entry&do=register&m=wyt_luntan', // 注册
-        yzTxyzm: 'index.php?i=2&c=entry&do=imgcode&m=wyt_luntan', // 验证图形验证码
-        forgetUrl: 'index.php?i=2&c=entry&do=forget&m=wyt_luntan', //忘记密码
+        loginUrl: 'index.php?i=2&c=entry&do=login_post&m=wyt_luntan', // 登陆接口
+        registerUrl: 'index.php?i=2&c=entry&do=register&m=wyt_luntan', // 注册接口
+        yzTxyzm: 'index.php?i=2&c=entry&do=imgcode&m=wyt_luntan', // 验证图形验证码接口
+        forgetUrl: 'index.php?i=2&c=entry&do=forget&m=wyt_luntan', //忘记密码接口
+        userInfo: 'index.php?i=2&c=entry&action=user&do=Index&m=wyt_luntan', // 个人中心地址
+        setUserInfo: 'index.php?i=2&c=entry&action=edit_info&do=Index&m=wyt_luntan', // 设置个人信息接口
     };
 
     /****************************************************************************** */
@@ -31,7 +33,7 @@
             var countTime = root.countTime
             // 判断图形验证码验证后返回值
             // 开启倒计时
-            
+
             $('.get-tel-code').text(countTime + 's').css('color', '#d2d2d2').off()
             var timer = setInterval(() => {
                 if (countTime > 0) {
@@ -128,7 +130,7 @@
                                 // 失败
                                 layer.msg(res.data.msg)
                             }
-                        } 
+                        }
                     }, 500)
                     // 验证图形验证码
                     if (obj.source == 'yzTxyzm') {
@@ -167,17 +169,24 @@
                 window.location.href = baseUrl + 'index.php?i=2&c=entry&do=login&m=wyt_luntan&action=login'
             }, 1000);
         }
-        
+
         root.navToLogin = navToLogin
-        
+
         // 去首页
         let navToHome = () => {
             setTimeout(() => {
                 window.location.href = baseUrl + 'index.php?i=2&c=entry&do=index&m=wyt_luntan'
             }, 1000);
         }
-
         root.navToHome = navToHome
+        // 去个人中心
+        let navToInfo = () => {
+            setTimeout(() => {
+                window.location.href = baseUrl + urlObj.userInfo
+            }, 1000);
+        }
+        root.navToInfo = navToInfo
+     
 
     }(window.$, window.myLib || (window.myLib = {})));
     /****************************************************************************** */
@@ -258,18 +267,7 @@
                 $('#registerText').hide()
                 $('#regitser').show()
             })
-        }
-        // else if (document.getElementById('registerText')) {
-        //     $('#registerText .close-btn').click(function () {
-        //         $('#registerText').hide()
-        //         $('#regitser').show()
-        //     })
-        //     $('#regitser .tiaokuan-link').click(function () {
-        //         $('#registerText').show()
-        //         $('#regitser').hide()
-        //     })
-        // } 
-        else if (document.getElementById('forget')) {
+        } else if (document.getElementById('forget')) {
             // 验证图形验证码 获取短信验证码
             root.sendCode()
             //监控表单
@@ -301,6 +299,26 @@
                     return false
                 });
             });
+        } else if (document.getElementById('setUserInfo')) {
+            $('form').submit(function () {
+                var formData = $(this).serializeArray()
+                console.log(formData)
+                $.ajax({
+                    url: baseUrl + urlObj.setUserInfo,
+                    dataType: 'JSON',
+                    data: formData,
+                    success: function (res) {
+                        console.log(res)
+                        layer.msg('修改保存成功！')
+                        // 跳转回个人中心
+                        root.navToInfo()
+                    },
+                    error: function (res) {
+                        layer.msg('修改失败，链接超时~')
+                    }
+                })
+                return false
+            })
         }
     }(window.$, window.myLib || (window.myLib = {})));
 }())

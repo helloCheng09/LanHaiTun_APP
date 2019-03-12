@@ -22,7 +22,27 @@ body{
         overflow: auto;
     }
 }
-
+// 统一退回样式
+.my-head {
+    display: flex;
+    align-items: center;
+    position: relative;
+    line-height: 50px;
+    padding: 0 10px;
+    .icon-back {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+    }
+    .head-title {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+}
 // layui 输入框样式整理
 .my-input {
     margin-bottom: 0;
