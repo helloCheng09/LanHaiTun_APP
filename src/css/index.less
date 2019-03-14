@@ -1,38 +1,47 @@
 @import './StyleDepend/mReset.css';
 @import './common.css';
+
 // 登陆
 #login {
     // font-family: PingFang Medium;
     min-height: 100vh;
     padding-top: 40px;
+    padding-bottom: 32px;
     background-size: cover;
     background-position: 50%;
     background-repeat: no-repeat;
     color: #fff;
+
     .login-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 30px;
     }
+
     .left-icon {
         width: 20px;
         height: 20px;
+
         img {
             width: 20px;
             height: 20px;
         }
     }
+
     .right-link {
         a {
-            font-family: PingFang-SC-Bold;
+            // font-family: PingFang-SC-Bold;
+            font-weight: bold;
             color: #fff;
         }
     }
+
     .logo-img {
         display: inline-block;
         width: 100%;
         box-sizing: content-box;
+
         h1 {
             width: 170px;
             height: 170px;
@@ -40,59 +49,79 @@
             box-sizing: content-box;
             margin: 0 auto;
         }
+
         img {
             width: 170px;
             height: 170px;
         }
     }
+
     .layui-form {
         padding: 0 30px;
+
         .my-input {
             .layui-input-block {
                 // margin-left: 0;
-            }
-            input {
                 height: 54px;
                 line-height: 54px;
+                vertical-align: middle;
                 border-radius: 27px;
                 padding: 0 16px;
+                background-color: #1690e5;
+            }
+
+            input {
+                display: inline-block;
+                -webkit-appearance: none;
                 border: none;
                 color: #fff;
                 background-color: #1690e5;
             }
+
             input::placeholder {
                 color: #fff;
             }
         }
     }
+
     .forget-link {
         padding-top: 12px;
         text-align: center;
+
         a {
             color: #fff;
         }
     }
 }
+
 // 忘记密码
 #forget {
     // font-family: PingFang Medium;
     padding-top: 32px;
+    padding-bottom: 32px;
     min-height: 100vh;
+
     .my-input {
         padding: 0 30px;
     }
+
     .back-login {
         padding: 0 10px;
         line-height: 20px;
+
         a {
             color: #6ec7ff;
         }
     }
+
     .my-input {
         flex: 1;
+
         .layui-form-label {
-            font-family: PingFang-SC-Bold;
+            font-weight: bold;
+            // font-family: PingFang-SC-Bold;
         }
+
         input {
             border: none;
             height: auto;
@@ -100,32 +129,39 @@
             padding-bottom: 20px;
             padding-left: 0;
         }
+
         input:placeholder {
             color: #999;
         }
+
         .layui-input-block::after {
             border-color: #c6cacc;
         }
     }
+
     .yz-bx {
         display: flex;
         align-items: flex-end;
         padding: 0 30px;
+
         .my-input {
             padding: 0;
         }
     }
+
     .img-code {
         width: 120px;
         height: 46px;
         margin-left: 10px;
         margin-bottom: 15px;
         background-color: #ddd;
+
         img {
             width: 120px;
             height: 46px;
         }
     }
+
     .get-tel-code {
         width: 85px;
         margin-bottom: 15px;
@@ -141,96 +177,121 @@
         color: #fff;
     }
 }
+
 // 注册
 #regitser {
     // font-family: PingFang Medium;
     min-height: 100vh;
     padding-top: 40px;
-    background-size: cover;
+    padding-bottom: 32px;
+    background-size: cover ;
     background-position: 50%;
     background-repeat: no-repeat;
     color: #fff;
+
     .login-head {
-        padding-bottom: 76px;
+        padding-bottom: 30px;
     }
+
     .left-icon {
         width: 20px;
         height: 20px;
+
         img {
             width: 20px;
             height: 20px;
         }
     }
+
     .right-link {
         a {
-            font-family: PingFang-SC-Bold;
+            // font-family: PingFang-SC-Bold;
+            font-weight: bold;
             color: #fff;
         }
     }
+
     .layui-form {
         padding: 0 30px;
+
         .my-input {
             .layui-input-block {
                 // margin-left: 0;
-            }
-            input {
                 height: 54px;
                 line-height: 54px;
+                vertical-align: middle;
                 border-radius: 27px;
                 padding: 0 16px;
+                background-color: #1690e5;
+            }
+
+            input {
+                display: inline-block;
+                -webkit-appearance: none;
                 border: none;
                 color: #fff;
                 background-color: #1690e5;
             }
+
             input::placeholder {
                 color: #fff;
             }
         }
     }
+
     .tiaokuan-link {
         padding-top: 12px;
         text-align: center;
         cursor: pointer;
         font-size: 12px;
+
         .xuanzhong-icon {
             width: 12px;
             height: 12px;
         }
+
         a {
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
+
             em {
                 margin: 0 4px;
                 line-height: 1.4em;
                 // text-decoration: underline;
                 font-style: normal;
             }
+
             em::after {
                 border-color: #fff;
             }
         }
     }
+
     .img-code {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         .code-bx {
             width: 120px;
             height: 46px;
             margin: 0 5px;
+
             img {
                 width: 120px;
                 height: 46px;
             }
         }
     }
+
     .tel-code {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
+
     .get-tel-code {
         height: 54px;
         width: 112px;
@@ -245,10 +306,12 @@
         cursor: pointer;
     }
 }
+
 // 注册协议
 #registerText {
     position: relative;
     padding-bottom: 30px;
+
     .close-btn {
         position: absolute;
         right: 20px;
@@ -256,13 +319,16 @@
         width: 20px;
         height: 20px;
     }
+
     h1 {
         padding: 30px 30px 0;
         text-align: center;
-        font-family: PingFang-SC-Bold;
+        font-weight: bold;
+        // font-family: PingFang-SC-Bold;
         font-size: 20px;
         color: #000;
     }
+
     p {
         padding: 0 30px;
         margin-top: 30px;
@@ -271,6 +337,7 @@
         color: #000;
     }
 }
+
 // 主页头部 
 .top-head {
     height: 150px;
@@ -279,13 +346,16 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
     .msg-bx {
         height: 37px;
+
         a {
             position: relative;
             display: inline-block;
             width: 100%;
             text-align: right;
+
             .msg-num {
                 position: absolute;
                 right: -6px;
@@ -296,6 +366,7 @@
                 line-height: 1.6em;
                 font-size: 12px;
             }
+
             img {
                 display: inline-block;
                 width: 36px;
@@ -303,15 +374,18 @@
             }
         }
     }
+
     .head-bx {
         display: flex;
         align-items: center;
         color: #333;
+
         span {
             padding-left: 10px;
             font-size: 16px;
         }
     }
+
     .logo-bx {
         width: 80px;
         height: 80px;
@@ -320,6 +394,7 @@
         background-color: rgba(255, 255, 255, 0.6);
         border: 1px solid #1690e5;
     }
+
     .user-pic {
         display: block;
         width: 70px;
@@ -327,11 +402,13 @@
         object-fit: cover;
         // margin: 0 auto;
     }
+
     .des-bx {
         position: relative;
         margin-top: 20px;
         text-align: center;
         color: #fff;
+
         .user-des {
             .name {
                 width: 100px;
@@ -347,6 +424,7 @@
                 background-color: rgba(0, 0, 0, 0.4);
             }
         }
+
         .add-fr {
             position: absolute;
             border: 0.5px solid #fff;
@@ -359,12 +437,15 @@
         }
     }
 }
+
 // 修改个人信息
 #setUserInfo {
     min-height: calc(~"100vh - 50px");
     background-color: #f2f2f2;
+
     form {
         padding-top: 1px;
+
         .item {
             display: flex;
             align-items: center;
@@ -372,16 +453,20 @@
             padding: 10px 15px;
             background-color: #fff;
             border-bottom: 0.5px solid #f2f2f2;
+
             .pic {
                 position: relative;
             }
+
             .preview {
                 object-fit: cover;
             }
+
             .upload-area {
                 width: 70px;
                 height: 70px;
             }
+
             .bianji {
                 display: flex;
                 justify-content: center;
@@ -394,6 +479,7 @@
                 color: #fff;
                 background-color: rgba(0, 0, 0, 0.4);
             }
+
             .file-input {
                 border: none;
                 background-color: transparent;
@@ -406,23 +492,28 @@
                 z-index: 99;
                 font-size: 6.5rem;
             }
+
             .pic-bx {
                 width: 70px;
                 height: 70px;
+
                 img {
                     width: 100%;
                     height: 100%;
                     border-radius: 100%;
                 }
             }
+
             .user-name {
                 border: none;
                 text-align: right;
                 color: #808080;
             }
         }
+
         .sub-bx {
             padding: 40px 15px 0;
+
             .submit-btn {
                 width: 100%;
                 line-height: 3;
@@ -435,6 +526,7 @@
         }
     }
 }
+
 /* uploadImage css begin*/
 // ol, ul {
 //     list-style: none;

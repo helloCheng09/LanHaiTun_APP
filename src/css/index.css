@@ -3,6 +3,7 @@
 #login {
   min-height: 100vh;
   padding-top: 40px;
+  padding-bottom: 32px;
   background-size: cover;
   background-position: 50%;
   background-repeat: no-repeat;
@@ -23,7 +24,7 @@
   height: 20px;
 }
 #login .right-link a {
-  font-family: PingFang-SC-Bold;
+  font-weight: bold;
   color: #fff;
 }
 #login .logo-img {
@@ -45,11 +46,17 @@
 #login .layui-form {
   padding: 0 30px;
 }
-#login .layui-form .my-input input {
+#login .layui-form .my-input .layui-input-block {
   height: 54px;
   line-height: 54px;
+  vertical-align: middle;
   border-radius: 27px;
   padding: 0 16px;
+  background-color: #1690e5;
+}
+#login .layui-form .my-input input {
+  display: inline-block;
+  -webkit-appearance: none;
   border: none;
   color: #fff;
   background-color: #1690e5;
@@ -66,6 +73,7 @@
 }
 #forget {
   padding-top: 32px;
+  padding-bottom: 32px;
   min-height: 100vh;
 }
 #forget .my-input {
@@ -82,7 +90,7 @@
   flex: 1;
 }
 #forget .my-input .layui-form-label {
-  font-family: PingFang-SC-Bold;
+  font-weight: bold;
 }
 #forget .my-input input {
   border: none;
@@ -133,13 +141,14 @@
 #regitser {
   min-height: 100vh;
   padding-top: 40px;
-  background-size: cover;
+  padding-bottom: 32px;
+  background-size: cover ;
   background-position: 50%;
   background-repeat: no-repeat;
   color: #fff;
 }
 #regitser .login-head {
-  padding-bottom: 76px;
+  padding-bottom: 30px;
 }
 #regitser .left-icon {
   width: 20px;
@@ -150,17 +159,23 @@
   height: 20px;
 }
 #regitser .right-link a {
-  font-family: PingFang-SC-Bold;
+  font-weight: bold;
   color: #fff;
 }
 #regitser .layui-form {
   padding: 0 30px;
 }
-#regitser .layui-form .my-input input {
+#regitser .layui-form .my-input .layui-input-block {
   height: 54px;
   line-height: 54px;
+  vertical-align: middle;
   border-radius: 27px;
   padding: 0 16px;
+  background-color: #1690e5;
+}
+#regitser .layui-form .my-input input {
+  display: inline-block;
+  -webkit-appearance: none;
   border: none;
   color: #fff;
   background-color: #1690e5;
@@ -238,7 +253,7 @@
 #registerText h1 {
   padding: 30px 30px 0;
   text-align: center;
-  font-family: PingFang-SC-Bold;
+  font-weight: bold;
   font-size: 20px;
   color: #000;
 }

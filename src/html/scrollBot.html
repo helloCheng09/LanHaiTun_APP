@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>tab</title>
+    <style>
+        textarea{height: 200px;width: 300px}
+    </style>
+</head>
+
+<body>
+
+    <p>
+        <textarea>
+        用户咨询条款
+        一、咨询系统提供的服务
+
+1、本网站咨询系统（以下简称“本系统”）为用户提供参与各种咨询项目（以下简称“项目”）的机会。用户在包之网上注册成为会员，并可申请某一专家会员通过包之网平台及电话等方式为其提供咨询服务。
+
+2、您应按照您想要咨询的专家其所对应的专家收费金额，根据您希望互动/通话时间的长短，预先存入咨询费用，方可进行预约、咨询。咨询完成后，剩余的款项将在15个工作日内直接退还给您。您应提供详细的收款信息，否则本网站不承担任何责任。提请您注意，若预存金额过低，可能导致咨询中断。咨询费用根据本网站标准的专家收费金额及实际通话时间进行计算。您同意因银行处理本网站对您的每一笔付款所产生的全部费用将由您自行承担。
+
+3、如果您对专家的工作内容或提供咨询服务质量等有异议，则在此等争议完全解决之前，本网站将扣留应付给您的款项。
+
+4、如果您需要发票，应直接向提供咨询的专家要求，本网站不提供任何发票。
+
+5、专家收费详见本网站不时发布的专家收费金额。专家收费金额及其修改均为本条款不可分割的组成部分，请您申请前仔细查看。
+
+6、本网站根据实际情况尽可能根据您的要求、申请与专家进行匹配， 但专家有权不予提供服务。
+
+    </textarea>
+    </p>
+    <p>
+        <input type="checkbox" value="1" disabled="disabled"> 同意
+    </p>
+    <script>
+        //获取checkbox元素
+        var checkbox = document.querySelector('input[type=checkbox]');
+        document.querySelector('textarea').addEventListener('scroll', function () {
+            //读取内容区域的真实高度（滚动条高）
+            //   console.log(this.scrollHeight);
+            //读取滚动条的位置
+            //        console.log(this.scrollTop);
+            //设置滚动到的位置
+            //            this.scrollTop=800;
+            //读取元素的高度
+            //        console.log(this.clientHeight)
+            //意思就是内容总体的高度 - 滚动条的偏移值  === 元素的高度(包含内边)但不包含外边距，边框，以及滚动条
+            if (this.scrollHeight - this.scrollTop === this.clientHeight) {
+                console.log("到达底部");
+                //移除disabled属性
+                checkbox.removeAttribute('disabled')
+            }
+        })
+    </script>
+</body>
+
+</html>
