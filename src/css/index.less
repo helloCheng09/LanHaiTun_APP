@@ -1,6 +1,207 @@
 @import './StyleDepend/mReset.css';
 @import './common.css';
 
+// 发送私信
+#sendMsg {
+    min-height: 100vh;
+    background-color: #f0f0f0;
+
+    .my-head {
+        background-color: #fff;
+    }
+
+    .main-screen {
+        height: calc(~"100vh - 102px");
+        overflow-y: scroll;
+        .msg-item {
+            padding: 20px 15px;
+            .msg-time {
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+                margin-bottom: 18px;
+                font-size: 12px;
+
+                .time {
+                    display: inline-block;
+                    padding: 0 8px;
+                    line-height: 2em;
+                    border-radius: 4px;
+                    background-color: #ccc;
+                }
+            }
+
+            .main-item {
+                display: flex;
+            }
+
+            img {
+                width: 48px;
+                height: 48px;
+                border-radius: 100%;
+                object-fit: cover;
+            }
+
+            .content {
+                line-height: 1.4em;
+                padding: 10px;
+                border-radius: 10px;
+                background-color: #fff;
+            }
+        }
+
+        .left {
+            .main-item {
+                padding-right: 50px;
+            }
+
+            .content {
+                margin-left: 10px;
+            }
+        }
+
+        .right {
+            .main-item {
+                padding-left: 50px;
+            }
+
+            .content {
+                margin-right: 10px;
+                background-color: #6ec7ff;
+                color: #fff;
+            }
+        }
+    }
+
+}
+
+// 好友列表
+#friendList,
+#addFriend {
+    .my-head {
+        background-color: #6ec7ff;
+        color: #fff;
+    }
+
+    .search {
+        margin: 15px;
+        padding: 6px 10px;
+        display: flex;
+        align-items: center;
+        border-radius: 6px;
+        background-color: #ededee;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+
+        input {
+            margin-left: 10px;
+            -webkit-appearance: none;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #b2b3b5;
+            background-color: #ededee;
+        }
+    }
+
+    .main-list {
+        .list {}
+
+        li {
+
+            margin: 0 10px;
+            padding: 14px 0px;
+            border-bottom: 1px solid #edeeee;
+
+            a {
+                display: flex;
+                width: calc(~"100vw - 20px");
+            }
+        }
+
+        .left {
+            display: flex;
+            flex: 1;
+            position: relative;
+
+            img {
+                width: 48px;
+                height: 48px;
+                border-radius: 100%;
+                object-fit: cover;
+            }
+
+            .name-dex {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                padding: 5px 0px 5px 10px;
+
+                .name {}
+
+                .content {
+                    width: 180px;
+                    display: inline-block;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    color: #999;
+                }
+            }
+        }
+
+        .right {
+            width: 108px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0px;
+
+            .add-btn {
+                display: inline-block;
+                padding: 0 6px;
+                line-height: 2em;
+                background-color: #6ec7ff;
+                border-radius: 6px;
+                color: #fff;
+            }
+
+            .send-btn {
+                display: inline-block;
+                padding: 0 6px;
+                line-height: 2em;
+                border-radius: 6px;
+                color: #fff;
+                background-color: #6e7dff;
+
+            }
+
+            .top-time {
+                font-size: 12px;
+            }
+
+            .num {
+                display: inline-block;
+                line-height: 1.6em;
+                padding: 0 4px;
+                font-size: 12px;
+                color: #fff;
+                border-radius: 4px;
+                background-color: #fd1c1c;
+            }
+        }
+    }
+
+}
+
 // 登陆
 #login {
     // font-family: PingFang Medium;
@@ -184,7 +385,7 @@
     min-height: 100vh;
     padding-top: 40px;
     padding-bottom: 32px;
-    background-size: cover ;
+    background-size: cover;
     background-position: 50%;
     background-repeat: no-repeat;
     color: #fff;

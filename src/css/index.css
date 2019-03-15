@@ -1,5 +1,176 @@
 @import 'StyleDepend/mReset.css';
 @import 'common.css';
+#sendMsg {
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+#sendMsg .my-head {
+  background-color: #fff;
+}
+#sendMsg .main-screen {
+  height: calc(100vh - 102px);
+  overflow-y: scroll;
+}
+#sendMsg .main-screen .msg-item {
+  padding: 20px 15px;
+}
+#sendMsg .main-screen .msg-item .msg-time {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 12px;
+}
+#sendMsg .main-screen .msg-item .msg-time .time {
+  display: inline-block;
+  padding: 0 8px;
+  line-height: 2em;
+  border-radius: 4px;
+  background-color: #ccc;
+}
+#sendMsg .main-screen .msg-item .main-item {
+  display: flex;
+}
+#sendMsg .main-screen .msg-item img {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  object-fit: cover;
+}
+#sendMsg .main-screen .msg-item .content {
+  line-height: 1.4em;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+#sendMsg .main-screen .left .main-item {
+  padding-right: 50px;
+}
+#sendMsg .main-screen .left .content {
+  margin-left: 10px;
+}
+#sendMsg .main-screen .right .main-item {
+  padding-left: 50px;
+}
+#sendMsg .main-screen .right .content {
+  margin-right: 10px;
+  background-color: #6ec7ff;
+  color: #fff;
+}
+#friendList .my-head,
+#addFriend .my-head {
+  background-color: #6ec7ff;
+  color: #fff;
+}
+#friendList .search,
+#addFriend .search {
+  margin: 15px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  background-color: #ededee;
+}
+#friendList .search img,
+#addFriend .search img {
+  width: 24px;
+  height: 24px;
+}
+#friendList .search input,
+#addFriend .search input {
+  margin-left: 10px;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #b2b3b5;
+  background-color: #ededee;
+}
+#friendList .main-list li,
+#addFriend .main-list li {
+  margin: 0 10px;
+  padding: 14px 0px;
+  border-bottom: 1px solid #edeeee;
+}
+#friendList .main-list li a,
+#addFriend .main-list li a {
+  display: flex;
+  width: calc(100vw - 20px);
+}
+#friendList .main-list .left,
+#addFriend .main-list .left {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+#friendList .main-list .left img,
+#addFriend .main-list .left img {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  object-fit: cover;
+}
+#friendList .main-list .left .name-dex,
+#addFriend .main-list .left .name-dex {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 5px 0px 5px 10px;
+}
+#friendList .main-list .left .name-dex .content,
+#addFriend .main-list .left .name-dex .content {
+  width: 180px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #999;
+}
+#friendList .main-list .right,
+#addFriend .main-list .right {
+  width: 108px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0px;
+}
+#friendList .main-list .right .add-btn,
+#addFriend .main-list .right .add-btn {
+  display: inline-block;
+  padding: 0 6px;
+  line-height: 2em;
+  background-color: #6ec7ff;
+  border-radius: 6px;
+  color: #fff;
+}
+#friendList .main-list .right .send-btn,
+#addFriend .main-list .right .send-btn {
+  display: inline-block;
+  padding: 0 6px;
+  line-height: 2em;
+  border-radius: 6px;
+  color: #fff;
+  background-color: #6e7dff;
+}
+#friendList .main-list .right .top-time,
+#addFriend .main-list .right .top-time {
+  font-size: 12px;
+}
+#friendList .main-list .right .num,
+#addFriend .main-list .right .num {
+  display: inline-block;
+  line-height: 1.6em;
+  padding: 0 4px;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 4px;
+  background-color: #fd1c1c;
+}
 #login {
   min-height: 100vh;
   padding-top: 40px;
@@ -142,7 +313,7 @@
   min-height: 100vh;
   padding-top: 40px;
   padding-bottom: 32px;
-  background-size: cover ;
+  background-size: cover;
   background-position: 50%;
   background-repeat: no-repeat;
   color: #fff;

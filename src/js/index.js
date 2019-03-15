@@ -11,6 +11,9 @@
         forgetUrl: 'index.php?i=2&c=entry&do=forget&m=wyt_luntan', //忘记密码接口
         userInfo: 'index.php?i=2&c=entry&action=user&do=Index&m=wyt_luntan', // 个人中心地址
         setUserInfo: 'index.php?i=2&c=entry&action=edit_info&do=Index&m=wyt_luntan', // 设置个人信息接口
+        searUser: 'index.php?i=2&c=entry&action=search_member&do=Index&m=wyt_luntan', // 搜索好友接口
+        addFriend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=friend_add_post', // 添加好友接口
+
     };
 
     /****************************************************************************** */
@@ -18,7 +21,72 @@
      * 初始化
      * init.js
      */
-    (function ($, root) {}(window.$, window.myLib || (window.myLib = {})));
+    (function ($, root) {
+        function autoTextarea(elem, extra, maxHeight) {
+            extra = extra || 0;
+            var isFirefox = !!document.getBoxObjectFor || 'mozInnerScreenX' in window,
+                isOpera = !!window.opera && !!window.opera.toString().indexOf('Opera'),
+                addEvent = function (type, callback) {
+                    elem.addEventListener ?
+                        elem.addEventListener(type, callback, false) :
+                        elem.attachEvent('on' + type, callback);
+                },
+                getStyle = elem.currentStyle ? function (name) {
+                    var val = elem.currentStyle[name];
+
+                    if (name === 'height' && val.search(/px/i) !== 1) {
+                        var rect = elem.getBoundingClientRect();
+                        return rect.bottom - rect.top -
+                            parseFloat(getStyle('paddingTop')) -
+                            parseFloat(getStyle('paddingBottom')) + 'px';
+                    };
+
+                    return val;
+                } : function (name) {
+                    return getComputedStyle(elem, null)[name];
+                },
+                minHeight = parseFloat(getStyle('height'));
+
+            elem.style.resize = 'none';
+
+            var change = function () {
+                var scrollTop, height,
+                    padding = 0,
+                    style = elem.style;
+
+                if (elem._length === elem.value.length) return;
+                elem._length = elem.value.length;
+
+                if (!isFirefox && !isOpera) {
+                    padding = parseInt(getStyle('paddingTop')) + parseInt(getStyle('paddingBottom'));
+                };
+                scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+                elem.style.height = minHeight + 'px';
+                if (elem.scrollHeight > minHeight) {
+                    if (maxHeight && elem.scrollHeight > maxHeight) {
+                        height = maxHeight - padding;
+                        style.overflowY = 'auto';
+                    } else {
+                        height = elem.scrollHeight - padding;
+                        style.overflowY = 'hidden';
+                    };
+                    style.height = height + extra + 'px';
+                    scrollTop += parseInt(style.height) - elem.currHeight;
+                    document.body.scrollTop = scrollTop;
+                    document.documentElement.scrollTop = scrollTop;
+                    elem.currHeight = parseInt(style.height);
+                };
+            };
+
+            addEvent('propertychange', change);
+            addEvent('input', change);
+            addEvent('focus', change);
+            change();
+        }
+        root.autoTextarea = autoTextarea
+
+    }(window.$, window.myLib || (window.myLib = {})));
 
     /****************************************************************************** */
     /**
@@ -26,6 +94,24 @@
      * delegate.js
      */
     (function ($, root) {
+        // 添加好友
+        function addFriend() {
+            $('.add-btn').click(function () {
+                var self = $(this)
+               var uid =  self.parents('li').attr('u-id')
+               var subData = {
+                   uid: uid,
+               }
+               console.log(subData)
+               root.postSubmit({
+                   data: subData,
+                   url: baseUrl + urlObj.addFriend,
+                   source: 'addFriend'
+               })
+            })
+        }
+        root.addFriend = addFriend
+
         // 倒计时 获取验证码
         let getTelCode = () => {
             // 倒计时时间
@@ -120,7 +206,6 @@
                             }
                         }
                         if (obj.source == 'forget') {
-                            console.log(1, res)
                             if (res.data.code == 1) {
                                 // 密码修改成功
                                 layer.msg(res.data.msg)
@@ -130,6 +215,68 @@
                                 // 失败
                                 layer.msg(res.data.msg)
                             }
+                        }
+                        if (obj.source === 'searchUser') {
+                            if (res.code == 1) {
+                                var data = res.data[0]
+                                if (data.is_friend == 0) {
+                                    // 还不是好友
+                                    var html = `
+                                        <li u-id = ${data.uid} my-id='${res.current_id}'>
+                                            <a href="##">
+                                                <div class="left">
+                                                    <img src="${data.headimgurl}">
+                                                    <div class="name-dex">
+                                                        <div class="name">${data.nickname}</div>
+                                                        <div class="content">ID：${data.telephone}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="right">
+                                                <span class="add-btn">+ 添加</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    `
+                                    
+                                } else {
+                                    // 已经是好友
+                                    // 去聊天的地址
+                                    var chatUrl = '/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=chatting&friend_id=' + data.uid + '&current_id=' + res.current_id
+                                    var html = ` 
+                                        <li>
+                                            <a href="${chatUrl}">
+                                                <div class="left">
+                                                    <img src="${data.headimgurl}">
+                                                    <div class="name-dex">
+                                                        <div class="name">${data.nickname}</div>
+                                                        <div class="content">ID：${data.telephone}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="right">
+                                                    <span class="send-btn">发私信</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    `
+                                }
+                                $('.list').append(html)
+                                // 如果不是好友，添加好友操作
+                                if (obj.source === 'searchUser'){
+                                    root.addFriend()
+                                }
+                            } else {
+                                layer.msg(res.msg)
+                            }
+                        }
+
+                        // 添加好友 申请
+                        if (obj.source == 'addFriend') {
+                            console.log(3, res)
+                            if (res.code == 1) {
+                                // 申请成功
+                            } 
+                            layer.msg(res.msg)
+                            return
                         }
                     }, 500)
                     // 验证图形验证码
@@ -186,7 +333,7 @@
             }, 1000);
         }
         root.navToInfo = navToInfo
-     
+
 
     }(window.$, window.myLib || (window.myLib = {})));
     /****************************************************************************** */
@@ -319,6 +466,31 @@
                 })
                 return false
             })
+        } else if (document.getElementById('sendMsg')) {
+            var textInput = document.getElementById('textarea')
+            root.autoTextarea(textInput)
+        } else if (document.getElementById('addFriend')) {
+            // 搜索框防抖
+            // 搜索好友
+            var timer
+            $('.ser-input').keydown(function () {
+                var _self = $(this)
+                if (timer) {
+                    clearTimeout(timer)
+                }
+
+                timer = setTimeout(() => {
+                    var serData = {
+                        telephone: _self.val()
+                    }
+                    root.postSubmit({
+                        url: baseUrl + urlObj.searUser,
+                        data: serData,
+                        source: 'searchUser'
+                    })
+                }, 1500);
+            })
+
         }
     }(window.$, window.myLib || (window.myLib = {})));
 }())
