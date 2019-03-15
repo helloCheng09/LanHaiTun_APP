@@ -42,6 +42,7 @@
   padding: 10px;
   border-radius: 10px;
   background-color: #fff;
+  font-size: 14px;
 }
 #sendMsg .main-screen .left .main-item {
   padding-right: 50px;
@@ -89,7 +90,7 @@
 #friendList .main-list li,
 #addFriend .main-list li {
   margin: 0 10px;
-  padding: 14px 0px;
+  padding: 8px 0px;
   border-bottom: 1px solid #edeeee;
 }
 #friendList .main-list li a,
@@ -100,6 +101,7 @@
 #friendList .main-list .left,
 #addFriend .main-list .left {
   display: flex;
+  align-items: center;
   flex: 1;
   position: relative;
 }
@@ -121,11 +123,16 @@
   text-overflow: ellipsis;
   padding: 5px 0px 5px 10px;
 }
+#friendList .main-list .left .name-dex .name,
+#addFriend .main-list .left .name-dex .name {
+  line-height: 2em;
+}
 #friendList .main-list .left .name-dex .content,
 #addFriend .main-list .left .name-dex .content {
   width: 180px;
   display: inline-block;
   overflow: hidden;
+  line-height: 2em;
   white-space: nowrap;
   text-overflow: ellipsis;
   color: #999;
@@ -144,9 +151,45 @@
   display: inline-block;
   padding: 0 6px;
   line-height: 2em;
-  background-color: #6ec7ff;
   border-radius: 6px;
+  font-size: 14px;
+  background-color: #6ec7ff;
   color: #fff;
+  cursor: pointer;
+}
+#friendList .main-list .right .pass-btn,
+#addFriend .main-list .right .pass-btn {
+  display: inline-block;
+  padding: 0 6px;
+  line-height: 2em;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #58b955;
+  color: #fff;
+  cursor: pointer;
+}
+#friendList .main-list .right .refuse-btn,
+#addFriend .main-list .right .refuse-btn {
+  display: inline-block;
+  padding: 0 6px;
+  line-height: 2em;
+  border-radius: 6px;
+  margin: 6px 0;
+  font-size: 14px;
+  background-color: #ff6e6e;
+  color: #fff;
+  cursor: pointer;
+}
+#friendList .main-list .right .waitting,
+#addFriend .main-list .right .waitting {
+  display: inline-block;
+  padding: 0 6px;
+  line-height: 2em;
+  border-radius: 6px;
+  background-color: #b8b8b8;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
 }
 #friendList .main-list .right .send-btn,
 #addFriend .main-list .right .send-btn {
@@ -154,8 +197,10 @@
   padding: 0 6px;
   line-height: 2em;
   border-radius: 6px;
+  font-size: 14px;
   color: #fff;
   background-color: #6e7dff;
+  cursor: pointer;
 }
 #friendList .main-list .right .top-time,
 #addFriend .main-list .right .top-time {
@@ -167,9 +212,15 @@
   line-height: 1.6em;
   padding: 0 4px;
   font-size: 12px;
+  margin-bottom: 8px;
   color: #fff;
   border-radius: 4px;
   background-color: #fd1c1c;
+}
+#friendList .main-list .btn,
+#addFriend .main-list .btn {
+  justify-content: center;
+  cursor: pointer;
 }
 #login {
   min-height: 100vh;

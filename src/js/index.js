@@ -13,6 +13,7 @@
         setUserInfo: 'index.php?i=2&c=entry&action=edit_info&do=Index&m=wyt_luntan', // 设置个人信息接口
         searUser: 'index.php?i=2&c=entry&action=search_member&do=Index&m=wyt_luntan', // 搜索好友接口
         addFriend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=friend_add_post', // 添加好友接口
+        passFriend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=friend_agree', // 处理好友申请接口
 
     };
 
@@ -98,16 +99,16 @@
         function addFriend() {
             $('.add-btn').click(function () {
                 var self = $(this)
-               var uid =  self.parents('li').attr('u-id')
-               var subData = {
-                   uid: uid,
-               }
-               console.log(subData)
-               root.postSubmit({
-                   data: subData,
-                   url: baseUrl + urlObj.addFriend,
-                   source: 'addFriend'
-               })
+                var uid = self.parents('li').attr('u-id')
+                var subData = {
+                    uid: uid,
+                }
+                console.log(subData)
+                root.postSubmit({
+                    data: subData,
+                    url: baseUrl + urlObj.addFriend,
+                    source: 'addFriend'
+                })
             })
         }
         root.addFriend = addFriend
@@ -223,7 +224,7 @@
                                     // 还不是好友
                                     var html = `
                                         <li u-id = ${data.uid} my-id='${res.current_id}'>
-                                            <a href="##">
+                                            <a href="javascript:;">
                                                 <div class="left">
                                                     <img src="${data.headimgurl}">
                                                     <div class="name-dex">
@@ -231,13 +232,13 @@
                                                         <div class="content">ID：${data.telephone}</div>
                                                     </div>
                                                 </div>
-                                                <div class="right">
+                                                <div class="right btn">
                                                 <span class="add-btn">+ 添加</span>
                                                 </div>
                                             </a>
                                         </li>
                                     `
-                                    
+
                                 } else {
                                     // 已经是好友
                                     // 去聊天的地址
@@ -252,7 +253,7 @@
                                                         <div class="content">ID：${data.telephone}</div>
                                                     </div>
                                                 </div>
-                                                <div class="right">
+                                                <div class="right btn">
                                                     <span class="send-btn">发私信</span>
                                                 </div>
                                             </a>
@@ -261,7 +262,7 @@
                                 }
                                 $('.list').append(html)
                                 // 如果不是好友，添加好友操作
-                                if (obj.source === 'searchUser'){
+                                if (obj.source === 'searchUser') {
                                     root.addFriend()
                                 }
                             } else {
@@ -271,12 +272,34 @@
 
                         // 添加好友 申请
                         if (obj.source == 'addFriend') {
-                            console.log(3, res)
                             if (res.code == 1) {
                                 // 申请成功
-                            } 
+                            } else if (res.code === 4) {
+                                $('.right').empty().append(' <span class="waitting">待通过</span>')
+                            }
                             layer.msg(res.msg)
                             return
+                        }
+
+                        // 处理好友申请
+                        // 接受
+                        if (obj.source === 'passFriend') {
+                            console.log(3, res)
+                            if (res.code == 1) {
+                                $('.right').empty().append('  <span class="waitting">已通过</span>')
+                            } else {
+                                layer.msg(res.msg)
+                            }
+                        }
+                        // 处理好友申请
+                        //  决绝
+                        if (obj.source === 'refuseFriend') {
+                            console.log(4, res)
+                            if (res.code == 1) {
+                                $('.right').empty().append('  <span class="waitting">已拒绝</span>')
+                            } else {
+                                layer.msg(res.msg)
+                            }
                         }
                     }, 500)
                     // 验证图形验证码
@@ -490,7 +513,34 @@
                     })
                 }, 1500);
             })
+            // 通过好友申请
+            $('.pass-btn').click(function () {
 
+                var id = $(this).parents('li').attr('data-id')
+                var data = {
+                    id: id,
+                    is_agree: 1, // 1同意， 2拒绝
+                }
+                root.postSubmit({
+                    url: baseUrl + urlObj.passFriend,
+                    data: data,
+                    source: 'passFriend'
+                })
+            })
+            // 拒绝好友申请
+            $('.refuse-btn').click(function () {
+
+                var id = $(this).parents('li').attr('data-id')
+                var data = {
+                    id: id,
+                    is_agree: 2, // 1同意， 2拒绝
+                }
+                root.postSubmit({
+                    url: baseUrl + urlObj.passFriend,
+                    data: data,
+                    source: 'refuseFriend'
+                })
+            })
         }
     }(window.$, window.myLib || (window.myLib = {})));
 }())

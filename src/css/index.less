@@ -47,7 +47,9 @@
                 padding: 10px;
                 border-radius: 10px;
                 background-color: #fff;
+                font-size: 14px;
             }
+
         }
 
         .left {
@@ -111,9 +113,8 @@
         .list {}
 
         li {
-
             margin: 0 10px;
-            padding: 14px 0px;
+            padding: 8px 0px;
             border-bottom: 1px solid #edeeee;
 
             a {
@@ -124,6 +125,7 @@
 
         .left {
             display: flex;
+            align-items: center;
             flex: 1;
             position: relative;
 
@@ -144,12 +146,15 @@
                 text-overflow: ellipsis;
                 padding: 5px 0px 5px 10px;
 
-                .name {}
+                .name {
+                    line-height: 2em;
+                }
 
                 .content {
                     width: 180px;
                     display: inline-block;
                     overflow: hidden;
+                    line-height: 2em;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     color: #999;
@@ -164,14 +169,46 @@
             justify-content: space-between;
             align-items: center;
             padding: 5px 0px;
-
             .add-btn {
                 display: inline-block;
                 padding: 0 6px;
                 line-height: 2em;
-                background-color: #6ec7ff;
                 border-radius: 6px;
+                font-size: 14px;
+                background-color: #6ec7ff;
                 color: #fff;
+                cursor: pointer;
+            }
+            .pass-btn {
+                display: inline-block;
+                padding: 0 6px;
+                line-height: 2em;
+                border-radius: 6px;
+                font-size: 14px;
+                background-color: #58b955;
+                color: #fff;
+                cursor: pointer;
+            }
+            .refuse-btn{
+                display: inline-block;
+                padding: 0 6px;
+                line-height: 2em;
+                border-radius: 6px;
+                margin:6px 0;
+                font-size: 14px;
+                background-color: #ff6e6e;
+                color: #fff;
+                cursor: pointer;
+            }
+            .waitting {
+                display: inline-block;
+                padding: 0 6px;
+                line-height: 2em;
+                border-radius: 6px;
+                background-color: #b8b8b8;
+                font-size: 14px;
+                color: #fff;
+                cursor: pointer;
             }
 
             .send-btn {
@@ -179,9 +216,10 @@
                 padding: 0 6px;
                 line-height: 2em;
                 border-radius: 6px;
+                font-size: 14px;
                 color: #fff;
                 background-color: #6e7dff;
-
+                cursor: pointer;
             }
 
             .top-time {
@@ -193,10 +231,15 @@
                 line-height: 1.6em;
                 padding: 0 4px;
                 font-size: 12px;
+                margin-bottom: 8px;
                 color: #fff;
                 border-radius: 4px;
                 background-color: #fd1c1c;
             }
+        }
+        .btn {
+            justify-content: center;
+            cursor: pointer;
         }
     }
 
