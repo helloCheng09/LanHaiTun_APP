@@ -3,7 +3,7 @@ var player = new Aliplayer({
   "source": "http://lhttp.qingting.fm/live/4804/64k.mp3",
   // "source": "http://ls.qingting.fm/live/20211612/64k.m3u8",
   "width": "100%",
-  "height": "100px",
+  "height": "130px",
   "autoplay": true,
   "isLive": true,
   "rePlay": true,

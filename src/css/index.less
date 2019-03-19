@@ -1,6 +1,81 @@
 @import './StyleDepend/mReset.css';
 @import './common.css';
 
+// 直播列表
+#showList {
+    height: calc(~"100vh - 126px")!important;
+    overflow-y: scroll;
+    font-size: 16px;
+    font-weight: normal;
+    background-color:#fff;
+    ul {
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            border-bottom: 0.3px solid #ececec;
+            .left {
+                .title {
+                    font-size: 16px;
+                    font-weight: normal;
+                    line-height: 1.6em;
+                }
+                .name {
+                    font-size: 14px;
+                    color: #808080;
+                }
+            }
+            .right {
+                font-size: 14px;
+                color: #808080;
+                .zhibo {
+                    padding: 2px 6px;
+                    // line-height: 1.6em;
+                    font-size: 12px;
+                    border-radius: 2px;
+                    background-color: #6ec7ff;
+                    color: #fff;
+                }
+            }
+        }
+
+        .now:before {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            top: 50%;
+            left:32px;
+            transform: translateY(-50%);
+            border-width: 7px;
+            border-color: transparent transparent transparent #6ec7ff;
+        }
+        .now:after {
+            content: '直播中...';
+            position: absolute;
+            right: 45px;
+            font-size: 14px;
+        }
+        .now {
+            color: #6ec7ff;
+        }
+        .past {
+            color: #cac7c7;
+        }
+        .zhibo-bx{
+            .title {
+                color: #6ec7ff;
+            }
+            .name {
+                color: #6ec7ff!important;
+            }
+            span {
+                color: #6ec7ff;
+            }
+        }
+    }
+}
+
 // 发送私信
 #sendMsg {
     min-height: 100vh;
@@ -14,7 +89,7 @@
         height: calc(~"100vh - 102px");
         overflow-y: scroll;
         .msg-item {
-            padding: 20px 15px;
+            padding: 10px 15px;
             .msg-time {
                 display: inline-block;
                 width: 100%;
@@ -27,7 +102,7 @@
                     padding: 0 8px;
                     line-height: 2em;
                     border-radius: 4px;
-                    background-color: #ccc;
+                    background-color: #e5e5e5;
                 }
             }
 
@@ -45,6 +120,7 @@
             .content {
                 line-height: 1.4em;
                 padding: 10px;
+                word-break: break-all;
                 border-radius: 10px;
                 background-color: #fff;
                 font-size: 14px;
@@ -54,6 +130,7 @@
 
         .left {
             .main-item {
+                align-items: center;
                 padding-right: 50px;
             }
 
@@ -64,9 +141,10 @@
 
         .right {
             .main-item {
+                align-items: center;
+                justify-content: flex-end;
                 padding-left: 50px;
             }
-
             .content {
                 margin-right: 10px;
                 background-color: #6ec7ff;
@@ -223,6 +301,7 @@
             }
 
             .top-time {
+                margin-top: 10px;
                 font-size: 12px;
             }
 

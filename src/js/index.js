@@ -14,6 +14,8 @@
         searUser: 'index.php?i=2&c=entry&action=search_member&do=Index&m=wyt_luntan', // 搜索好友接口
         addFriend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=friend_add_post', // 添加好友接口
         passFriend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=friend_agree', // 处理好友申请接口
+        sendMsg: 'index.php?i=2&c=entry&action=friend_chat&do=Index&m=wyt_luntan', // 发送消息接口
+        getMsg: 'index.php?i=2&c=entry&action=refresh_chat&do=Index&m=wyt_luntan', // 获取消息列表
 
     };
 
@@ -23,6 +25,15 @@
      * init.js
      */
     (function ($, root) {
+        // 获取地址栏参数
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+        root.getQueryString = getQueryString
+
         function autoTextarea(elem, extra, maxHeight) {
             extra = extra || 0;
             var isFirefox = !!document.getBoxObjectFor || 'mozInnerScreenX' in window,
@@ -95,6 +106,22 @@
      * delegate.js
      */
     (function ($, root) {
+        // 获取好友发来的信息
+        function getNewMsg () {
+            var friend_id = root.getQueryString('friend_id')
+            var last_time = $('.main-screen .msg-item:last').attr('data-time')
+            // 获取聊天内容
+            root.postSubmit({
+                url: baseUrl + urlObj.getMsg,
+                data: {
+                    friend_id: friend_id,
+                    last_time: last_time,
+                },
+                source: 'getMsg'
+            })
+        }
+
+        root.getNewMsg = getNewMsg
         // 添加好友
         function addFriend() {
             $('.add-btn').click(function () {
@@ -223,21 +250,21 @@
                                 if (data.is_friend == 0) {
                                     // 还不是好友
                                     var html = `
-                                        <li u-id = ${data.uid} my-id='${res.current_id}'>
-                                            <a href="javascript:;">
-                                                <div class="left">
-                                                    <img src="${data.headimgurl}">
-                                                    <div class="name-dex">
-                                                        <div class="name">${data.nickname}</div>
-                                                        <div class="content">ID：${data.telephone}</div>
+                                            <li u-id = ${data.uid} my-id='${res.current_id}'>
+                                                <a href="javascript:;">
+                                                    <div class="left">
+                                                        <img src="${data.headimgurl}">
+                                                        <div class="name-dex">
+                                                            <div class="name">${data.nickname}</div>
+                                                            <div class="content">ID：${data.telephone}</div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="right btn">
-                                                <span class="add-btn">+ 添加</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    `
+                                                    <div class="right btn">
+                                                    <span class="add-btn">+ 添加</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        `
 
                                 } else {
                                     // 已经是好友
@@ -313,6 +340,57 @@
                             layer.msg('图形验证码错误')
                             $("input[name='tx_code']").addClass('layui-form-danger')
                         }
+                    }
+
+                    // 发送消息给好友
+                    if (obj.source == 'sendMsg') {
+                        if (res.code === 1) {
+                            // 发送成功
+                            // 插入发送的内容
+                            var html = `
+                                <div class="msg-item right">
+                                    <span class="msg-time">
+                                    <span class="time">${res.data.sub_time}</span>
+                                    </span>
+                                    <div class="main-item">
+                                        <div class="content">${res.data.content}</div>
+                                        <img src="${res.data.headimgurl}">
+                                    </div>
+                                </div>
+                            `
+                            $('.main-screen').append(html)
+                            $('#textarea').attr('value', '')
+                            // 滚动到底
+                            var myEle = document.getElementsByClassName('main-screen')[0]
+                            myEle.scrollTop = 2000000000
+                        } else {
+                            layer.msg(res.msg)
+                            return false
+                        }
+                    }
+
+                    // 获取新消息内容
+                    if (obj.source === 'getMsg') {
+                        if (res.code === 1) {
+                            if (res.data) {
+                                var html = `
+                                    <div class="msg-item left" data-time="${res.data[0].sub_time}">
+                                        <div class="main-item">
+                                            <img src="${res.data[0].headimgurl_left}">
+                                            <div class="content">${res.data[0].content}</div>
+                                        </div>
+                                    </div>
+                                `
+                                $('.main-screen').append(html)
+                                // 滚动到底
+                                var myEle = document.getElementsByClassName('main-screen')[0]
+                                myEle.scrollTop = 2000000000
+                                // clearInterval(root.getMsg_timer)
+                                // root.lastTime = res.data[0].sub_time
+                                // 获取聊天内容
+                                root.getNewMsg()
+                            }
+                        } else {}
                     }
                 },
                 fail: (res) => {
@@ -490,8 +568,31 @@
                 return false
             })
         } else if (document.getElementById('sendMsg')) {
+            // 滚动到底
+            var myEle = document.getElementsByClassName('main-screen')[0]
+            myEle.scrollTop = 2000000000
+
             var textInput = document.getElementById('textarea')
             root.autoTextarea(textInput)
+            var friend_id = root.getQueryString('friend_id')
+            // 发送信息
+            $('button').click(function () {
+                var content = $('#textarea').val()
+                var data = {
+                    friend_id: friend_id,
+                    content: content,
+                }
+                // 发送消息请求
+                root.postSubmit({
+                    url: baseUrl + urlObj.sendMsg,
+                    data: data,
+                    source: 'sendMsg'
+                })
+            })
+
+            // 获取聊天内容
+            root.getNewMsg()
+
         } else if (document.getElementById('addFriend')) {
             // 搜索框防抖
             // 搜索好友
@@ -541,6 +642,27 @@
                     source: 'refuseFriend'
                 })
             })
+        } else if (document.getElementById('showList')) {
+            $('.TAstate li').toggleClass('.currentli ').click(function () {
+                if ($(this).index() === 0) {
+                    $('.chat-bx').show()
+                    $('#showList').hide()
+                } else {
+                    $('.chat-bx').hide()
+                    $('#showList').show()
+                }
+            })
+
+            // 消除没有加载的图片，直播聊天中
+            setTimeout(function () {
+                $('.chat_title li').each(function () {
+                    var self = $(this)
+                    if (self.find('.char_message img').attr('src') == 'undefined') {
+                        self.find('.char_message img').remove()
+                        console.log(self.find('.char_message img').attr('src'))
+                    }
+                })
+            }, 300)
         }
     }(window.$, window.myLib || (window.myLib = {})));
 }())
