@@ -127,6 +127,21 @@
             $('.add-btn').click(function () {
                 var self = $(this)
                 var uid = self.parents('li').attr('u-id')
+                root.postSubmit({
+                    data: subData,
+                    url: baseUrl + urlObj.addFriend,
+                    source: 'addFriend'
+                })
+            })
+        }
+        root.addFriend = addFriend
+
+        // addfriend2
+        // 添加好友
+        function addFriendCenter() {
+            $('.add-btn').click(function () {
+                var self = $(this)
+                var uid = root.getQueryString('uid')
                 var subData = {
                     uid: uid,
                 }
@@ -138,8 +153,7 @@
                 })
             })
         }
-        root.addFriend = addFriend
-
+        root.addFriendCenter = addFriendCenter
         // 倒计时 获取验证码
         let getTelCode = () => {
             // 倒计时时间
@@ -311,7 +325,6 @@
                         // 处理好友申请
                         // 接受
                         if (obj.source === 'passFriend') {
-                            console.log(3, res)
                             if (res.code == 1) {
                                 $('.right').empty().append('  <span class="waitting">已通过</span>')
                             } else {
@@ -348,7 +361,7 @@
                             // 发送成功
                             // 插入发送的内容
                             var html = `
-                                <div class="msg-item right">
+                                <div class="msg-item right" data-time="${res.data.times}">
                                     <span class="msg-time">
                                     <span class="time">${res.data.sub_time}</span>
                                     </span>
@@ -371,6 +384,7 @@
 
                     // 获取新消息内容
                     if (obj.source === 'getMsg') {
+                        console.log(4444, res)
                         if (res.code === 1) {
                             if (res.data) {
                                 var html = `
@@ -387,8 +401,6 @@
                                 myEle.scrollTop = 2000000000
                                 // clearInterval(root.getMsg_timer)
                                 // root.lastTime = res.data[0].sub_time
-                                // 获取聊天内容
-                                root.getNewMsg()
                             }
                         } else {}
                     }
@@ -591,7 +603,10 @@
             })
 
             // 获取聊天内容
-            root.getNewMsg()
+            var getnewTimer = setInterval(() => {
+                root.getNewMsg()
+            }, 1500);
+            root.getnewTimer = getnewTimer
 
         } else if (document.getElementById('addFriend')) {
             // 搜索框防抖
@@ -630,7 +645,6 @@
             })
             // 拒绝好友申请
             $('.refuse-btn').click(function () {
-
                 var id = $(this).parents('li').attr('data-id')
                 var data = {
                     id: id,
@@ -652,17 +666,23 @@
                     $('#showList').show()
                 }
             })
-
-            // 消除没有加载的图片，直播聊天中
-            setTimeout(function () {
-                $('.chat_title li').each(function () {
-                    var self = $(this)
-                    if (self.find('.char_message img').attr('src') == 'undefined') {
-                        self.find('.char_message img').remove()
-                        console.log(self.find('.char_message img').attr('src'))
-                    }
-                })
-            }, 300)
+        } else if (document.getElementById('userCenter')) {
+            // 添加好友
+            root.addFriendCenter()
+        } 
+        // 直播样式
+        if (document.getElementById('videoMode')) {
+            var videoEle = document.querySelector("#myVideo");
+            $('.play-img').click(function () {
+                $(this).hide()
+                $('.pause-img').show()
+                videoEle.play()
+            })
+            $('.pause-img').click(function () {
+                $(this).hide()
+                $('.play-img').show()
+                videoEle.pause()
+            })
         }
     }(window.$, window.myLib || (window.myLib = {})));
 }())

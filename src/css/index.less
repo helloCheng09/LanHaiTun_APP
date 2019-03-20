@@ -3,17 +3,18 @@
 
 // 直播列表
 #showList {
-    height: calc(~"100vh - 126px")!important;
+    height: calc(~"100vh - 194px") !important;
     overflow-y: scroll;
     font-size: 16px;
     font-weight: normal;
-    background-color:#fff;
-    ul {
-        li {
-            display: flex;
+    background-color: #fff; 
+
+    ul {   
+        li { 
+            display: flex; 
             justify-content: space-between;
             align-items: center;
-            padding: 6px 10px;
+            padding: 12px 10px;
             border-bottom: 0.3px solid #ececec;
             .left {
                 .title {
@@ -21,14 +22,17 @@
                     font-weight: normal;
                     line-height: 1.6em;
                 }
+
                 .name {
                     font-size: 14px;
                     color: #808080;
                 }
             }
+
             .right {
                 font-size: 14px;
                 color: #808080;
+
                 .zhibo {
                     padding: 2px 6px;
                     // line-height: 1.6em;
@@ -45,30 +49,36 @@
             position: absolute;
             border-style: solid;
             top: 50%;
-            left:32px;
+            left: 32px;
             transform: translateY(-50%);
             border-width: 7px;
             border-color: transparent transparent transparent #6ec7ff;
         }
+
         .now:after {
             content: '直播中...';
             position: absolute;
             right: 45px;
             font-size: 14px;
         }
+
         .now {
             color: #6ec7ff;
         }
+
         .past {
             color: #cac7c7;
         }
-        .zhibo-bx{
+
+        .zhibo-bx {
             .title {
                 color: #6ec7ff;
             }
+
             .name {
-                color: #6ec7ff!important;
+                color: #6ec7ff !important;
             }
+
             span {
                 color: #6ec7ff;
             }
@@ -88,8 +98,10 @@
     .main-screen {
         height: calc(~"100vh - 102px");
         overflow-y: scroll;
+
         .msg-item {
             padding: 10px 15px;
+
             .msg-time {
                 display: inline-block;
                 width: 100%;
@@ -108,6 +120,7 @@
 
             .main-item {
                 display: flex;
+                align-items: center;
             }
 
             img {
@@ -130,7 +143,6 @@
 
         .left {
             .main-item {
-                align-items: center;
                 padding-right: 50px;
             }
 
@@ -141,10 +153,10 @@
 
         .right {
             .main-item {
-                align-items: center;
                 justify-content: flex-end;
                 padding-left: 50px;
             }
+
             .content {
                 margin-right: 10px;
                 background-color: #6ec7ff;
@@ -247,6 +259,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 5px 0px;
+
             .add-btn {
                 display: inline-block;
                 padding: 0 6px;
@@ -257,6 +270,7 @@
                 color: #fff;
                 cursor: pointer;
             }
+
             .pass-btn {
                 display: inline-block;
                 padding: 0 6px;
@@ -267,17 +281,19 @@
                 color: #fff;
                 cursor: pointer;
             }
-            .refuse-btn{
+
+            .refuse-btn {
                 display: inline-block;
                 padding: 0 6px;
                 line-height: 2em;
                 border-radius: 6px;
-                margin:6px 0;
+                margin: 6px 0;
                 font-size: 14px;
                 background-color: #ff6e6e;
                 color: #fff;
                 cursor: pointer;
             }
+
             .waitting {
                 display: inline-block;
                 padding: 0 6px;
@@ -316,6 +332,7 @@
                 background-color: #fd1c1c;
             }
         }
+
         .btn {
             justify-content: center;
             cursor: pointer;
@@ -402,6 +419,11 @@
             }
 
             input::placeholder {
+                color: #fff;
+            }
+
+            input:-moz-placeholder {
+                /* Mozilla Firefox 4 to 18 */
                 color: #fff;
             }
         }
@@ -770,15 +792,33 @@
         padding-top: 1px;
 
         .item {
+            width: 100vw;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px 15px;
             background-color: #fff;
             border-bottom: 0.5px solid #f2f2f2;
-
-            .pic {
+            label {
+                display: inline-block;
+                width: 100px;
                 position: relative;
+            }
+            .my-name {
+                display: inline-block;
+                width: 100px;
+                border: none;
+                text-align: right;
+                -webkit-appearance: none;
+                color: #808080;
+
+            }
+        
+            .nickname-bx {
+                // width: 200px;
+                white-space: nowrap;
+                display: inline-block;
+                text-align: right;
             }
 
             .preview {
@@ -788,6 +828,14 @@
             .upload-area {
                 width: 70px;
                 height: 70px;
+            }
+
+            .J_UploadBtn  {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                height: 70px;
+                width: 70px;
             }
 
             .bianji {
@@ -810,8 +858,8 @@
                 height: 70px;
                 opacity: 0;
                 position: absolute;
-                top: 61px;
-                right: 15px;
+                top: 0px;
+                right: 0px;
                 z-index: 99;
                 font-size: 6.5rem;
             }
@@ -828,6 +876,8 @@
             }
 
             .user-name {
+                display: inline-block;
+                width: 200px;
                 border: none;
                 text-align: right;
                 color: #808080;
@@ -961,3 +1011,48 @@
 //     background: url(../images/ajax-loader.gif) center center no-repeat;
 // }
 /* uploadImage css end*/
+
+
+// 自定义播放器
+#videoMode{
+    padding-top: 20px;
+    background-size: cover;
+    background-position:  center;
+    #myVideo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        z-index: -1; 
+    }
+    .video-bx {
+        width:100%;
+        height: 200px;
+        background-size: cover;
+        background-position:  center;
+    }
+    .video-zhibo {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        font-size: 16px;
+        color: #fa6666;
+    }
+    .video-title {
+        position: absolute;
+        display: inline-block;
+        left: 40px;
+        top: 65px;
+        font-size: 26px;
+        color: #1690e5;
+
+    }
+    .play-img,.pause-img {
+        position: absolute;
+        right: 40px;
+        top: 55px;
+        width: 64px;
+        height: 64px;
+        
+    }
+}

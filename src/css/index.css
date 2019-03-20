@@ -1,7 +1,7 @@
 @import 'StyleDepend/mReset.css';
 @import 'common.css';
 #showList {
-  height: calc(100vh - 126px) !important;
+  height: calc(100vh - 194px) !important;
   overflow-y: scroll;
   font-size: 16px;
   font-weight: normal;
@@ -11,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 10px;
+  padding: 12px 10px;
   border-bottom: 0.3px solid #ececec;
 }
 #showList ul li .left .title {
@@ -60,7 +60,7 @@
   color: #6ec7ff;
 }
 #showList ul .zhibo-bx .name {
-  color: #6ec7ff!important;
+  color: #6ec7ff !important;
 }
 #showList ul .zhibo-bx span {
   color: #6ec7ff;
@@ -95,6 +95,7 @@
 }
 #sendMsg .main-screen .msg-item .main-item {
   display: flex;
+  align-items: center;
 }
 #sendMsg .main-screen .msg-item img {
   width: 48px;
@@ -111,14 +112,12 @@
   font-size: 14px;
 }
 #sendMsg .main-screen .left .main-item {
-  align-items: center;
   padding-right: 50px;
 }
 #sendMsg .main-screen .left .content {
   margin-left: 10px;
 }
 #sendMsg .main-screen .right .main-item {
-  align-items: center;
   justify-content: flex-end;
   padding-left: 50px;
 }
@@ -354,6 +353,10 @@
   background-color: #1690e5;
 }
 #login .layui-form .my-input input::placeholder {
+  color: #fff;
+}
+#login .layui-form .my-input input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
   color: #fff;
 }
 #login .forget-link {
@@ -647,6 +650,7 @@
   padding-top: 1px;
 }
 #setUserInfo form .item {
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -654,8 +658,23 @@
   background-color: #fff;
   border-bottom: 0.5px solid #f2f2f2;
 }
-#setUserInfo form .item .pic {
+#setUserInfo form .item label {
+  display: inline-block;
+  width: 100px;
   position: relative;
+}
+#setUserInfo form .item .my-name {
+  display: inline-block;
+  width: 100px;
+  border: none;
+  text-align: right;
+  -webkit-appearance: none;
+  color: #808080;
+}
+#setUserInfo form .item .nickname-bx {
+  white-space: nowrap;
+  display: inline-block;
+  text-align: right;
 }
 #setUserInfo form .item .preview {
   object-fit: cover;
@@ -663,6 +682,13 @@
 #setUserInfo form .item .upload-area {
   width: 70px;
   height: 70px;
+}
+#setUserInfo form .item .J_UploadBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  height: 70px;
+  width: 70px;
 }
 #setUserInfo form .item .bianji {
   display: flex;
@@ -683,8 +709,8 @@
   height: 70px;
   opacity: 0;
   position: absolute;
-  top: 61px;
-  right: 15px;
+  top: 0px;
+  right: 0px;
   z-index: 99;
   font-size: 6.5rem;
 }
@@ -698,6 +724,8 @@
   border-radius: 100%;
 }
 #setUserInfo form .item .user-name {
+  display: inline-block;
+  width: 200px;
   border: none;
   text-align: right;
   color: #808080;
@@ -716,3 +744,44 @@
 }
 /* uploadImage css begin*/
 /* uploadImage css end*/
+#videoMode {
+  padding-top: 20px;
+  background-size: cover;
+  background-position: center;
+}
+#videoMode #myVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: -1;
+}
+#videoMode .video-bx {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+#videoMode .video-zhibo {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  font-size: 16px;
+  color: #fa6666;
+}
+#videoMode .video-title {
+  position: absolute;
+  display: inline-block;
+  left: 40px;
+  top: 65px;
+  font-size: 26px;
+  color: #1690e5;
+}
+#videoMode .play-img,
+#videoMode .pause-img {
+  position: absolute;
+  right: 40px;
+  top: 55px;
+  width: 64px;
+  height: 64px;
+}

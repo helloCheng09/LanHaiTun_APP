@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- css -->
+    <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/StyleDepend/swiper.min.css">
+    <link rel="stylesheet" href="../css/index.css?t=<?php echo time();?>">
+    <link rel="stylesheet" href="../css/common.css?t=<?php echo time();?>">
+    <!-- js -->
+    <script type='text/javascript' src="../js/JsDepend/jQuery.min.js"></script>
+    <script type='text/javascript' src="../js/JsDepend/swiper.min.js"></script>
+</head>
+<body>
+
+    <div id="videoMode" style="background-image:url(../img/poster.png)">
+        <video id="myVideo" style="object-fit:fill" id="native-player" src="http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts"
+            controls="">
+        </video>
+        <div class="video-bx" style="background-image:url(../img/bgguangbo.png)">
+            <span class="video-zhibo">直播中</span>
+            <h1 class="video-title">节目名字1</h1>
+            <img class="play-img" src="../img/bofangbtn.png">
+            <img class="pause-img" src="../img/zhanting.png" style="display:none;">
+        </div>
+    </div>
+
+</body>
+<script>
+    // var videoEle = document.querySelector("#myVideo");
+    // $('.play-img').click(function () {
+    //     $(this).hide()
+    //     $('.pause-img').show()
+    //     videoEle.play
+    // })
+    // $('.pause-img').click(function () {
+    //     $(this).hide()
+    //     $('.play-img').show()
+    //     videoEle.pause
+    // })
+</script>
+
+</html>
+<!-- js -->
+<script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script>
+<script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>
