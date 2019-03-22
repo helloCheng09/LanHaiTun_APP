@@ -127,6 +127,9 @@
             $('.add-btn').click(function () {
                 var self = $(this)
                 var uid = self.parents('li').attr('u-id')
+                var subData = {
+                    uid: uid,
+                }
                 root.postSubmit({
                     data: subData,
                     url: baseUrl + urlObj.addFriend,
@@ -241,7 +244,7 @@
                                 // 注册成功
                                 layer.msg(res.data.msg)
                                 // 回登陆页面
-                                root.navToLogin()
+                                root.navToLive()
                             } else {
                                 // 注册失败
                                 layer.msg(res.data.msg)
@@ -315,6 +318,7 @@
                         if (obj.source == 'addFriend') {
                             if (res.code == 1) {
                                 // 申请成功
+                                $('.right').empty().append(' <span class="waitting">待通过</span>')
                             } else if (res.code === 4) {
                                 $('.right').empty().append(' <span class="waitting">待通过</span>')
                             }
@@ -446,7 +450,13 @@
             }, 1000);
         }
         root.navToInfo = navToInfo
-
+        // 去直播页面
+        let navToLive = () => {
+            setTimeout(() => {
+                window.location.href = baseUrl + 'index.php?i=2&c=entry&m=wxz_wzb&do=index2&rid=9'
+            }, 1000);
+        }
+        root.navToLive = navToLive
 
     }(window.$, window.myLib || (window.myLib = {})));
     /****************************************************************************** */
