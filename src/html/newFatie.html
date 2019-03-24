@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>发帖</title>
+    <!-- css -->
+    <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/index.css?t=<?php echo time();?>">
+    <link rel="stylesheet" href="../css/common.css?t=<?php echo time();?>">
+    <!-- js -->
+    <script type='text/javascript' src="../js/JsDepend/jQuery.min.js"></script>
+    <script type='text/javascript' src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/plusGeolocation.js"></script>
+</head>
+
+<body>
+
+    <div id="newFatie">
+        <form class="layui-form" action="" method="">
+            <div class="layui-form-item first-item">
+                <div class="layui-input-block">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入标题"
+                        autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <div class="layui-input-block main-content">
+                    <textarea id="textarea" name="desc" placeholder="说点什么..." class="layui-textarea"></textarea>
+                    <div class="img-show-bx">
+                        <ul>
+                            <!-- <li>
+                                <img class="main-pic" src="../img/homepage_bg.png">
+                                <img class="del-icon" src="../img/shanchu.png">
+                            </li>
+                            <li>
+                                <img class="main-pic" src="../img/homepage_bg.png">
+                                <img class="del-icon" src="../img/shanchu.png">
+                            </li>
+                            <li>
+                                <img class="main-pic" src="../img/homepage_bg.png">
+                                <img class="del-icon" src="../img/shanchu.png">
+                            </li>
+                            <li>
+                                <img class="main-pic" src="../img/homepage_bg.png">
+                                <img class="del-icon" src="../img/shanchu.png">
+                            </li>
+                            <li>
+                                <img class="main-pic" src="../img/tianjiapic.png">
+                            </li> -->
+                        </ul>
+
+                        <!-- 插入视频 -->
+                        <div class="v-bx" hidden>
+                            <img src="../img/guanbibai.png" class="del-icon-full">
+                            <img class="btn-video" style="display:none" src="../img/tiezibofang.png">
+                            <video class="show-my-video " id="video">
+                                <source src="../img/shuping.mp4">
+                            </video>
+                        </div>
+                        <div id="videoPoster" hidden>
+                            <img class="btn-video" src="../img/tiezibofang.png">
+                            <img class="del-icon" src="../img/shanchu.png">
+                            <img class="poster-img" src="../img/morenvideo.png" >
+                        </div>
+                    </div>
+                    <!-- 图片最大化 轮播 -->
+                    <div class="img-max-bx">
+
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block btn-bx">
+                    <button class="layui-btn " lay-submit lay-filter="formDemo">发 送</button>
+                </div>
+            </div>
+
+            <!-- 上传的图片 -->
+            <div id="uploadImgBx">
+                <input name="" value="" hidden>
+            </div>
+
+            <!-- 上传的视频 -->
+            <div id="uploadVideo">
+                <input name="" value="" hidden>
+            </div>
+        </form>
+
+        <div class="footer-btns">
+            <div class="loc">
+                <img src="../img/ftdingwei.png" alt="" class="loc-img">
+                <span class="loc-text">合肥市哈哈哈</span>
+            </div>
+            <div class="col-cell">
+                <!-- <img src="../img/upPic.png"> -->
+                <img src="../img/upPhoto.png">
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<!-- js -->
+<script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script>
+<script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>
+
+<script>
+    // 赋值视频地址
+
+    // 赋值图片地址
+
+
+
+</script>

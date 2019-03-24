@@ -84,6 +84,7 @@ function ImageUploader($parent, options) {
 						};
 						console.log(data);
 						img[0].src = picUrl;
+						alert(picUrl)
 					},
 					error: function () {
 						console.log('fail')

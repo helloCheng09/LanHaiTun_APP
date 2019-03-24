@@ -7,15 +7,16 @@
     overflow-y: scroll;
     font-size: 16px;
     font-weight: normal;
-    background-color: #fff; 
+    background-color: #fff;
 
-    ul {   
-        li { 
-            display: flex; 
+    ul {
+        li {
+            display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 12px 10px;
             border-bottom: 0.3px solid #ececec;
+
             .left {
                 .title {
                     font-size: 16px;
@@ -799,11 +800,13 @@
             padding: 10px 15px;
             background-color: #fff;
             border-bottom: 0.5px solid #f2f2f2;
+
             label {
                 display: inline-block;
                 width: 100px;
                 position: relative;
             }
+
             .my-name {
                 display: inline-block;
                 width: 100px;
@@ -813,7 +816,7 @@
                 color: #808080;
 
             }
-        
+
             .nickname-bx {
                 // width: 200px;
                 white-space: nowrap;
@@ -830,7 +833,7 @@
                 height: 70px;
             }
 
-            .J_UploadBtn  {
+            .J_UploadBtn {
                 position: absolute;
                 top: 10px;
                 right: 15px;
@@ -1014,23 +1017,26 @@
 
 
 // 自定义播放器
-#videoMode{
+#videoMode {
     padding-top: 20px;
     background-size: cover;
-    background-position:  center;
+    background-position: center;
+
     #myVideo {
         position: absolute;
         top: 0;
         left: 0;
         opacity: 0;
-        z-index: -1; 
+        z-index: -1;
     }
+
     .video-bx {
-        width:100%;
+        width: 100%;
         height: 200px;
         background-size: cover;
-        background-position:  center;
+        background-position: center;
     }
+
     .video-zhibo {
         position: absolute;
         top: 30px;
@@ -1038,6 +1044,7 @@
         font-size: 16px;
         color: #fa6666;
     }
+
     .video-title {
         position: absolute;
         display: inline-block;
@@ -1047,12 +1054,263 @@
         color: #1690e5;
 
     }
-    .play-img, .pause-img {
+
+    .play-img,
+    .pause-img {
         position: absolute;
         right: 40px;
         top: 94px;
-        width: 64px; 
+        width: 64px;
         height: 64px;
-        
+
+    }
+}
+
+// 新建发帖
+
+#newFatie {
+    .layui-form {
+        .layui-form-item {
+            margin-bottom: 0;
+        }
+
+        .first-item {
+            margin-top: 5px;
+        }
+
+        .main-content {
+            min-height: calc(~"100vh - 191px");
+
+            .img-show-bx {
+                padding: 6px;
+                font-size: 0;
+
+                .show-test-video {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    z-index: 999;
+                }
+
+                ul {
+                    display: flex;
+                    flex-wrap: wrap;
+                }
+
+                li {
+                    position: relative;
+                    width: 33.33%;
+                    height: calc(~"33.33vw - 4px");
+                    padding: 2px;
+                }
+
+                .del-icon-full {
+                    position: fixed;
+                    top: 175px;
+                    left: 20px;
+                    z-index: 1100000;
+                    width: 24px;
+                    height: 24px;
+                }
+
+                #video2 {
+                    width: 100%;
+                    height: 300px;
+                    margin: auto;
+                    position: relative;
+                }
+
+                .del-icon {
+                    position: absolute;
+                    top: 2px;
+                    right: 2px;
+                    width: 20px;
+                    height: 20px;
+                    background-color: rgba(255, 255, 255, 0.8);
+                    border-bottom-left-radius: 4px;
+                    z-index: 1000;
+                }
+
+                .main-pic {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+
+                #video {
+                    position: absolute;
+                    width: 100%;
+                    top: 50%;
+                    margin-top: -101px;
+                }
+
+                .shuping-video {
+                    top: 0 !important;
+                    margin-top: 0 !important;
+                }
+
+                .v-bx {
+                    position: fixed;
+                    top: 0;
+                    left: 0px;
+                    z-index: 1100;
+                    width: 100%;
+                    height: 100%;
+                    .show-my-video {}
+
+                    .btn-video {
+                        position: absolute;
+                        width: 30px;
+                        height: 30px;
+                        left: 50%;
+                        top: 50%;
+                        margin-top: -15px;
+                        margin-left: -15px;
+                        // transform: translate(-50%, -50%);
+                        z-index: 1000;
+                    }
+                }
+
+                #video::-webkit-media-controls {
+                    display: none !important;
+                }
+
+                .shuping {
+                    display: inline-block;
+                    width: 58%;
+                    height: auto;
+                }
+
+                .hengping {
+                    display: inline-block;
+                    width: calc(~"100% - 6px");
+                    height: auto;
+                }
+
+                #videoPoster {
+                    position: relative;
+                    margin: 0 3px;
+
+                    .poster-img {
+                        width: 100%;
+                    }
+
+                    .btn-video {
+                        position: absolute;
+                        width: 30px;
+                        height: 30px;
+                        left: 50%;
+                        top: 50%;
+                        margin-top: -15px;
+                        margin-left: -15px;
+                        // transform: translate(-50%, -50%);
+                        z-index: 1000;
+                    }
+
+                    .del-icon {
+                        position: absolute;
+                        top: 0px;
+                        right: 0px;
+                        width: 20px;
+                        height: 20px;
+                        background-color: rgba(255, 255, 255, 0.8);
+                        z-index: 1000;
+                        border-bottom-left-radius: 4px;
+                    }
+
+                }
+
+                #videoPoster::after {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    z-index: 99;
+                    background-color: rgba(0, 0, 0, 0.3);
+                }
+
+
+
+            }
+
+            .img-max-bx {}
+        }
+
+        .layui-input-block {
+            margin-left: 0;
+
+            input,
+            textarea {
+                font-weight: normal;
+                border: none;
+                resize: none;
+            }
+
+            input::placeholder {
+                color: rgb(184, 184, 184);
+            }
+
+            textarea::placeholder {
+                color: rgb(184, 184, 184);
+            }
+
+            textarea {}
+        }
+
+        .btn-bx {
+            padding: 10px;
+            text-align: right;
+        }
+
+        .layui-btn {
+
+            background-color: #6ec7ff;
+        }
+
+        .disabled {
+            background-color: #ddd;
+        }
+
+    }
+
+    .footer-btns {
+        .loc {
+            line-height: 20px;
+            padding: 10px;
+            font-size: 12px;
+
+            // text-align: right;
+            .loc-text {
+                color: #808080;
+            }
+
+            img {
+                display: inline-block;
+                width: 20px;
+                vertical-align: sub;
+            }
+
+        }
+
+        .col-cell {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+
+            img {
+                width: 28px;
+                height: auto;
+                margin-right: 35px;
+            }
+
+            .photo-img {
+                padding-top: 6px;
+            }
+        }
     }
 }
