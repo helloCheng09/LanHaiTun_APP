@@ -560,7 +560,7 @@
   color: #000;
 }
 .top-head {
-  height: 150px;
+  height: 118px;
   width: 100vw;
   padding: 16px 16px 10px;
   background-size: cover;
@@ -787,6 +787,9 @@
 }
 #newFatie .layui-form .layui-form-item {
   margin-bottom: 0;
+}
+#newFatie .layui-form .layui-form-item .cancle-btn {
+  background-color: #ff6e86!important;
 }
 #newFatie .layui-form .first-item {
   margin-top: 5px;
@@ -1034,4 +1037,37 @@
 #refresh {
   bottom: 138px;
   right: 10px;
+}
+#zhengwen .xiala {
+  font-size: 14px;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+#zhengwen .tiezi-bx {
+  width: 100%;
+  color: #111;
+  font-size: 16px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#tieziInfo .content-bx {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#tieziInfo .li-item {
+  width: 100%;
+  margin-right: 1.6em;
+  max-height: 100%;
+  text-align: center;
+}
+#tieziInfo .li-item img {
+  display: inline-block;
+  width: 80%;
+  margin-top: 5px;
+  padding-right: 10px;
+  object-fit: cover;
 }

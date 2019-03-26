@@ -399,7 +399,6 @@
 
     .layui-form {
         padding: 0 30px;
-
         .my-input {
             .layui-input-block {
                 // margin-left: 0;
@@ -686,7 +685,7 @@
 
 // 主页头部 
 .top-head {
-    height: 150px;
+    height: 118px;
     width: 100vw;
     padding: 16px 16px 10px;
     background-size: cover;
@@ -1072,6 +1071,9 @@
     .layui-form {
         .layui-form-item {
             margin-bottom: 0;
+            .cancle-btn {
+                background-color: #ff6e86!important;
+            }
         }
 
         .first-item {
@@ -1080,18 +1082,23 @@
 
         .main-content {
             min-height: calc(~"100vh - 191px");
+
             .fenlei-tag {
                 padding: 0 10px;
             }
-            .layui-form-radio>i:hover, .layui-form-radioed>i  {
+
+            .layui-form-radio>i:hover,
+            .layui-form-radioed>i {
                 color: #6ec7ff;
             }
+
             .layui-textarea {
                 min-height: 65px;
             }
+
             .img-show-bx {
                 font-size: 0;
-                
+
                 .show-test-video {
                     position: absolute;
                     top: 0;
@@ -1206,7 +1213,7 @@
                     display: inline-block;
                     width: 58%;
                     height: auto;
-                    
+
                 }
 
                 .hengping {
@@ -1345,8 +1352,10 @@
         }
     }
 }
+
 // 刷新
-#refresh, #goTop {
+#refresh,
+#goTop {
     position: fixed;
     text-align: center;
     z-index: 999999999;
@@ -1354,6 +1363,7 @@
     height: 40px;
     border-radius: 100%;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+
     a {
         width: 100%;
         height: 100%;
@@ -1362,6 +1372,7 @@
         justify-content: center;
         border-radius: 100%;
         background-color: #fff;
+
         img {
             display: inline-block;
             width: 26px;
@@ -1369,12 +1380,58 @@
         }
     }
 }
+
 #goTop {
     bottom: 188px;
     right: 10px;
 }
+
 #refresh {
     bottom: 138px;
     right: 10px;
 }
+
 // 置顶
+
+#zhengwen {
+    .item-tiezi {}
+
+    .xiala {
+        font-size: 14px;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+    }
+
+    .tiezi-bx {
+        width: 100%;
+        color: #111;
+        font-size: 16px;
+        vertical-align: middle;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+// 帖子详情
+#tieziInfo {
+    .content-bx {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .li-item {
+        width: 100%;
+        margin-right: 1.6em;
+        max-height: 100%;
+        text-align: center;
+        img {
+            display: inline-block;
+            width:80%;
+            margin-top: 5px;
+            padding-right: 10px;
+            object-fit: cover;
+        }
+    }
+}
