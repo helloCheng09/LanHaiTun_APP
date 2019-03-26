@@ -22,9 +22,11 @@
         min-height: 100vh;
         background-color: #f0f0f0;
     }
+
     .my-nav-bx::before {
         border-color: #ddd;
     }
+
     .my-nav-bx {
         position: fixed;
         bottom: 0;
@@ -38,53 +40,70 @@
         text-align: center;
         background-color: #fff;
     }
-    .my-nav-bx  a {
+
+    .my-nav-bx a {
         color: #999;
     }
+
     .my-nav-bx .active a {
         color: #6ec7ff;
     }
+
     .my-nav-bx span {
         display: inline-block;
         width: 100%;
     }
+
     .my-nav img {
         width: 50px;
         height: 50px;
     }
 
     /* 发帖 */
-    .button-fatie {
+    .button-fatie {}
 
-    }
     #dragCircle {
-        width: 60px;
-        height: 60px; 
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         background: #bcbcbc;
-        position: absolute;
+        position: fixed;
         bottom: 90px;
         right: 10px;
-        text-align: center; 
-        line-height: 100px;
-        
+        text-align: center;
+        line-height: 70px;
+
     }
-    #dragCircle  a {
+
+    #dragCircle a {
         display: inline-block;
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
     }
-    #dragCircle  img {
-        width: 60px;
-        height: 60px;
+
+    #dragCircle img {
+        width: 40px;
+        height: 40px;
     }
 </style>
 
 
-<body>
+<body style="height:300vh;">
+    <!-- 加id识别id="indexWrap"  不可删除 -->
+    <div id="indexWrap" >11111</div>
     <div id="dragCircle">
         <a href="#">
             <img src="../img/home_icon_post@2x.png">
+        </a>
+    </div>
+    <div id="refresh">
+        <a href="javascript:;">
+            <img src="../img/shuaxin.png">
+        </a>
+    </div>
+    <div id="goTop">
+        <a href="javascript:;">
+            <img src="../img/zhiding.png">
         </a>
     </div>
     <ul id="dian" class="my-nav-bx mob_1px_t">

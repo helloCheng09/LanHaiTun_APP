@@ -17,6 +17,7 @@
         sendMsg: 'index.php?i=2&c=entry&action=friend_chat&do=Index&m=wyt_luntan', // 发送消息接口
         getMsg: 'index.php?i=2&c=entry&action=refresh_chat&do=Index&m=wyt_luntan', // 获取消息列表
         baseUpImg: 'index.php?i=2&c=entry&do=Getimg&m=wyt_luntan', // base64上传图片接口
+        sendTiezi: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=fabu_tiezi', // 发帖接口
 
     };
 
@@ -28,84 +29,77 @@
     (function ($, root) {
         // 执行视频
         function showfsVideo(videoSrc) {
-            // 给视频加第一帧封面
-            // video.addEventListener('loadeddata', root.getFirstVideoImg('video', '#videoPoster '))
-            // root.getFirstVideoImg('video', '#videoPoster ')
-            // 默认是竖屏
-            // 竖屏
-            $('#videoPoster').addClass('shuping').removeClass('hengping')
-            $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
-            $('.show-my-video ').addClass('shuping-video')
-            // 显示视频
-            setTimeout(function () {
+            // h5 生成video 播放器
+            // 创建视频播放控件
+            $('#videoPoster .btn-video').off()
+            if (!root.videoPlayer) {
+                $('#video2').show()
+                root.videoPlayer = new plus.video.VideoPlayer('video2', {
+                    src: videoSrc,
+                    direction: '',
+                });
+                $('#video2').hide()
+                root.videoPlayer.hide()
+                // 默认是竖屏
+                // 竖屏
+                // $('#videoPoster').addClass('shuping').removeClass('hengping')
+                // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
+                // 显示视频
                 $('#videoPoster').show()
-            }, 800)
+                $('.set-poster').show()
+                root.videoPlayer.addEventListener("fullscreenchange", function (e) {
+                    if (!e.detail.fullScreen) {
+                        $('#video2').hide()
+                        root.videoPlayer.pause()
+                        root.videoPlayer.hide()
+                        $('#videoPoster .btn-video').show()
+                    }
+                    // 判断视频比例 
+                    // if (e.detail.direction == 'horizontal') {
+                    //     // 如果不是竖屏 而是横屏
+                    //     // 横屏
+                    //     $('#videoPoster').addClass('hengping').removeClass('shuping')
+                    //     $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
+                    // }
+                })
+            } else {
+                root.videoPlayer.setStyles({
+                    src: videoSrc
+                })
+            }
 
             // 视频操作
-            var videoEle = document.getElementById('video')
-            var videoPlayer = null
             $('#videoPoster .btn-video').on('click', function () {
+                console.log(3)
                 // 关闭视频点击按钮
                 $(this).hide()
-                // h5 生成video 播放器
-                // 创建视频播放控件
-                $('#video2').show()
-                if (!videoPlayer) {
-                    videoPlayer = new plus.video.VideoPlayer('video2', {
-                        src: videoSrc,
-                        direction: '',
-                        autoplay: true,
-                        showCenterPlayBtn: true
-                    });
-                    videoPlayer.requestFullScreen(0)
-                    videoPlayer.addEventListener("fullscreenchange", function (e) {
-                        if (!e.detail.fullScreen) {
-                            $('#video2').hide()
-                            videoPlayer.hide()
-                            root.closeVideoFs(videoEle)
-                        }
-                        // 判断视频比例 
-                        console.log(e.detail.direction)
-                        if (e.detail.direction == 'horizontal') {
-                            // 如果不是竖屏 而是横屏
-                             // 横屏
-                            $('#videoPoster').addClass('hengping').removeClass('shuping')
-                            $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
-                            $('.show-my-video ').removeClass('shuping-video')
-                        }
-                    })
-                } else {
-                    // 如果已经有video实例
-                    // 全屏 播放
-                    $('#video2').show()
-                    videoPlayer.requestFullScreen(0)
-                    videoPlayer.show()
-                    videoPlayer.play()
-                }
-
+                // 如果已经有video实例
+                // 全屏 播放
+                root.videoPlayer.show()
+                root.videoPlayer.play()
+                root.videoPlayer.requestFullScreen(0)
+                return false
             })
 
             // 点击删除视频
             $('#videoPoster .del-icon').on('click', function () {
                 // 删除上传的值
-                $("input[name='videos']").val('')
+                $("input[name='video']").val('')
                 $('#videoPoster').hide()
+                $('.set-poster').hide()
+                // 恢复图片上传 相机拍照
+                $('#upImg').show()
+                root.showCamera()
             })
+            return false
         }
         root.showfsVideo = showfsVideo
 
-        function closeVideoFs(videoEle) {
-            // 视频暂停
-            videoEle.pause()
-            // 解除点击事件
-            $('.v-bx').off()
-            // 隐藏视频点击按钮
-            $('.v-bx .btn-video').hide()
-            // 展示封面点击按钮
-            $('#videoPoster .btn-video').show()
-            $('.v-bx').hide('fast')
-        }
-        root.closeVideoFs = closeVideoFs
+        // function closeVideoFs(videoEle) {
+        //     // 展示封面点击按钮
+        //     $('#videoPoster .btn-video').show()
+        // }
+        // root.closeVideoFs = closeVideoFs
         // 获取视频第一帧方法
         function getFirstVideoImg(videIdName, posterIdName) {
             var video, output;
@@ -150,6 +144,7 @@
                     $('.show-my-video ').addClass('shuping-video')
                 }
                 $('#videoPoster').show()
+                $('.set-poster').show()
             };
             initialize()
         }
@@ -344,7 +339,7 @@
             $.ajax({
                 url: obj.url,
                 data: obj.data,
-                type: 'POST',
+                type: 'POST', 
                 dataType: 'JSON',
                 beforeSend: function () {
                     // 加载中
@@ -541,6 +536,18 @@
                             }
                         } else {}
                     }
+
+                    // 发帖
+                    if (obj.source === 'sendTiezi') {
+                        console.log(JSON.stringify(res))
+                        if (res.code == 1) {
+                            layer.msg(res.msg)
+                            root.navToHome ()
+                        } else if (res.code == 2) {
+                            layer.msg(res.msg)
+                            root.navToLogin()
+                        }
+                    }
                 },
                 fail: (res) => {
                     // 失败
@@ -605,11 +612,11 @@
             //Demo
             layui.use('form', function () {
                 var form = layui.form;
-                form.verify({
-                    pass: [
-                        /^[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*$/, '密码必须是数字和字母的组合'
-                    ]
-                });
+                // form.verify({
+                //     pass: [
+                //         /^[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*$/, '密码必须是数字和字母的组合'
+                //     ]
+                // });
                 //监听提交
                 form.on('submit(formDemo)', function (data) {
                     // layer.msg(JSON.stringify(data.field));
@@ -629,14 +636,14 @@
             //注册提交
             layui.use('form', function () {
                 var form = layui.form;
-                form.verify({
-                    pass: [
-                        /^[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*$/, '密码必须是数字和字母的组合'
-                    ],
-                    rePass: [
-                        /^[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*$/, '密码必须是数字和字母的组合'
-                    ]
-                });
+                // form.verify({
+                //     pass: [
+                //         /^[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*$/, '密码必须是数字和字母的组合'
+                //     ],
+                //     rePass: [
+                //         /^[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*$/, '密码必须是数字和字母的组合'
+                //     ]
+                // });
                 //监听提交
                 form.on('submit(formDemo)', function (data) {
                     // 验证注册密码一致性
@@ -821,13 +828,40 @@
             var textInput = document.getElementById('textarea')
             root.autoTextarea(textInput)
 
-            //Demo
+            // 帖子提交 验证事件
             layui.use('form', function () {
                 var form = layui.form;
 
                 //监听提交
                 form.on('submit(formDemo)', function (data) {
-                    layer.msg(JSON.stringify(data.field));
+                    // layer.msg(JSON.stringify(data.field));
+                    // return false
+                    var myData = data.field
+                    // 全部为空 提示
+                    if (!myData.video && !myData.img && !myData.title && !myData.info) {
+                        layer.msg('发送失败~帖子为空')
+                        return false;
+                    } else {
+                       
+                        if ( myData.title &&!myData.video && !myData.img  && !myData.info) {
+                             // 只有标题 没有内容
+                            layer.msg('发送失败~暂无内容')
+                            return false;
+                        }else if (myData.img && !myData.title && !myData.info) {
+                             // 分享图片
+                            myData.title = '分享图片'
+                        } else if (myData.video && !myData.title && !myData.info) {
+                            // 分享视频
+                            myData.title = '分享视频'
+                        }
+                        // 提交后台
+                        root.postSubmit({
+                            url: baseUrl + urlObj.sendTiezi,
+                            data: myData,
+                            source: 'sendTiezi'
+                        })
+                    }
+
                     return false;
                 });
             });
@@ -842,30 +876,21 @@
                 root.getMyVideo()
             })
 
-            //拍照
-            function getpic() {
-                var c = plus.camera.getCamera();
-                c.captrueImage(function (e) {
-                    plus.io.resolveLocalFileSystemURL(e, function (entry) {
-                        var s = entry.toLocalURL() + "?version=" + new Date().getTime();
-                        uploadServerImg(s); //上传图片
-                    }, function (e) {
-                        console.log("读取拍照文件错误" + e.message)
-                    })
-                }, function (s) {
-                    console.log("error" + s);
-                }, {
-                    filname: "_doc/head.png"
-                })
-            }
-
             //获取图片
             function getimg() {
                 var imgNum = 6 - $('ul .uped-pic').length
                 plus.gallery.pick(function (e) {
+                    // 提示等待
+                    root.imgW = plus.nativeUI.showWaiting()
                     for (var i in e.files) {
-                        // console.log(e.files[i]);
-                        uploadServerImg(e.files[i])
+                        var num = Number(i) + 1
+                        var len = e.files.length
+                        var lastone = false
+                        if (num == len) {
+                            lastone = true
+                        }
+                        // console.log(num, len);
+                        uploadServerImg(e.files[i], lastone)
                     }
                 }, function () {}, {
                     multiple: true,
@@ -888,8 +913,8 @@
             root.getMyVideo = getMyVideo
 
             //上传图片
-            function uploadServerImg(imgPath) {
-                console.log(imgPath)
+            function uploadServerImg(imgPath, lastone) {
+                // console.log(imgPath)
                 // jpg','jpeg','gif','png'
                 // 如果上传图片
                 plus.zip.compressImage({
@@ -901,28 +926,47 @@
                     // 新建上传任务 图片
                     /*
                      */
+                    // 关闭等待
+                    if (lastone) {
+                        root.imgW.close()
+                    }
                     var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
                         method: "POST",
                     }, function (res) {
                         var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+                        console.log(imgUrl)
                         var showPicEle = $('.img-show-bx ul')
                         // 判断是否第一次上传相片 插入上传按钮
-                        if ($('.img-show-bx ul li').length == 0) {
-                            showPicEle.prpend(`
+                        // 给input img一个值
+                        $("input[name='img']").val(imgUrl)
+                        if ($('.img-show-bx ul li').length == 0 || $('.img-show-bx ul li').length == 6) {
+                            // 隐藏上传按钮
+                            $('.img-show-bx .add-img').hide()
+                            // 插入最后一次图片
+                            if ($('.img-show-bx ul li').length == 6) {
+                                $('.img-show-bx ul').prepend(`
                                     <li class='uped-pic'>
                                         <img class="main-pic" src="${imgUrl}">
                                         <img class="del-icon" src="  http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
-                                        <input name="img[]" value="${imgUrl}" hidden>
+                                        <input name="images[]" value="${imgUrl}" hidden>
                                     </li>
                                 `)
+                            }
                         } else {
+                            $('.img-show-bx .add-img').show()
                             $('.img-show-bx ul').prepend(`
                                 <li class='uped-pic'>
                                     <img class="main-pic" src="${imgUrl}">
                                     <img class="del-icon" src="  http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
-                                    <input name="img[]" value="${imgUrl}" hidden>
+                                    <input name="images[]" value="${imgUrl}" hidden>
                                 </li>
                             `)
+                        }
+                        // 上传图片即隐藏video上传
+                        if ($('.img-show-bx ul li').length == 2) {
+                            // 隐藏相机拍照和
+                            $('#upVideo').hide()
+                            root.showCamera('photo')
                         }
                         // 上传按钮
                         hideUpBtn()
@@ -937,6 +981,9 @@
                             // 判断图片数量 隐藏、展示按钮
                             if ($('ul .uped-pic').length == 6 || $('ul .uped-pic').length == 0) {
                                 $('ul .add-img').hide()
+                                // 如果没有图片了
+                                $('#upVideo').show()
+                                root.showCamera()
                             } else {
                                 $('ul .add-img').show()
                                 // 增加图片方法
@@ -959,28 +1006,146 @@
             root.uploadServerImg = uploadServerImg
 
             // 上传视频方法 
-            function uploadMyVideo(imgPath) {
+            function uploadMyVideo(videoPath) {
                 //  开等待提示
                 var w = plus.nativeUI.showWaiting();
                 // 新建上传任务 视频
                 var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=upload_video", {
                     method: "POST",
                 }, function (res) {
+                    // 关闭图片上传 相机只能录像
+                    $('#upImg').hide()
+                    root.showCamera('video')
                     // 关闭等待
                     w.close()
-                    var videoSrc = (res.responseText) 
+                    var videoSrc = (res.responseText)
                     //  赋值给input
-                    $("#video2 input").val(videoSrc) 
+                    $("input[name='video']").val(videoSrc)
                     // 展示视频封面
                     root.showfsVideo(videoSrc)
                 });
-                task.addFile(imgPath, {
+                task.addFile(videoPath, {
                     key: "file"
                 });
                 task.start();
 
             }
             root.uploadMyVideo = uploadMyVideo
+
+            // 相册获取封面
+            function getPoster() {
+                plus.gallery.pick(function (e) {
+                    console.log(e)
+                    root.uploadPoster(e)
+                }, function () {}, {
+                    multiple: false,
+                    maximum: 1,
+                    system: false
+                })
+            }
+            root.getPoster = getPoster
+            // 上传封面接口
+            function uploadPoster(imgPath) {
+                // 如果上传图片
+                plus.zip.compressImage({
+                    src: imgPath,
+                    dst: "_doc/chat/gallery//" + imgPath,
+                    quality: 20,
+                    overwrite: true,
+                }, function (e) {
+                    // console.log('上传封面', e)
+                    // 新建上传任务 图片
+                    /*
+                     */
+                    var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+                        method: "POST",
+                    }, function (res) {
+                        var posterUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+                        // console.log(posterUrl)
+                        $("input[name='fengmian']").val(posterUrl)
+                        $("#videoPoster .poster-img").attr('src', posterUrl)
+                    });
+                    task.addFile(e.target, {
+                        key: "file"
+                    });
+                    task.start();
+                }, function (error) {
+                    layer.msg('图片上传失败~')
+                });
+            }
+            root.uploadPoster = uploadPoster
+            // 修改视频封面
+            $('.set-poster').click(function () {
+                root.getPoster()
+            })
+            // 相机拍照
+            function cameraImg() {
+                var cmr = plus.camera.getCamera();
+                var res = cmr.supportedImageResolutions[0];
+                var fmt = cmr.supportedImageFormats[0];
+                // console.log("Resolution: " + res + ", Format: " + fmt);
+                cmr.captureImage(function (path) {
+                        // console.log("拍照成功：" + path);
+                        root.uploadServerImg(path)
+                    },
+                    function (error) {
+                        // alert( "Capture image failed: " + error.message );
+                    }, {
+                        resolution: res,
+                        format: fmt
+                    }
+                );
+            }
+            // 相机录像
+            function cameraVideo() {
+                var cmr = plus.camera.getCamera();
+                var res = cmr.supportedVideoResolutions[0];
+                var fmt = cmr.supportedVideoFormats[0];
+                cmr.startVideoCapture(function (path) {
+                        // console.log("录像成功：" + path);
+                        root.uploadMyVideo(path)
+                    },
+                    function (error) {
+                        // alert( "Capture video failed: " + error.message );
+                    }, {
+                        resolution: res,
+                        format: fmt
+                    }
+                );
+            }
+            // 调用相机 拍照 录像
+            function showCamera(keyword) {
+                $('#upImgVideo').off()
+                $('#upImgVideo').click(function () {
+                    if (!keyword) {
+                        plus.nativeUI.actionSheet({
+                            cancel: "取消",
+                            buttons: [{
+                                title: "照相"
+                            }, {
+                                title: "录像"
+                            }]
+                        }, function (e) {
+                            switch (e.index) {
+                                case 1:
+                                    cameraImg()
+                                    break;
+                                case 2:
+                                    cameraVideo()
+                                    break;
+                            }
+                        });
+                    } else if (keyword == 'photo') {
+                        cameraImg()
+                    } else if (keyword == 'video') {
+                        cameraVideo()
+                    }
+                })
+
+            }
+            root.showCamera = showCamera
+            // 开启相机 拍照+摄像选择
+            root.showCamera()
 
             // 定位
             // 扩展API加载完毕后调用onPlusReady回调函数 
@@ -996,6 +1161,27 @@
                     layer.msg('获取定位失败~');
                 });
             }
+        } else if (document.getElementById('indexWrap'))  {
+            // 置顶 
+            /**
+             * 回到顶部
+             */
+            function scrollToTop(anchorId) {
+                $(anchorId).on('click', function () {
+                    var dis = $(window).scrollTop();
+                    $('html,body').animate({
+                        scrollTop: '0px'
+                    }, 0);
+                })
+            }
+
+            root.scrollToTop = scrollToTop
+            root.scrollToTop ('#goTop')
+            // 刷新
+            $('#refresh').click (function () {
+                window.location.reload()
+            })
+
         }
 
         // 直播样式
