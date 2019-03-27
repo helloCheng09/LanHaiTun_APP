@@ -560,9 +560,9 @@
   color: #000;
 }
 .top-head {
-  height: 118px;
+  height: 128px;
   width: 100vw;
-  padding: 16px 16px 10px;
+  padding: 36px 16px 10px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -825,7 +825,7 @@
 }
 #newFatie .layui-form .main-content .img-show-bx li {
   position: relative;
-  width: 33.33%;
+  width: calc(33.33vw - 9px);
   height: calc(33.33vw - 4px);
   padding: 2px;
 }
@@ -1070,4 +1070,10 @@
   margin-top: 5px;
   padding-right: 10px;
   object-fit: cover;
+}
+#zhengwen-bx .tz-list-none {
+  display: inline-block;
+  line-height: 2em;
+  font-size: 16px;
+  text-align: center;
 }
