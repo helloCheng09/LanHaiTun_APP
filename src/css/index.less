@@ -2,13 +2,22 @@
 @import './common.css';
 
 // 直播列表
+#zhiboWrap {
+    .chat-bx {
+        height: calc(~"100vh - 321px") !important;
+    }
+}
 #showList {
-    height: calc(~"100vh - 194px") !important;
+    // max-height: calc(~"100vh - 194px") !important;
+    height: calc(~"100vh - 254px") !important;
     overflow-y: scroll;
     font-size: 16px;
     font-weight: normal;
     background-color: #fff;
-
+    .show-list {
+        height: calc(~"100vh - 254px") !important;
+    }
+    
     ul {
         li {
             display: flex;
@@ -17,11 +26,13 @@
             padding: 12px 10px;
             border-bottom: 0.3px solid #ececec;
 
-            .left {
+            .left { 
+                display: flex;
                 .title {
                     font-size: 16px;
                     font-weight: normal;
                     line-height: 1.6em;
+                    margin-right: 4px;
                 }
 
                 .name {
@@ -42,7 +53,19 @@
                     background-color: #6ec7ff;
                     color: #fff;
                 }
+                .reListen {
+                    padding: 2px 6px;
+                    // line-height: 1.6em;
+                    font-size: 12px;
+                    border-radius: 2px;
+                    background-color: #ffa900;
+                    color: #fff;
+                }
             }
+        }
+
+        .pass {
+            color: #808080!important;
         }
 
         .now:before {
@@ -399,6 +422,7 @@
 
     .layui-form {
         padding: 0 30px;
+
         .my-input {
             .layui-input-block {
                 // margin-left: 0;
@@ -524,7 +548,7 @@
 }
 
 // 注册
-#regitser {
+#register {
     // font-family: PingFang Medium;
     min-height: 100vh;
     padding-top: 40px;
@@ -1014,7 +1038,6 @@
 // }
 /* uploadImage css end*/
 
-
 // 自定义播放器
 #videoMode {
     padding-top: 20px;
@@ -1023,8 +1046,10 @@
 
     #myVideo {
         position: absolute;
-        top: 0;
-        left: 0;
+        top: -1px;
+        left: -1px;
+        width: 1px;
+        height: 1px;
         opacity: 0;
         z-index: -1;
     }
@@ -1071,8 +1096,9 @@
     .layui-form {
         .layui-form-item {
             margin-bottom: 0;
+
             .cancle-btn {
-                background-color: #ff6e86!important;
+                background-color: #ff6e86 !important;
             }
         }
 
@@ -1081,7 +1107,7 @@
         }
 
         .main-content {
-            min-height: calc(~"100vh - 191px");
+            min-height: calc(~"100vh - 197px");
 
             .fenlei-tag {
                 padding: 0 10px;
@@ -1267,9 +1293,6 @@
                     z-index: 99;
                     background-color: rgba(0, 0, 0, 0.3);
                 }
-
-
-
             }
 
             .img-max-bx {}
@@ -1312,6 +1335,7 @@
 
     }
 
+
     .footer-btns {
         .loc {
             line-height: 20px;
@@ -1349,6 +1373,32 @@
             .photo-img {
                 padding-top: 6px;
             }
+        }
+    }
+
+    .link-bx {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        padding: 10px;
+        // border-top: .5px solid #ddd;
+        background-color: #FFF;
+        display: none;
+        .layui-form-item {
+            margin-bottom: 4px;
+        }
+
+        .btn-bx {
+            position: absolute;
+            right: 10px;
+            bottom: 96px;
+            text-align: right;
+        }
+
+        .cancelBtn {
+            background-color: #ef4242;
         }
     }
 }
@@ -1421,14 +1471,16 @@
         flex-wrap: wrap;
         justify-content: center;
     }
+
     .li-item {
         width: 100%;
         margin-right: 1.6em;
         max-height: 100%;
         text-align: center;
+
         img {
             display: inline-block;
-            width:80%;
+            width: 80%;
             margin-top: 5px;
             padding-right: 10px;
             object-fit: cover;
@@ -1444,3 +1496,5 @@
         text-align: center;
     }
 }
+
+

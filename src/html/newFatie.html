@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>发帖</title>
+    <title>本地-发帖</title>
     <!-- css -->
     <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
     <link rel="stylesheet" href="../css/index.css?t=<?php echo time();?>">
@@ -19,16 +19,16 @@
 <body>
 
     <div id="newFatie">
-        <form class="layui-form" action="" method="">
+        <form class="layui-form main-form" lay-filter="formFatie" action="" method="">
             <div class="layui-form-item first-item">
                 <div class="layui-input-block">
-                    <input type="text" name="title" required lay-verify="required" placeholder="请输入标题"
+                    <input type="text" name="title" placeholder="请输入标题"
                         autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
                 <div class="layui-input-block main-content">
-                    <textarea id="textarea" name="desc" placeholder="说点什么..." class="layui-textarea"></textarea>
+                    <textarea id="textarea" name="info" placeholder="说点什么..." class="layui-textarea"></textarea>
                     <div class="img-show-bx">
                         <ul>
                             <!-- <li>
@@ -63,13 +63,12 @@
                     </div>
                     <!-- 图片最大化 轮播 -->
                     <div class="img-max-bx">
-
                     </div>
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block btn-bx">
-                    <button class="layui-btn " lay-submit lay-filter="formDemo">发 送</button>
+                    <button class="layui-btn" lay-submit lay-filter="fatieFormSub">发 送</button>
                 </div>
             </div>
 
@@ -91,10 +90,42 @@
             </div>
             <div class="col-cell">
                 <!-- <img src="../img/upPic.png"> -->
-                <img src="../img/upPhoto.png">
+                <img id="upImg" src="../img/upPic.png">
+                <img id="upVideo" src="../img/videoPic.png">
+                <img id="upImgVideo" class="photo-img" src="../img/upPhoto.png">
+                <img id="upLink" class="link-img photo-img" src="../img/lianjiebtn.png">
             </div>
         </div>
+        <div class="link-bx">
+            <form action="" lay-filter="formLink" class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="text"  name="link_title"  placeholder="链接标题"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <textarea name="link_des" id=""  placeholder="链接描述"
+                            class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <textarea name="link_adress" id=""  placeholder="链接地址"
+                            class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block btn-bx">
+                        <div class="layui-btn cancelBtn">取消</div>
+                        <div class="layui-btn" lay-submit lay-filter="formLinkSub">提交</div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+
 
 </body>
 

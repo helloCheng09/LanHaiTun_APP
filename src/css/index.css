@@ -1,11 +1,17 @@
 @import 'StyleDepend/mReset.css';
 @import 'common.css';
+#zhiboWrap .chat-bx {
+  height: calc(100vh - 321px) !important;
+}
 #showList {
-  height: calc(100vh - 194px) !important;
+  height: calc(100vh - 254px) !important;
   overflow-y: scroll;
   font-size: 16px;
   font-weight: normal;
   background-color: #fff;
+}
+#showList .show-list {
+  height: calc(100vh - 254px) !important;
 }
 #showList ul li {
   display: flex;
@@ -14,10 +20,14 @@
   padding: 12px 10px;
   border-bottom: 0.3px solid #ececec;
 }
+#showList ul li .left {
+  display: flex;
+}
 #showList ul li .left .title {
   font-size: 16px;
   font-weight: normal;
   line-height: 1.6em;
+  margin-right: 4px;
 }
 #showList ul li .left .name {
   font-size: 14px;
@@ -33,6 +43,16 @@
   border-radius: 2px;
   background-color: #6ec7ff;
   color: #fff;
+}
+#showList ul li .right .reListen {
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 2px;
+  background-color: #ffa900;
+  color: #fff;
+}
+#showList ul .pass {
+  color: #808080!important;
 }
 #showList ul .now:before {
   content: '';
@@ -433,7 +453,7 @@
   font-size: 12px;
   color: #fff;
 }
-#regitser {
+#register {
   min-height: 100vh;
   padding-top: 40px;
   padding-bottom: 32px;
@@ -442,25 +462,25 @@
   background-repeat: no-repeat;
   color: #fff;
 }
-#regitser .login-head {
+#register .login-head {
   padding-bottom: 30px;
 }
-#regitser .left-icon {
+#register .left-icon {
   width: 20px;
   height: 20px;
 }
-#regitser .left-icon img {
+#register .left-icon img {
   width: 20px;
   height: 20px;
 }
-#regitser .right-link a {
+#register .right-link a {
   font-weight: bold;
   color: #fff;
 }
-#regitser .layui-form {
+#register .layui-form {
   padding: 0 30px;
 }
-#regitser .layui-form .my-input .layui-input-block {
+#register .layui-form .my-input .layui-input-block {
   height: 54px;
   line-height: 54px;
   vertical-align: middle;
@@ -468,60 +488,60 @@
   padding: 0 16px;
   background-color: #1690e5;
 }
-#regitser .layui-form .my-input input {
+#register .layui-form .my-input input {
   display: inline-block;
   -webkit-appearance: none;
   border: none;
   color: #fff;
   background-color: #1690e5;
 }
-#regitser .layui-form .my-input input::placeholder {
+#register .layui-form .my-input input::placeholder {
   color: #fff;
 }
-#regitser .tiaokuan-link {
+#register .tiaokuan-link {
   padding-top: 12px;
   text-align: center;
   cursor: pointer;
   font-size: 12px;
 }
-#regitser .tiaokuan-link .xuanzhong-icon {
+#register .tiaokuan-link .xuanzhong-icon {
   width: 12px;
   height: 12px;
 }
-#regitser .tiaokuan-link a {
+#register .tiaokuan-link a {
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
 }
-#regitser .tiaokuan-link a em {
+#register .tiaokuan-link a em {
   margin: 0 4px;
   line-height: 1.4em;
   font-style: normal;
 }
-#regitser .tiaokuan-link a em::after {
+#register .tiaokuan-link a em::after {
   border-color: #fff;
 }
-#regitser .img-code {
+#register .img-code {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-#regitser .img-code .code-bx {
+#register .img-code .code-bx {
   width: 120px;
   height: 46px;
   margin: 0 5px;
 }
-#regitser .img-code .code-bx img {
+#register .img-code .code-bx img {
   width: 120px;
   height: 46px;
 }
-#regitser .tel-code {
+#register .tel-code {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-#regitser .get-tel-code {
+#register .get-tel-code {
   height: 54px;
   width: 112px;
   text-align: center;
@@ -751,8 +771,10 @@
 }
 #videoMode #myVideo {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -1px;
+  left: -1px;
+  width: 1px;
+  height: 1px;
   opacity: 0;
   z-index: -1;
 }
@@ -789,13 +811,13 @@
   margin-bottom: 0;
 }
 #newFatie .layui-form .layui-form-item .cancle-btn {
-  background-color: #ff6e86!important;
+  background-color: #ff6e86 !important;
 }
 #newFatie .layui-form .first-item {
   margin-top: 5px;
 }
 #newFatie .layui-form .main-content {
-  min-height: calc(100vh - 191px);
+  min-height: calc(100vh - 197px);
 }
 #newFatie .layui-form .main-content .fenlei-tag {
   padding: 0 10px;
@@ -1003,6 +1025,28 @@
 }
 #newFatie .footer-btns .col-cell .photo-img {
   padding-top: 6px;
+}
+#newFatie .link-bx {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 10px;
+  background-color: #FFF;
+  display: none;
+}
+#newFatie .link-bx .layui-form-item {
+  margin-bottom: 4px;
+}
+#newFatie .link-bx .btn-bx {
+  position: absolute;
+  right: 10px;
+  bottom: 96px;
+  text-align: right;
+}
+#newFatie .link-bx .cancelBtn {
+  background-color: #ef4242;
 }
 #refresh,
 #goTop {
