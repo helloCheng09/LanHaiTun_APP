@@ -27,6 +27,9 @@
         deletTz: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=delete_thread', // 删除帖子接口
         sentTzChat: 'index.php?i=2&c=entry&rid=9&do=addcomment&m=wxz_wzb', // 发送直播评论接口
         getTelYzm: 'index.php?i=2&c=entry&do=sendmsg&m=wyt_luntan', // 获取短信验证码接口
+        hfTzSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=pinglun', // 回复帖子接口
+        hfHfSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=huifu1', // 回复评论接口
+        hfzhfSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=huifu3', // 回复评论的评论
 
     };
 
@@ -747,7 +750,21 @@
                         }
                         layer.msg(res.msg)
                     }
+
+                    // 提交帖子回复
+                    if (obj.source === 'hfTzSend') {
+                        if (res.code == 1) {
+                            $('#newHfBx .new-huifu').slideToggle('fast')
+                            $('#newHfBx').hide()
+                            window.location.reload()
+                        } else {
+                            layer.msg(res.msg)
+                        }
+                        return false;
+                    }
                 },
+
+
                 fail: (res) => {
                     // 失败
                     layer.close(loginAni)
@@ -1117,8 +1134,6 @@
                 });
             });
 
-
-
             // 选择相册
             $('#upImg').click(function () {
                 root.getimg()
@@ -1142,8 +1157,8 @@
                         if (num == len) {
                             lastone = true
                         }
-                        // console.log(num, len);
-
+                        console.log(e.files[0])
+                        root.uploadServerImg(e.files[0], lastone)
                     }
                 }, function () {}, {
                     multiple: true,
@@ -1187,7 +1202,7 @@
                         method: "POST",
                     }, function (res) {
                         var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
-                        // console.log(imgUrl)
+                        console.log(imgUrl)
                         var showPicEle = $('.img-show-bx ul')
                         // 判断是否第一次上传相片 插入上传按钮
                         // 给input img一个值
@@ -1614,6 +1629,171 @@
                     }
                 }
             });
+        } else if (document.getElementById('tieziInfo')) {
+            // 获取帖子id
+            var tid = root.getQueryString('id')
+
+            // 相册传图片
+            $('#upImg').click(function () {
+                uploadOnePic()
+
+                function uploadOnePic() {
+                    plus.gallery.pick(function (path) {
+                        // 提示等待
+                        // alert(JSON.stringify(path))
+                        // root.imgW = plus.nativeUI.showWaiting()
+                        // root.uploadServerImg(e.files, true)
+                        plus.zip.compressImage({
+                            src: path,
+                            dst: "_doc/chat/gallery//" + path,
+                            quality: 20,
+                            overwrite: true,
+                        }, function (e) {
+                            // layer.msg(JSON.stringify(e.target))
+                            var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+                                    method: "POST",
+                                },
+                                function (res) {
+                                    var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+                                    // $("input[name='images']").val(imgUrl)
+                                    var html = `
+                                        <img src="${imgUrl}">
+                                        <input name="images" value='${imgUrl}' hidden>
+                                        <span class="re-upload">重新上传</span> 
+                                    `
+                                    $('.formHf .bot-img').hide()
+                                    $('.formHf .img-bx').append(html)
+                                    // 改变回复窗口高度
+                                    // $('.hf-mask').addClass('upImg')
+                                }
+                            );
+                            task.addFile(e.target, {
+                                key: "file"
+                            });
+                            task.start();
+                        }, function (error) {
+                            layer.msg('图片上传失败~')
+                        });
+                    }, function () {}, {
+                        system: false
+                    })
+                }
+            })
+            // 帖子id
+            // var tzId = $('#tieziInfo').attr('uid')
+            // 打开消息弹窗 回复帖子
+            $('#hfBtn').off().click(function () {
+                $('#newHfBx').show()
+                // 修改弹窗mask高度 样式控制
+                // $('.hf-mask').removeClass('upImg').removeClass('hfhf')
+                $('.new-huifu .bot-img').show()
+                $('.new-huifu .img-bx').show()
+                $('#newHfBx .new-huifu').slideToggle('fast')
+                root.submitMsgTz({
+                    type: 1,
+                    url: baseUrl + urlObj.hfTzSend
+                })
+            })
+            // 回复 评论
+            $('.zihuifubtn').click(function () {
+                $('#newHfBx').show()
+                // $('.hf-mask').removeClass('upImg').addClass('hfhf')
+                $('#newHfBx .new-huifu').slideToggle('fast')
+                // 隐藏回复帖子的图片
+                $('.new-huifu .bot-img').hide()
+                $('.new-huifu .img-bx').hide()
+                var data = {}
+                // hname  昵称
+                data.hname = $(this).attr('hname')
+                // pid 评论id
+                data.pid = $(this).attr('pid')
+                root.submitMsgTz({
+                    type: 2,
+                    url: baseUrl + urlObj.hfHfSend,
+                    data: data
+                })
+
+            })
+
+            // 回复 子评论
+            $('.hfzhfbtn').click (function () {
+                $('#newHfBx').show()
+                // $('.hf-mask').removeClass('upImg').addClass('hfhf')
+                $('#newHfBx .new-huifu').slideToggle('fast')
+                // 隐藏回复帖子的图片
+                $('.new-huifu .bot-img').hide()
+                $('.new-huifu .img-bx').hide()
+                var data = {}
+                // hname  昵称
+                data.hname = $(this).attr('hname')
+                // pid 评论id
+                data.pid = $(this).attr('pid')
+                // hid 子评论的id
+                data.hid = $(this).attr('hid')
+                root.submitMsgTz({
+                    type: 3,
+                    url: baseUrl + urlObj.hfzhfSend,
+                    data: data
+                })
+            })
+
+            // 取消回复弹窗
+            $('.hf-mask').off().click(function (e) {
+                $('#newHfBx .new-huifu').slideToggle('fast')
+                $('#newHfBx').hide()
+                e.preventDefault()
+                return false;
+            })
+            $('#newHfBx .cancle').off().click(function (e) {
+                $('#newHfBx .new-huifu').slideToggle('fast')
+                $('#newHfBx').hide()
+                e.preventDefault()
+                return false;
+            })
+            // 提交回复
+            /**
+             * @param {type} obj 回复类型 1回复帖子2回复评论3回复子评论
+             * @param {url} obj 三个地址
+             */
+            function submitMsgTz(obj) {
+                var type = obj.type
+                var url = obj.url
+                var newData = obj.data
+                layui.use('form', function () {
+                    var form = layui.form;
+                    //各种基于事件的操作，下面会有进一步介绍
+                    form.on('submit(formHfBtn)', function (data) {
+                        var hfData = {}
+                        hfData = data.field
+                        // 帖子id
+                        hfData.tid = tid
+                        if (type != 1) {
+                            // 回复评论获取的参数 
+                            hfData = Object.assign(newData, hfData)
+                        }
+                        // 空
+                        if (!hfData.info && !hfData.images) {
+                            layer.msg('请填写回复内容')
+                            return false
+                        }
+                        // 只有图片
+                        if (!hfData.info && hfData.images) {
+                            hfData.info = '图片回复'
+                        }
+                        console.log(JSON.stringify(hfData))
+                        root.postSubmit({
+                            url: url,
+                            data: hfData,
+                            source: 'hfTzSend',
+                        })
+
+                        return false
+                    });
+                });
+            }
+
+            root.submitMsgTz = submitMsgTz
+
         }
 
         // 直播页面
@@ -1659,8 +1839,6 @@
                 $('.my-nav').click(function () {
                     root.radioPlayer.stop()
                 })
-
-
 
             }
             document.addEventListener('plusready', plusReady, false);

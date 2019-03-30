@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>本地-帖子列表</title>
+    <!-- css -->
+    <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/index.css?t=<?php echo time();?>">
+    <link rel="stylesheet" href="../css/common.css?t=<?php echo time();?>">
+    <!-- js -->
+    <script type='text/javascript' src="../js/JsDepend/jQuery.min.js"></script>
+    <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.1/skins/default/aliplayer-min.css" />
+    <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.1/aliplayer-min.js">
+    </script>
+</head>
+
+<body>
+
+    <div id="newListShow">
+        <ul class="list-bx">
+            <li class="listshow-item">
+                <div class="item-bx">
+                    <img src="../img/quanxinde.png" class="newtag">
+                    <a class="user-info" href="#">
+                        <div class="user-det-left">
+                            <img src="../img/morentouxiang.png" class="touxiang-img">
+                            <div class="user-det">
+                                <div class="top">
+                                    <span class="user-name isadmin">小明白[管理员]</span>
+                                    <img src="../img/guanliyuan.png" class="admin">
+                                    <img src="../img/remende.png" class="hot-tag">
+                                </div>
+                                <div class="bottom">
+                                    <span class="fatie-time">
+                                        2019-03-28 18:15
+                                    </span>
+                                    <div class="tag-bx">
+                                        <span class="tag-item">
+                                            <img src="../img/xiaokache.png">
+                                            <span>
+                                                随手拍
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="../img/xiala.png" class="xiala-img">
+                    </a>
+                    <a class="conten-detail" href="#">
+                        <dd>
+                            <span class="main-content three-ellipsis">
+                                <span class="zhiding-img">
+                                    <img src="../img/zhiding1.png">
+                                    <img src="../img/zhiding2.png">
+                                </span>分享链接</span>
+                        </dd>
+                        <!-- <div class="other-content">
+                               <img class="img-item"
+                                    src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a4c7a13b34f33a87816d061af65d1018/8d5494eef01f3a295c0bf7c59725bc315d607cfd.jpg">
+                                <img class="img-item"
+                                    src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a4c7a13b34f33a87816d061af65d1018/8d5494eef01f3a295c0bf7c59725bc315d607cfd.jpg">
+                                <img class="img-item"
+                                    src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a4c7a13b34f33a87816d061af65d1018/8d5494eef01f3a295c0bf7c59725bc315d607cfd.jpg">
+                                <img class="img-item"
+                                    src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a4c7a13b34f33a87816d061af65d1018/8d5494eef01f3a295c0bf7c59725bc315d607cfd.jpg"> 
+                            </div>-->
+                        <!-- <div class="other-link" >
+                                <div class="link-bx">
+                                    <div class="img-bx"><img src="../img/linkcover.png"></div>
+                                    <div class="link-det">
+                                        <dt class="two-ellipsis">标题我博爱道具发哦安静的佛奥覅哦啊标题我博爱道具发哦安静的佛奥覅哦啊标题我博爱道具发哦安静的佛奥覅哦啊标题我博爱道具发哦安静的佛奥覅哦啊标题我博爱道具发哦安静的佛奥覅哦啊 </dt>
+                                    </div>
+                                </div>
+                            </div> -->
+                        <div class="video-bx">
+                            <div class="prism-player" id="player-con"></div>
+                        </div>
+                    </a>
+                    <div class="other-info-bx">
+                        <div class="other-item">
+                            <span class="loc-bx">
+                                <span class="loc-img">
+                                    <img src="../img/location.png">
+                                </span>
+                                <span class="loc-text">合肥市·蜀山区·习友路</span>
+                            </span>
+                            <div class="checked-num">8000次浏览</div>
+                        </div>
+                    </div>
+                    <div class="bar-control mob_1px_t">
+                        <span class="zhuanfa">
+                            <img src="../img/shoucang1.png">
+                            <img src="../img/dianzanhou.png" style="display:none;">
+                            <span>收藏</span>
+                        </span>
+                        <span class="zhuanfa">
+                            <img src="../img/zhuanfa.png">
+                            <span>转发</span>
+                        </span>
+                        <span class="zhuanfa">
+                            <a href="#">
+                                <img src="../img/pinlgun.png">
+                                <span>评论</span>
+                            </a>
+                        </span>
+                        <span class="zhuanfa">
+                            <img src="../img/dianzan.png">
+                            <img src="../img/dianzanhou.png" style="display:none;">
+                            <span>赞</span>
+                        </span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        </a>
+
+</body>
+
+</html>
+<!-- js -->
+<script type='text/javascript' src="../js/JsDepend/layui/layui.all.js"></script>
+<script type='text/javascript' src="../js/index.js?t=<?php echo time();?>"></script>
+
+<script>
+    var player = new Aliplayer({
+        "id": "player-con",
+        "source": "http://lanhaitun.zanhf.com/attachment/videos/2/201903/28/wrh2yZ7iZIf9Ymk9YFkRyQFYzITiRi.mp4",
+        "width": "100%",
+        "height": "190px",
+        "cover": 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png',
+        "autoplay": false,
+        "isLive": false,
+        "rePlay": false,
+        "videoHeight": "190px",
+        "playsinline": true,
+        "preload": true,
+        "controlBarVisibility": "hover",
+        "videoWidth": "100%",
+        "useH5Prism": true,
+        "skinLayout": [{
+                "name": "bigPlayButton",
+                "align": "blabs",
+                "x": 270,
+                "y": 20
+            },
+            {
+                "name": "H5Loading",
+                "align": "cc"
+            },
+            {
+                "name": "errorDisplay",
+                "align": "tlabs",
+                "x": 0,
+                "y": 0
+            },
+            {
+                "name": "tooltip",
+                "align": "blabs",
+                "x": 0,
+                "y": 56
+            },
+            {
+                "name": "thumbnail"
+            },
+            {
+                "name": "controlBar",
+                "align": "blabs",
+                "x": 0,
+                "y": 0,
+                "children": [{
+                        "name": "progress",
+                        "align": "blabs",
+                        "x": 0,
+                        "y": 44
+                    },
+                    {
+                        "name": "playButton",
+                        "align": "tl",
+                        "x": 15,
+                        "y": 12
+                    },
+                    {
+                        "name": "timeDisplay",
+                        "align": "tl",
+                        "x": 10,
+                        "y": 7
+                    },
+                    {
+                        "name": "fullScreenButton",
+                        "align": "tr",
+                        "x": 10,
+                        "y": 12
+                    },
+                    {
+                        "name": "setting",
+                        "align": "tr",
+                        "x": 15,
+                        "y": 12
+                    },
+                    {
+                        "name": "volume",
+                        "align": "tr",
+                        "x": 5,
+                        "y": 10
+                    }
+                ]
+            }
+        ]
+    }, function (player) {
+        player._switchLevel = 0;
+        console.log("播放器创建了。");
+    });
+
+    // player.dispose()
+</script>

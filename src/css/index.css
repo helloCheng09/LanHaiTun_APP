@@ -52,7 +52,7 @@
   color: #fff;
 }
 #showList ul .pass {
-  color: #808080!important;
+  color: #808080 !important;
 }
 #showList ul .now:before {
   content: '';
@@ -784,6 +784,10 @@
   background-size: cover;
   background-position: center;
 }
+#videoMode .video-bx .prism-player {
+  width: 100%;
+  height: 190px;
+}
 #videoMode .video-zhibo {
   position: absolute;
   top: 30px;
@@ -1115,9 +1119,337 @@
   padding-right: 10px;
   object-fit: cover;
 }
+#tieziInfo .new-huifu-pn {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  display: none;
+}
+#tieziInfo .hf-mask {
+  flex: 1;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#tieziInfo .upImg {
+  height: calc(100vh - 312px);
+}
+#tieziInfo .hfhf {
+  height: calc(100vh - 210px);
+}
+#tieziInfo .new-huifu {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+}
+#tieziInfo .new-huifu .title {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  align-items: center;
+  font-size: 14px;
+  padding: 0 10px;
+  border-bottom: 0.5px solid #ddd;
+}
+#tieziInfo .new-huifu .title .fabiao {
+  display: inline-block;
+  background: -webkit-linear-gradient(left, #6ec7ff, #22aaff) no-repeat;
+  padding: 0px 12px;
+  height: 26px;
+  line-height: 26px;
+  border-radius: 20px;
+  color: #fff;
+}
+#tieziInfo form .img-bx {
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+#tieziInfo form .img-bx img {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin-right: 6px;
+  object-fit: cover;
+  vertical-align: bottom;
+}
+#tieziInfo form .img-bx .re-upload {
+  display: inline-block;
+  line-height: 1.6em;
+  padding: 0 10px;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+#tieziInfo form textarea {
+  width: 100%;
+  height: 160px;
+  padding: 6px 10px;
+  line-height: 1.4em;
+  border: none;
+  outline: none;
+  resize: none;
+  -webkit-appearance: none;
+}
+#tieziInfo form .bot-img {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 6px 0;
+}
+#tieziInfo form .bot-img img {
+  display: inline-block;
+  width: 28px;
+  height: auto;
+  margin-right: 35px;
+}
 #zhengwen-bx .tz-list-none {
   display: inline-block;
   line-height: 2em;
   font-size: 16px;
   text-align: center;
+}
+#newListShow {
+  min-height: 100vh;
+  background-color: #f0f0f1;
+}
+#newListShow .prism-player .prism-cover {
+  background-size: cover;
+  background-position: center;
+}
+#newListShow .prism-player .prism-big-play-btn {
+  left: 50%!important;
+  bottom: 50%!important;
+  transform: translateX(-50%) !important;
+  margin-bottom: -32px;
+}
+#newListShow .list-bx .layui-flow-more {
+  margin: 0;
+  padding: 10px 0;
+  background-color: #fff;
+}
+#newListShow .list-bx .layui-flow-more a cite {
+  background-color: #fff;
+}
+#newListShow .list-bx .listshow-item {
+  padding-bottom: 5px;
+  position: relative;
+}
+#newListShow .list-bx .listshow-item .item-bx {
+  position: relative;
+  background-color: #fff;
+}
+#newListShow .list-bx .listshow-item .newtag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 30px;
+  height: 30px;
+}
+#newListShow .list-bx .listshow-item .user-info {
+  display: inline-block;
+  width: 100%;
+  padding: 2.6% 4% 1%;
+  display: flex;
+  justify-content: space-between;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det-left {
+  display: flex;
+  align-items: center;
+}
+#newListShow .list-bx .listshow-item .user-info .touxiang-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .top .user-name {
+  vertical-align: middle;
+  margin-right: 4px;
+  font-weight: normal;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .top .isadmin {
+  font-weight: bold;
+  color: #6ec7ff;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .top .admin {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .top .hot-tag {
+  width: 44px;
+  height: auto;
+  vertical-align: middle;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .bottom {
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .bottom .fatie-time {
+  font-size: 14px;
+  margin-right: 10px;
+  color: #ffd100;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .bottom .tag-bx {
+  margin-right: 6px;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .bottom .tag-item {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 2px;
+  background-color: #6ec7ff;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .bottom .tag-item img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+#newListShow .list-bx .listshow-item .user-info .user-det .bottom .tag-item span {
+  font-size: 14px;
+  color: #fff;
+}
+#newListShow .list-bx .listshow-item .user-info .xiala-img {
+  width: 24px;
+  height: 24px;
+}
+#newListShow .list-bx .listshow-item .conten-detail {
+  display: inline-block;
+  width: 100%;
+  padding: 0 2.6%;
+  margin-bottom: 4px;
+}
+#newListShow .list-bx .listshow-item .conten-detail dd {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  vertical-align: middle;
+}
+#newListShow .list-bx .listshow-item .conten-detail dd .zhiding-img {
+  font-size: 0;
+  margin-right: 6px;
+  display: inline-block;
+  height: 16px;
+  vertical-align: middle;
+}
+#newListShow .list-bx .listshow-item .conten-detail dd .zhiding-img img:first-child {
+  width: 16px;
+  height: 16px;
+  margin-right: 2px;
+}
+#newListShow .list-bx .listshow-item .conten-detail dd .zhiding-img img:last-child {
+  width: 30px;
+  height: auto;
+}
+#newListShow .list-bx .listshow-item .conten-detail dd .main-content {
+  line-height: 1.2em;
+}
+#newListShow .list-bx .listshow-item .conten-detail .other-content {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+  position: relative;
+}
+#newListShow .list-bx .listshow-item .conten-detail .other-content .img-item {
+  width: 31.3vw;
+  height: 31.3vw;
+  padding-bottom: 100%;
+  padding: 0.6%;
+  object-fit: cover;
+}
+#newListShow .list-bx .listshow-item .video-bx {
+  width: calc(100vw - 5.2vw);
+}
+#newListShow .list-bx .listshow-item .video-bx .prism-player {
+  width: 100%;
+  height: 190px;
+}
+#newListShow .list-bx .listshow-item .other-link {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 4px;
+}
+#newListShow .list-bx .listshow-item .other-link .link-bx {
+  display: flex;
+  padding: 2.6%;
+  align-items: center;
+  background-color: #f0f0f1;
+}
+#newListShow .list-bx .listshow-item .other-link .img-bx {
+  margin-right: 6px;
+}
+#newListShow .list-bx .listshow-item .other-link img {
+  width: 46px;
+  height: 46px;
+}
+#newListShow .list-bx .listshow-item .other-link .link-det dt {
+  line-height: 1.2em;
+  font-size: 14px;
+}
+#newListShow .list-bx .listshow-item .other-info-bx {
+  padding: 0 2.6%;
+  margin-bottom: 4px;
+}
+#newListShow .list-bx .listshow-item .other-info-bx .other-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+#newListShow .list-bx .listshow-item .other-info-bx .other-item .loc-bx {
+  padding: 2px 6px;
+  border-radius: 2px;
+  background-color: #eee;
+}
+#newListShow .list-bx .listshow-item .other-info-bx .other-item .loc-img {
+  display: inline-block;
+}
+#newListShow .list-bx .listshow-item .other-info-bx .other-item img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+#newListShow .list-bx .listshow-item .other-info-bx .other-item .loc-text {
+  font-size: 12px;
+}
+#newListShow .list-bx .listshow-item .other-info-bx .checked-num {
+  font-size: 12px;
+  color: #808080;
+}
+#newListShow .list-bx .listshow-item .bar-control::before {
+  content: '';
+  border-color: #b0b0b0;
+}
+#newListShow .list-bx .listshow-item .bar-control {
+  margin: 0 2.6%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#newListShow .list-bx .listshow-item .bar-control .zhuanfa:first-child img {
+  width: 22px;
+}
+#newListShow .list-bx .listshow-item .bar-control .zhuanfa {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+}
+#newListShow .list-bx .listshow-item .bar-control .zhuanfa img {
+  width: 20px;
+  height: auto;
+  margin-right: 4px;
+  vertical-align: text-bottom;
+}
+#newListShow .list-bx .listshow-item .bar-control .zhuanfa span {
+  font-size: 14px;
+  color: #808080;
 }

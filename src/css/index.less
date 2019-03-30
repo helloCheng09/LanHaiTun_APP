@@ -7,6 +7,7 @@
         height: calc(~"100vh - 321px") !important;
     }
 }
+
 #showList {
     // max-height: calc(~"100vh - 194px") !important;
     height: calc(~"100vh - 254px") !important;
@@ -14,10 +15,11 @@
     font-size: 16px;
     font-weight: normal;
     background-color: #fff;
+
     .show-list {
         height: calc(~"100vh - 254px") !important;
     }
-    
+
     ul {
         li {
             display: flex;
@@ -26,8 +28,9 @@
             padding: 12px 10px;
             border-bottom: 0.3px solid #ececec;
 
-            .left { 
+            .left {
                 display: flex;
+
                 .title {
                     font-size: 16px;
                     font-weight: normal;
@@ -53,6 +56,7 @@
                     background-color: #6ec7ff;
                     color: #fff;
                 }
+
                 .reListen {
                     padding: 2px 6px;
                     // line-height: 1.6em;
@@ -65,7 +69,7 @@
         }
 
         .pass {
-            color: #808080!important;
+            color: #808080 !important;
         }
 
         .now:before {
@@ -908,6 +912,7 @@
                 text-align: right;
                 color: #808080;
             }
+           
         }
 
         .sub-bx {
@@ -1059,6 +1064,10 @@
         height: 200px;
         background-size: cover;
         background-position: center;
+        .prism-player {
+            width: 100%;
+            height: 190px;
+        }
     }
 
     .video-zhibo {
@@ -1386,6 +1395,7 @@
         // border-top: .5px solid #ddd;
         background-color: #FFF;
         display: none;
+
         .layui-form-item {
             margin-bottom: 4px;
         }
@@ -1486,6 +1496,120 @@
             object-fit: cover;
         }
     }
+
+    // 帖子回复
+    .new-huifu-pn {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        display: none;
+    }
+
+    .hf-mask {
+        flex: 1;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .upImg {
+        height: calc(~'100vh - 312px');
+    }
+
+    .hfhf {
+        height: calc(~'100vh - 210px');
+    }
+
+    .new-huifu {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            height: 40px;
+            align-items: center;
+            font-size: 14px;
+            padding: 0 10px;
+            border-bottom: 0.5px solid #ddd;
+
+            .cancle {}
+
+            .title-text {}
+
+            .fabiao {
+                display: inline-block;
+                background: -webkit-linear-gradient(left, #6ec7ff, #22aaff) no-repeat;
+                padding: 0px 12px;
+                height: 26px;
+                line-height: 26px;
+                border-radius: 20px;
+                color: #fff;
+            }
+        }
+    }
+
+    form {
+        .img-bx {
+            padding: 0 10px;
+            margin-bottom: 10px;
+
+            img {
+                display: inline-block;
+                width: 100px;
+                height: 100px;
+                margin-right: 6px;
+                object-fit: cover;
+                vertical-align: bottom;
+            }
+
+            .re-upload {
+                display: inline-block;
+                line-height: 1.6em;
+                padding: 0 10px;
+                font-size: 14px;
+                background-color: rgba(0, 0, 0, 0.6);
+                color: #fff;
+            }
+        }
+
+        textarea {
+            width: 100%;
+            height: 160px;
+            padding: 6px 10px;
+            ;
+            line-height: 1.4em;
+            border: none;
+            outline: none;
+            resize: none;
+            -webkit-appearance: none;
+        }
+
+        .bot-img {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 6px 0;
+
+            img {
+                display: inline-block;
+                width: 28px;
+                height: auto;
+                margin-right: 35px;
+            }
+
+            #upImg {}
+
+            #upImgVideo {}
+        }
+    }
 }
 
 #zhengwen-bx {
@@ -1497,4 +1621,309 @@
     }
 }
 
+// 新版帖子列表
 
+#newListShow {
+    min-height: 100vh;
+    background-color: #f0f0f1;
+    .prism-player {
+    }
+    .prism-player .prism-cover {
+        background-size: cover;
+        background-position: center;
+    }
+    .prism-player .prism-big-play-btn {
+        left: 50%!important;
+        bottom: 50%!important;
+        transform: translateX(-50%)!important;
+        margin-bottom: -32px;
+    }
+    .list-bx {
+        .layui-flow-more {
+            margin: 0;
+            padding: 10px 0;
+            background-color: #fff;
+        }
+        .layui-flow-more a cite  {
+           background-color: #fff; 
+        }
+        .listshow-item {
+            padding-bottom: 5px;
+            position: relative;
+            .item-bx {
+                position: relative;
+                background-color: #fff;
+            }
+            .newtag {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 99;
+                width: 30px;
+                height: 30px;
+            }
+
+            .user-info {
+                display: inline-block;
+                width: 100%;
+                padding: 2.6% 4% 1%;
+                display: flex;
+                justify-content: space-between;
+                
+                .user-det-left {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .touxiang-img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 100%;
+                    margin-right: 10px;
+                    object-fit: cover;
+                }
+
+                .user-det {
+                    .top {
+                        .user-name {
+                            vertical-align: middle;
+                            margin-right: 4px;
+                            font-weight: normal;
+                        } .isadmin {
+                            font-weight: bold;
+                            color:#6ec7ff;
+                        }
+
+                        .admin {
+                            width: 20px;
+                            height: 20px;
+                            vertical-align: middle;
+                        }
+
+                        .hot-tag {
+                            width: 44px;
+                            height: auto;
+                            vertical-align: middle;
+                        }
+                    }
+
+                    .bottom {
+                        height: 24px;
+                        display: flex;
+                        align-items: center;
+
+                        .fatie-time {
+                            font-size: 14px;
+                            margin-right: 10px;
+                            color: #ffd100;
+                        }
+
+
+                        .tag-bx {
+                            margin-right: 6px;
+                        }
+
+                        .tag-item {
+                            display: inline-block;
+                            padding: 0 6px;
+                            border-radius: 2px;
+                            background-color: #6ec7ff;
+
+                            img {
+                                width: 24px;
+                                height: 24px;
+                                vertical-align: middle;
+                            }
+
+                            span {
+                                font-size: 14px;
+                                color: #fff;
+                            }
+                        }
+                    }
+                }
+
+                .xiala-img {
+                    width: 24px;
+                    height: 24px;
+                }
+
+            }
+
+            .conten-detail {
+                display: inline-block;
+                width: 100%;
+                padding: 0 2.6%;
+                margin-bottom: 4px;
+
+                dd {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 4px;
+                    vertical-align: middle;
+
+                    .zhiding-img {
+                        font-size: 0;
+                        margin-right: 6px;
+                        display: inline-block;
+                        height: 16px;
+                        vertical-align: middle;
+
+                        img:first-child {
+                            width: 16px;
+                            height: 16px;
+                            margin-right: 2px;
+                        }
+
+                        img:last-child {
+                            width: 30px;
+                            height: auto;
+                        }
+                    }
+
+                    .main-content {
+                        line-height: 1.2em;
+                    }
+                }
+
+                .other-content {
+                    display: flex;
+                    flex-wrap: wrap;
+                    margin-bottom: 4px;
+                    position: relative;
+
+                    .img-item {
+                        width: 31.3vw;
+                        height: 31.3vw;
+                        padding-bottom: 100%;
+                        padding: 0.6%;
+                        object-fit: cover;
+                    }
+                }
+            }
+            .video-bx {
+                width:calc(~"100vw - 5.2vw");
+                .prism-player{
+                    width: 100%;
+                    height: 190px;
+                }
+            }
+            .other-link {
+                display: inline-block;
+                width: 100%;
+                margin-bottom: 4px;
+
+                .link-bx {
+                    display: flex;
+                    padding: 2.6%;
+                    align-items: center;
+                    background-color: #f0f0f1;
+                }
+
+                .img-bx {
+                 
+                    margin-right: 6px;
+                }
+
+                img {
+                    width: 46px;
+                    height: 46px;
+                }
+
+                .link-det {
+                    dt {
+                        line-height: 1.2em;
+                        font-size: 14px;
+                    }
+                }
+
+            }
+
+            .other-info-bx {
+                padding: 0 2.6%;
+                margin-bottom: 4px;
+
+                .other-item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 8px;
+
+                    .loc-bx {
+                        padding: 2px 6px;
+                        border-radius: 2px;
+                        background-color: #eee;
+                    }
+
+                    .loc-img {
+                        display: inline-block;
+                    }
+
+                    img {
+                        width: 24px;
+                        height: 24px;
+                        vertical-align: middle;
+                    }
+
+                    .loc-text {
+                        font-size: 12px;
+                    }
+                }
+
+                .checked-num {
+                    font-size: 12px;
+                    color: #808080;
+                }
+
+
+            }
+
+            .bar-control::before {
+                content: '';
+                border-color: #b0b0b0;
+            }
+
+            .bar-control {
+                margin: 0 2.6%;
+                padding: 10px 0;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .zhuanfa:first-child {
+                    img {
+                        width: 22px;
+                    }
+                }
+
+                .zhuanfa:nth-child(2) {
+                    img {}
+                }
+
+                .zhuanfa:last-child {
+                    img {}
+
+                    span {}
+                }
+
+                .zhuanfa {
+                    flex: 1;
+                    text-align: center;
+                    cursor: pointer;
+
+                    img {
+                        width: 20px;
+                        height: auto;
+                        margin-right: 4px;
+                        vertical-align: text-bottom;
+                    }
+
+                    span {
+                        font-size: 14px;
+                        color: #808080;
+                    }
+                }
+            }
+        }
+    }
+}
