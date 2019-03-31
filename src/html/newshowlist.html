@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>本地-帖子列表</title>
     <!-- css -->
+
+
     <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
     <link rel="stylesheet" href="../css/index.css?t=<?php echo time();?>">
     <link rel="stylesheet" href="../css/common.css?t=<?php echo time();?>">
@@ -20,6 +22,48 @@
 <body>
 
     <div id="newListShow">
+        <div class="search-bx">
+            <div class="search-con">
+                <img src="../img/sousou.png">
+                <div class="search-item">
+                    <input type="text" placeholder="搜索帖子">
+                </div>
+            </div>
+        </div>
+        <div class="fenlei-tags">
+            <div class="tag-bx">
+                <span class="tag-item active">
+                    <img src="../img/xiaokache.png">
+                    <span>
+                        全 部
+                    </span>
+                </span>
+                <span class="tag-item">
+                    <img src="../img/xiaokache.png">
+                    <span>
+                        随手拍
+                    </span>
+                </span>
+                <span class="tag-item">
+                    <img src="../img/xiaokache.png">
+                    <span>
+                        实时路况
+                    </span>
+                </span>
+                <span class="tag-item">
+                    <img src="../img/xiaokache.png">
+                    <span>
+                        帮帮忙
+                    </span>
+                </span>
+                <span class="tag-item">
+                    <img src="../img/xiaokache.png">
+                    <span>
+                        曝光台
+                    </span>
+                </span>
+            </div>
+        </div>
         <ul class="list-bx">
             <li class="listshow-item">
                 <div class="item-bx">
@@ -27,13 +71,13 @@
                     <a class="user-info" href="#">
                         <div class="user-det-left">
                             <img src="../img/morentouxiang.png" class="touxiang-img">
-                            <div class="user-det">
-                                <div class="top">
+                            <div class="my-user-det">
+                                <div class="user-top">
                                     <span class="user-name isadmin">小明白[管理员]</span>
                                     <img src="../img/guanliyuan.png" class="admin">
                                     <img src="../img/remende.png" class="hot-tag">
                                 </div>
-                                <div class="bottom">
+                                <div class="user-bottom">
                                     <span class="fatie-time">
                                         2019-03-28 18:15
                                     </span>
@@ -48,7 +92,7 @@
                                 </div>
                             </div>
                         </div>
-                        <img src="../img/xiala.png" class="xiala-img">
+                        <img  src="../img/xiala.png" class="xiala-img xiala">
                     </a>
                     <a class="conten-detail" href="#">
                         <dd>
@@ -56,7 +100,7 @@
                                 <span class="zhiding-img">
                                     <img src="../img/zhiding1.png">
                                     <img src="../img/zhiding2.png">
-                                </span>分享链接</span>
+                                </span>分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接分享链接</span>
                         </dd>
                         <!-- <div class="other-content">
                                <img class="img-item"
@@ -76,7 +120,7 @@
                                     </div>
                                 </div>
                             </div> -->
-                        <div class="video-bx">
+                        <div class="video-bx" style="background-image:url(../img/jiazaishibai.png)">
                             <div class="prism-player" id="player-con"></div>
                         </div>
                     </a>
@@ -91,10 +135,10 @@
                             <div class="checked-num">8000次浏览</div>
                         </div>
                     </div>
-                    <div class="bar-control mob_1px_t">
-                        <span class="zhuanfa">
-                            <img src="../img/shoucang1.png">
-                            <img src="../img/dianzanhou.png" style="display:none;">
+                    <div class="bar-control mob_1px_t" >
+                        <span class="zhuanfa shoucang" shou-status="0">
+                            <img class="shou-img" src="../img/shoucang1.png">
+                            <img class="shou-hou-img" src="../img/shoucang2.png" style="display:none;">
                             <span>收藏</span>
                         </span>
                         <span class="zhuanfa">
@@ -107,10 +151,10 @@
                                 <span>评论</span>
                             </a>
                         </span>
-                        <span class="zhuanfa">
-                            <img src="../img/dianzan.png">
-                            <img src="../img/dianzanhou.png" style="display:none;">
-                            <span>赞</span>
+                        <span class="zhuanfa dianzan" zan-status="0">
+                            <img class="zan-img" src="../img/dianzan.png">
+                            <img class="zan-hou-img" src="../img/dianzanhou.png" style="display:none;">
+                            <span>11</span>
                         </span>
                     </div>
                 </div>
