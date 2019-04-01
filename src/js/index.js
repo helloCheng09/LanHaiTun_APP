@@ -30,6 +30,11 @@
         hfTzSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=pinglun', // 回复帖子接口
         hfHfSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=huifu1', // 回复评论接口
         hfzhfSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=huifu3', // 回复评论的评论
+        dianzanUrl: 'index.php?i=2&c=entry&action=zan&do=Index&m=wyt_luntan', // 点赞接口 tid 帖子id
+        collecUrl: '/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=collection', // 收藏接口 id 帖子id
+        tieziInfo: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=thread_info', // 获取帖子详情接口thread_id  地址栏中的帖子id
+        shenheTz: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=shenghe_list', // 获取要审核的帖子列表接口
+        sheheaction: '/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=shenghe', // 审核帖子接口 帖子id shstate 0通过 2拒绝
 
     };
 
@@ -40,6 +45,75 @@
      */
 
     (function ($, root) {
+        // 获取随机大写字母组合
+        function getRanNum() {
+            var result = [];
+            for (var i = 0; i < 6; i++) {
+                var ranNum = Math.ceil(Math.random() *
+                    25); //生成一个0到25的数字
+                //大写字母'A'的ASCII是65,A~Z的ASCII码就是65 + 0~25;然后调用String.fromCharCode()传入ASCII值返回相应的字符并push进数组里
+                result.push(String.fromCharCode(65 +
+                    ranNum));
+            }
+            return result.join('');
+        }
+        root.getRanNum = getRanNum
+        // 提交回复
+        /**
+         * @param {type} obj 回复类型 1回复帖子2回复评论3回复子评论
+         * @param {url} obj 三个地址
+         */
+        function submitMsgTz(obj) {
+            var type = obj.type
+            var url = obj.url
+            var newData = obj.data
+            var tid = obj.tid
+            layui.use('form', function () {
+                var form = layui.form;
+                //各种基于事件的操作，下面会有进一步介绍
+                form.on('submit(formHfBtn)', function (data) {
+                    var hfData = {}
+                    hfData = data.field
+                    // 帖子id
+                    hfData.tid = tid
+                    if (type != 1) {
+                        // 回复评论获取的参数 
+                        hfData = Object.assign(newData, hfData)
+                    }
+                    // 空
+                    if (!hfData.info && !hfData.images) {
+                        layer.msg('请填写回复内容')
+                        return false
+                    }
+                    // 只有图片
+                    if (!hfData.info && hfData.images) {
+                        hfData.info = '图片回复'
+                    }
+                    console.log(JSON.stringify(hfData))
+                    root.postSubmit({
+                        url: url,
+                        data: hfData,
+                        source: 'hfTzSend',
+                    })
+
+                    return false
+                });
+            });
+        }
+
+        root.submitMsgTz = submitMsgTz
+        // 首页 进入发帖弹窗
+        function intoFatie(obj) {
+            $('#dragCircle').off().click(function () {
+                if (obj.type == 'newindex') {
+                    $('#newListShow').hide()
+                    $('.my-nav-bx').hide()
+                    $('#newFatie').show('fast')
+                    // root.newfatieEvent()
+                }
+            })
+        }
+        root.intoFatie = intoFatie
 
         function mainPageEvent() {
 
@@ -49,16 +123,33 @@
                 // 当前用户是否收藏
                 self.off().click(function () {
                     var scstatus = self.attr('shou-status')
+                    var id = self.find('li').attr('id')
                     if (scstatus == '0') { // 当前用户 收藏状态
                         self.attr('shou-status', 1) // 切换收藏状态
                         self.find('.shou-img').hide() // 切换图标
                         self.find('.shou-hou-img').show()
                         self.find('span').text("已收藏")
+                        root.postSubmit({
+                            url: baseUrl + urlObj.collecUrl,
+                            source: 'shoucang',
+                            data: {
+                                id: id
+                            },
+                            elem: self
+                        })
                     } else {
                         self.attr('shou-status', 0)
                         self.find('.shou-img').show()
                         self.find('.shou-hou-img').hide()
                         self.find('span').text("收藏")
+                        root.postSubmit({
+                            url: baseUrl + urlObj.collecUrl,
+                            source: 'shoucang',
+                            data: {
+                                id: id
+                            },
+                            elem: self
+                        })
                     }
 
                 })
@@ -70,16 +161,29 @@
                 self.off().click(function () {
                     var zanstatus = self.attr('zan-status')
                     var zantext = self.find('span').text()
+                    var tid = self.parents('li').attr('id')
                     if (zanstatus == '0') { // 当前用户点赞状态 0 未点单赞
-                        self.attr('zan-status', 1) // 改为已经点赞
-                        self.find('.zan-img').hide() // 切换图标
-                        self.find('.zan-hou-img').show()
-                        if (zantext == '赞') { // 数量增加方式判断
-                            self.find('span').text('1')
-                        } else {
-                            zantext = Number(zantext) + 1
-                            self.find('span').text(zantext)
-                        }
+                        // 发送点赞请求
+                        root.postSubmit({
+                            url: baseUrl + urlObj.dianzanUrl, // 点赞请求
+                            source: 'dianzan',
+                            data: {
+                                tid: tid,
+                            },
+                            elem: self,
+                        })
+                        // 点赞成功后操作
+                        /*  self.attr('zan-status', 1) // 改为已经点赞
+                          self.find('.zan-img').hide() // 切换图标
+                          self.find('.zan-hou-img').show()
+                          if (self.find('span').text() == '赞') { // 数量增加方式判断
+                              self.find('span').text('1')
+                          } else {
+                              self.find('span').text() = Number(zantext) + 1
+                              self.find('span').text(zantext)
+                          }
+                          self.addClass('hadzan') // 字体颜色切换蓝色
+                          */
                     } else {
                         layer.msg('您已点过赞了~')
                         // self.attr('zan-status', 0)
@@ -231,7 +335,11 @@
                             })
                             break;
                         case '再编辑':
-                            window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
+                            // 弹出再编辑
+                            root.intoFatie({
+                                type: 'newindex'
+                            })
+                            // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
                             break;
                     }
                 }
@@ -239,8 +347,7 @@
         }
 
         function showAdmin() {
-            $('.xiala').off()
-            $('.xiala').on('click', function () {
+            $('.xiala').off().on('click', function () {
                 // 是否是管理员
                 var isadmin = $(this).attr('isadmin')
                 // 是否是自己的帖子
@@ -263,7 +370,90 @@
         }
 
         root.showAdmin = showAdmin
+        /**
+         * 数据渲染后重新实例化video方法
+         */
+        function newVideos(newVideoArr) {
+            // 遍历新增加的video内容
+            newVideoArr.forEach(function (item) {
+                aliPlayer(item)
+                // console.log(item)
+            })
 
+            function aliPlayer(videoData) {
+                var id = videoData.id
+                var src = videoData.src
+                var poster = videoData.fengmian
+                // console.log(id)
+
+                var player = new Aliplayer({
+                    "id": id,
+                    "source": src,
+                    "cover": poster,
+                    "width": "100%",
+                    "height": "190px",
+                    "autoplay": false,
+                    "isLive": false,
+                    "rePlay": false,
+                    "playsinline": false,
+                    "preload": true,
+                    "controlBarVisibility": "click",
+                    "showBarTime": 5000,
+                    "useH5Prism": true,
+                    "skinLayout": [{
+                            "name": "bigPlayButton",
+                            "align": "blabs",
+                            "x": 30,
+                            "y": 80
+                        },
+                        {
+                            "name": "H5Loading",
+                            "align": "cc"
+                        },
+                        {
+                            "name": "thumbnail"
+                        },
+                        {
+                            "name": "controlBar",
+                            "align": "blabs",
+                            "x": 0,
+                            "y": 0,
+                            "children": [{
+                                    "name": "progress",
+                                    "align": "blabs",
+                                    "x": 0,
+                                    "y": 44
+                                },
+                                {
+                                    "name": "playButton",
+                                    "align": "tl",
+                                    "x": 15,
+                                    "y": 12
+                                },
+                                {
+                                    "name": "timeDisplay",
+                                    "align": "tl",
+                                    "x": 10,
+                                    "y": 7
+                                },
+                                {
+                                    "name": "fullScreenButton",
+                                    "align": "tr",
+                                    "x": 10,
+                                    "y": 12
+                                }
+                            ]
+                        }
+                    ]
+                }, function (player) {
+                    player._switchLevel = 0;
+
+                    $('#' + id).parents('.video-bx').attr('data-status', 'done')
+                    // var status = $('#' + id).parents('.video-bx').attr('data-status')
+                });
+            }
+        }
+        root.newVideos = newVideos
         /**
          * 流加载
          * url 请求地址
@@ -280,12 +470,11 @@
                 flow.load({
                     elem: obj.elem, //指定列表容器
                     done: function (page, next) { //到达临界点（默认滚动触发），触发下一页
+                        var data = {}
                         if (obj.sou) {
-                            var data = {}
                             data.page = +page
                             data.sou = obj.sou
                         } else {
-                            var data = {}
                             data.page = +page
                             data.fenlei = obj.fenlei
                             data.load_style = obj.load_style
@@ -313,7 +502,11 @@
                             var isself // 是否当前用户的帖子 string true false
                             var locHtml // 定位
                             var newVideoArr = [] // 存储新的video内容
-
+                            if (obj.thread_id) { // 如果是获取帖子详情 特殊处理data返回值
+                                data = []
+                                data.push(res.data)
+                                console.log(data)
+                            }
                             /** 循环帖子列表数组 */
                             layui.each(data, function (index, item) {
                                 var html = ''
@@ -438,7 +631,7 @@
                                 } else {
                                     iszan = 1
                                     dz = item.zan
-                                    zanHtml = ` <span class="zhuanfa dianzan"  zan-status="${iszan}">
+                                    zanHtml = ` <span class="zhuanfa dianzan hadzan"  zan-status="${iszan}">
                                         <img  class="zan-img" src="/attachment/style/src/img/dianzan.png" style="display: none;">
                                         <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png">
                                         <span>${dz}</span>
@@ -486,7 +679,7 @@
 
                                     var itemHtml = `
                                     <div class="video-bx" style="background-image:url(/attachment/style/src/img/jiazaishibai.png)"  data-status="empty" >
-                                        <div class="prism-player" id="${newId}"  data-src="${isVideo}" data-fengmian= "${item.videos.fengmian}"  data-id="${newId}"></div>
+                                        <div class="prism-player" id="${newId}"  data-src="${isVideo}" data-fengmian= "${item.videos.fengmian}"  data-id="${newId}" ></div>
                                     </div>
                                     `
                                     // 新获取的video
@@ -577,15 +770,27 @@
                             next(lis.join(''), page < pages);
                             // 实例 视频
                             // console.log(newVideoArr)
-                            newVideos(newVideoArr)
+                            if (newVideoArr) {
+                                root.newVideos(newVideoArr)
+                            }
                             // 管理员下拉
                             // root.showAdmin()
+
                             // 调试模式 直接再编辑 帖子
-                            $('.xiala').on('click', function () {
+                            $('.xiala').off().on('click', function () {
                                 // 获取到帖子的id
                                 var thread_id = $(this).parents('li').attr('id')
+                                // 弹出再编辑
+                                console.log(88887777)
+                                $('#newListShow').hide()
+                                $('.my-nav-bx').hide()
+                                $('#newFatie').show('fast')
+                                // 进入重新编辑发帖模式
+                                root.reeditor = {}
+                                root.reeditor.thread_id = thread_id
+                                root.reeditor.islink = 'true'
 
-                                window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                                // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
                             })
                             // 调用收藏 点赞 转发事件
                             root.mainPageEvent()
@@ -595,89 +800,309 @@
             });
         }
         root.showListFlow = showListFlow
-        /**
-         * 数据渲染后重新实例化video方法
-         */
-        function newVideos(newVideoArr) {
-            // 遍历新增加的video内容
-            newVideoArr.forEach(function (item) {
-                aliPlayer(item)
-                // console.log(item)
-            })
+        // 获取帖子详情
+        function getTzInfoRq(url, obj) {
+            $.post(url, obj.data, function (res) {
+                var res = JSON.parse(res)
+                var item = res.data
 
-            function aliPlayer(videoData) {
-                var id = videoData.id
-                var src = videoData.src
-                var poster = videoData.fengmian
-                // console.log(id)
+                console.log(item)
+                // return false
+                var shoucang = "收藏" // 收藏文本 
+                var isshou = 0 // 收藏状态 布尔型 true false
+                var shouHtml
+                var zhuanfa = "转发" // 转发文本
+                var zhuanHtml
+                var pinglun = "评论" // 评论文本
+                var pingHtml
+                var dz = "赞" // 点赞文本
+                var iszan = 0 // 点赞状态 布尔型 true false
+                var zanHtml
+                var zhidingHtml // 置顶状态 string 0 1
+                var newHtml // 新消息 string true false
+                var hotHtml // 热门 string true false
+                var isadmin // 管理员 布尔型 true false
+                var adminHtml
+                var isself // 是否当前用户的帖子 string true false
+                var locHtml // 定位
+                var newVideoArr = [] // 存储新的video内容
 
-                var player = new Aliplayer({
-                    "id": id,
-                    "source": src,
-                    "cover": poster,
-                    "width": "100%",
-                    "height": "190px",
-                    "autoplay": false,
-                    "isLive": false,
-                    "rePlay": false,
-                    "playsinline": false,
-                    "preload": true,
-                    "controlBarVisibility": "click",
-                    "showBarTime": 5000,
-                    "useH5Prism": true,
-                    "skinLayout": [{
-                            "name": "bigPlayButton",
-                            "align": "blabs",
-                            "x": 30,
-                            "y": 80
-                        },
-                        {
-                            "name": "H5Loading",
-                            "align": "cc"
-                        },
-                        {
-                            "name": "thumbnail"
-                        },
-                        {
-                            "name": "controlBar",
-                            "align": "blabs",
-                            "x": 0,
-                            "y": 0,
-                            "children": [{
-                                    "name": "progress",
-                                    "align": "blabs",
-                                    "x": 0,
-                                    "y": 44
-                                },
-                                {
-                                    "name": "playButton",
-                                    "align": "tl",
-                                    "x": 15,
-                                    "y": 12
-                                },
-                                {
-                                    "name": "timeDisplay",
-                                    "align": "tl",
-                                    "x": 10,
-                                    "y": 7
-                                },
-                                {
-                                    "name": "fullScreenButton",
-                                    "align": "tr",
-                                    "x": 10,
-                                    "y": 12
-                                }
-                            ]
-                        }
-                    ]
-                }, function (player) {
-                    player._switchLevel = 0;
+                /** 循环帖子列表数组 */
+                var html = ''
+                var userlink = './index.php?i=2&c=entry&action=other&do=Index&m=wyt_luntan&uid=' + item.uid // 用户个人中心链接地址 // 个人中心连接拼接 个人uid
+                var tiezilink = './index.php?i=2&c=entry&action=info&do=Index&m=wyt_luntan&id=' + item.id // 帖子地址链接 拼接帖子id
+                // 定位
+                if (item.address) {
+                    locHtml = `
+                <span class="loc-bx">
+                    <span class="loc-img">
+                        <img src="/attachment/style/src//img/location.png">
+                    </span>
+                    <span class="loc-text">${item.address}</span>        
+                </span>
+                `
+                } else {
+                    locHtml = `
+                `
+                }
 
-                    $('#' + id).parents('.video-bx').attr('data-status', 'done')
-                    var status = $('#' + id).parents('.video-bx').attr('data-status')
-                });
-            }
+                // 新消息
+                if (item.is_new == 'true') { // 是新消息
+                    newHtml = `
+                <img src="/attachment/style/src//img/quanxinde.png" class="newtag">
+                `
+                } else {
+                    newHtml = ''
+                }
+                // 热门
+                if (item.is_hot == 'true') { // 是热门
+                    hotHtml = `
+                <img src="/attachment/style/src/img/remende.png" class="hot-tag">
+                `
+                } else {
+                    hotHtml = ''
+                }
+                // 管理员
+                if (item.is_admin) { // 是管理员
+                    adminHtml = `
+                    <span class="user-name isadmin">${item.nickname}[管理员]</span>
+                    <img src="/attachment/style/src/img/guanliyuan.png" class="admin">
+                `
+                } else {
+                    adminHtml = `
+                    <span class="user-name ">${item.nickname}</span>
+                `
+
+                }
+                // 是否是自己的帖子
+                if (item.is_myself == 'true') { // 是自己的帖子
+                }
+                isself = item.is_myself
+                // 置顶
+                if (item.zdstate != '0') { // 已经置顶
+                    zhidingHtml = `
+                    <span class="zhiding-img">
+                        <img src="/attachment/style/src//img/zhiding1.png">
+                        <img src="/attachment/style/src//img/zhiding2.png">
+                    </span>
+                `
+                } else {
+                    zhidingHtml = ''
+                }
+
+                // 收藏
+                if (!item.collection) {
+                    shoucang = '收藏'
+                    shouHtml = `
+                    <span class="zhuanfa shoucang" shou-status= ${isshou}>
+                        <img class="shou-img" src="/attachment/style/src/img/shoucang1.png">
+                        <img class="shou-hou-img" src="/attachment/style/src/img/shoucang2.png"  style="display:none;">
+                        <span>${shoucang}</span>
+                    </span>
+                `
+                } else {
+                    shoucang = '已收藏'
+                    shouHtml = `
+                    <span class="zhuanfa shoucang" shou-status= ${isshou}>
+                        <img class="shou-img" src="/attachment/style/src/img/shoucang1.png" style="display:none;">
+                        <img class="shou-hou-img" src="/attachment/style/src/img/shoucang2.png">
+                        <span>${shoucang}</span>
+                    </span>
+                `
+                }
+                // 转发
+                if (item.share != '0') { // 有转发
+                    zhuanfa = item.share
+                } else {
+                    zhuanfa = '转发'
+                }
+                zhuanHtml = `
+                <span class="zhuanfa">
+                    <img src="/attachment/style/src/img/zhuanfa.png">
+                    <span>${zhuanfa}</span>
+                </span>
+            `
+
+                // 评论
+                if (item.pl != 0) { // 有评论
+                    pinglun = item.pl
+                } else {
+                    pinglun = '评论'
+                }
+                pingHtml = `
+                <span class="zhuanfa">
+                    <a href="${tiezilink}">
+                        <img src="/attachment/style/src/img/pinlgun.png">
+                        <span>${pinglun}</span>
+                    </a>
+                </span>
+            `
+                // 点赞
+                if (!item.dianzan) { // 用户未点赞
+                    iszan = 0
+                    dz = '赞'
+                    zanHtml = ` <span class="zhuanfa dianzan"  zan-status="${iszan}">
+                            <img  class="zan-img" src="/attachment/style/src/img/dianzan.png">
+                            <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png" style="display: none;">
+                            <span>${dz}</span>
+                        </span>
+                    `
+                } else {
+                    iszan = 1
+                    dz = item.zan
+                    zanHtml = ` <span class="zhuanfa dianzan hadzan"  zan-status="${iszan}">
+                            <img  class="zan-img" src="/attachment/style/src/img/dianzan.png" style="display: none;">
+                            <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png">
+                            <span>${dz}</span>
+                        </span>
+                    `
+                }
+
+                /**
+                 * @1 分享文字
+                 * @2 分享文字+图片
+                 * @3 分享文字+视频
+                 * @4 分享文字+链接
+                 */
+                var isText = item.info1
+                var isPic = item.images
+                var isVideo = item.video
+                var isLink = item.link_title
+                if (isPic && !isVideo && !isLink) {
+                    // @2
+                    var picArr = ''
+                    isPic.forEach(element => {
+                        picArr += `
+                        <img class="img-item"src="${element}">
+                    `
+                    });
+                    var itemHtml = `
+                        <div class="other-content">
+                            ${picArr}
+                        </div>
+                     `
+                }
+                if (isVideo) {
+                    // @3
+                    // 生成6位随机id
+                    console.log(5566)
+                    var newId = root.getRanNum()
+                    var itemHtml = `
+                        <div class="video-bx" style="background-image:url(/attachment/style/src/img/jiazaishibai.png)"  data-status="empty" >
+                            <div class="prism-player" id="${newId}"  data-src="${isVideo}" data-fengmian= "${item.fengmian}"  data-id="${newId}"></div>
+                        </div>
+                        `
+                    // 新获取的video
+                    // if (item.videos) {
+                    //     item.videos.id = newId
+                    //     newVideoArr.push(item.videos)
+                    //     console.log(newVideoArr)
+                    // } else {
+
+                    // }
+
+                    var videos = {}
+                    videos.fengmian = item.fengmian
+                    videos.src = item.video
+                    videos.id = newId
+                    newVideoArr.push(videos)
+
+                } else if (!isPic && !isVideo && isLink) {
+                    // @4
+                    var itemHtml = `
+                    <div class="other-link" data-href="${item.link_title}">
+                        <div class="link-bx">
+                            <div class="img-bx"><img src="/attachment/style/src//img/linkcover.png"></div>
+                            <div class="link-det">
+                                <dt class="two-ellipsis">${item.link_title}</dt>
+                            </div>
+                        </div>
+                    </div> 
+                `
+                } else {
+                    var itemHtml = ''
+                }
+
+                html = `
+                <li class="listshow-item" uid="${item.uid}" id="${item.id}" islink="${item.islink}" iszhiding="${item.zdstate}">
+                    <div class="item-bx">
+                        ${newHtml}
+                    <div class="user-info">
+                        <a class="user-det-left" href="${userlink}">
+                            <img src="${item.avatar}" class="touxiang-img">
+                            <div class="my-user-det">
+                                <div class="user-top">
+                                    ${adminHtml}
+                                    ${hotHtml}
+                                </div>
+                                <div class="user-bottom">
+                                    <span class="fatie-time">
+                                        ${item.time}
+                                    </span>
+                                    <div class="tag-bx">
+                                        <span class="tag-item">
+                                            <img src="/attachment/style/src/img/xiaokache.png">
+                                            <span>
+                                                ${item.fenlei}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <img  src="/attachment/style/src/img/xiala.png" class="xiala-img xiala" isadmin="${item.isadminer}" isself="${item.is_myself}">
+                    </div>
+                    <a class="conten-detail" href="${tiezilink}">
+                        <dd>
+                            <span class="main-content three-ellipsis">
+                                ${zhidingHtml}
+                                ${item.title}
+                            </span>
+                        </dd>
+                          ${itemHtml}
+                    </a>
+                    <div class="other-info-bx">
+                        <div class="other-item">
+                            ${locHtml}
+                            <div class="checked-num">${item.looks}次浏览</div>
+                        </div>
+                    </div>
+                    <div class="bar-control mob_1px_t"  shou-status="${isshou}">
+                        ${shouHtml}  ${zhuanHtml}   ${zanHtml}
+                    </div>
+                    </div>
+                </li>
+                `
+                $(obj.elem).prepend(html)
+                // 实例 视频
+                if (newVideoArr) {
+                    console.log(newVideoArr)
+                    root.newVideos(newVideoArr)
+                }
+
+                // 管理员下拉
+                // root.showAdmin()
+
+                // 调试模式 直接再编辑 帖子
+                $('.xiala').off().on('click', function () {
+                    // 获取到帖子的id
+                    var thread_id = $(this).parents('li').attr('id')
+                    // 弹出再编辑
+                    $('#newListShow').hide()
+                    $('.my-nav-bx').hide()
+                    $('#newFatie').show('fast')
+                    // 进入重新编辑发帖模式
+                    root.reeditor = {}
+                    root.reeditor.thread_id = thread_id
+                    root.reeditor.islink = 'true'
+                    // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                })
+                // 调用收藏 点赞 转发事件
+                root.mainPageEvent()
+            });
+
         }
+        root.getTzInfoRq = getTzInfoRq
 
         // 获取地址栏参数
         function getQueryString(name) {
@@ -898,18 +1323,6 @@
      * delegate.js
      */
     (function ($, root) {
-        // 首页 进入发帖弹窗
-        function intoFatie(obj) {
-            $('#dragCircle').click(function () {
-                if (obj.type == 'newindex') {
-                    $('#newListShow').hide()
-                    $('.my-nav-bx').hide()
-                    $('#newFatie').show('fast')
-                    // root.newfatieEvent()
-                }
-            })
-        }
-        root.intoFatie = intoFatie
         root.intoFatie({
             type: 'newindex'
         })
@@ -1429,6 +1842,34 @@
                         }
                         return false;
                     }
+
+                    // 点赞帖子操作
+                    if (obj.source == 'dianzan') {
+                        console.log(JSON.stringify(res))
+                        var self = obj.elem
+                        if (res.code == '1') { // 点赞成功
+                            layer.msg('成功点赞')
+                            self.attr('zan-status', 1) // 改为已经点赞
+                            self.find('.zan-img').hide() // 切换图标
+                            self.find('.zan-hou-img').show()
+                            if (self.find('span').text() == '赞') { // 数量增加方式判断
+                                self.find('span').text('1')
+                            } else {
+                                self.find('span').text() = Number(zantext) + 1
+                                self.find('span').text(zantext)
+                            }
+                            self.addClass('hadzan') // 字体颜色切换蓝色
+                        } else {
+                            layer.msg('点赞失败')
+                        }
+                        return false;
+                    }
+
+                    // 收藏帖子操作
+                    if (obj.source == 'shoucang') {
+                        var self = obj.elem
+                        console.log(res)
+                    }
                 },
 
 
@@ -1482,6 +1923,312 @@
             }, 1000);
         }
         root.navToLive = navToLive
+
+        // 获取审核页面所有需要审核的帖子
+        function getallShTz(url, obj) {
+            $.post(url, obj.data, function (res) {
+                var res = JSON.parse(res)
+                //  data 是数组
+                var data = res.data
+
+                // console.log(data)
+                // return false
+                var html = ''
+                var newVideoArr = [] // 存储新的video内容
+                data.forEach(function (item) {
+                    var shoucang = "收藏" // 收藏文本 
+                    var isshou = 0 // 收藏状态 布尔型 true false
+                    var shouHtml
+                    var zhuanfa = "转发" // 转发文本
+                    var zhuanHtml
+                    var pinglun = "评论" // 评论文本
+                    var pingHtml
+                    var dz = "赞" // 点赞文本
+                    var iszan = 0 // 点赞状态 布尔型 true false
+                    var zanHtml
+                    var zhidingHtml // 置顶状态 string 0 1
+                    var newHtml // 新消息 string true false
+                    var hotHtml // 热门 string true false
+                    var isadmin // 管理员 布尔型 true false
+                    var adminHtml
+                    var isself // 是否当前用户的帖子 string true false
+                    var locHtml // 定位
+                    /** 循环帖子列表数组 */
+                    var userlink = './index.php?i=2&c=entry&action=other&do=Index&m=wyt_luntan&uid=' + item.uid // 用户个人中心链接地址 // 个人中心连接拼接 个人uid
+                    var tiezilink = './index.php?i=2&c=entry&action=info&do=Index&m=wyt_luntan&id=' + item.id // 帖子地址链接 拼接帖子id
+                    // 定位
+                    if (item.address) {
+                        locHtml = `
+                    <span class="loc-bx">
+                        <span class="loc-img">
+                            <img src="/attachment/style/src//img/location.png">
+                        </span>
+                        <span class="loc-text">${item.address}</span>        
+                    </span>
+                    `
+                    } else {
+                        locHtml = `
+                    `
+                    }
+
+                    // 新消息
+                    if (item.is_new == 'true') { // 是新消息
+                        newHtml = `
+                    <img src="/attachment/style/src//img/quanxinde.png" class="newtag">
+                    `
+                    } else {
+                        newHtml = ''
+                    }
+                    // 热门
+                    if (item.is_hot == 'true') { // 是热门
+                        hotHtml = `
+                    <img src="/attachment/style/src/img/remende.png" class="hot-tag">
+                    `
+                    } else {
+                        hotHtml = ''
+                    }
+                    // 管理员
+                    if (item.is_admin) { // 是管理员
+                        adminHtml = `
+                        <span class="user-name isadmin">${item.nickname}[管理员]</span>
+                        <img src="/attachment/style/src/img/guanliyuan.png" class="admin">
+                    `
+                    } else {
+                        adminHtml = `
+                        <span class="user-name ">${item.nickname}</span>
+                    `
+
+                    }
+                    // 是否是自己的帖子
+                    if (item.is_myself == 'true') { // 是自己的帖子
+                    }
+                    isself = item.is_myself
+                    // 置顶
+                    if (item.zdstate != '0') { // 已经置顶
+                        zhidingHtml = `
+                        <span class="zhiding-img">
+                            <img src="/attachment/style/src//img/zhiding1.png">
+                            <img src="/attachment/style/src//img/zhiding2.png">
+                        </span>
+                    `
+                    } else {
+                        zhidingHtml = ''
+                    }
+
+                    // 收藏
+                    if (!item.collection) {
+                        shoucang = '收藏'
+                        shouHtml = `
+                        <span class="zhuanfa shoucang" shou-status= ${isshou}>
+                            <img class="shou-img" src="/attachment/style/src/img/shoucang1.png">
+                            <img class="shou-hou-img" src="/attachment/style/src/img/shoucang2.png"  style="display:none;">
+                            <span>${shoucang}</span>
+                        </span>
+                    `
+                    } else {
+                        shoucang = '已收藏'
+                        shouHtml = `
+                        <span class="zhuanfa shoucang" shou-status= ${isshou}>
+                            <img class="shou-img" src="/attachment/style/src/img/shoucang1.png" style="display:none;">
+                            <img class="shou-hou-img" src="/attachment/style/src/img/shoucang2.png">
+                            <span>${shoucang}</span>
+                        </span>
+                    `
+                    }
+                    // 转发
+                    if (item.share != '0') { // 有转发
+                        zhuanfa = item.share
+                    } else {
+                        zhuanfa = '转发'
+                    }
+                    zhuanHtml = `
+                    <span class="zhuanfa">
+                        <img src="/attachment/style/src/img/zhuanfa.png">
+                        <span>${zhuanfa}</span>
+                    </span>
+                `
+
+                    // 评论
+                    if (item.pl != 0) { // 有评论
+                        pinglun = item.pl
+                    } else {
+                        pinglun = '评论'
+                    }
+                    pingHtml = `
+                    <span class="zhuanfa">
+                        <a href="${tiezilink}">
+                            <img src="/attachment/style/src/img/pinlgun.png">
+                            <span>${pinglun}</span>
+                        </a>
+                    </span>
+                `
+                    // 点赞
+                    if (!item.dianzan) { // 用户未点赞
+                        iszan = 0
+                        dz = '赞'
+                        zanHtml = ` <span class="zhuanfa dianzan"  zan-status="${iszan}">
+                                <img  class="zan-img" src="/attachment/style/src/img/dianzan.png">
+                                <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png" style="display: none;">
+                                <span>${dz}</span>
+                            </span>
+                        `
+                    } else {
+                        iszan = 1
+                        dz = item.zan
+                        zanHtml = ` <span class="zhuanfa dianzan hadzan"  zan-status="${iszan}">
+                                <img  class="zan-img" src="/attachment/style/src/img/dianzan.png" style="display: none;">
+                                <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png">
+                                <span>${dz}</span>
+                            </span>
+                        `
+                    }
+
+                    /**
+                     * @1 分享文字
+                     * @2 分享文字+图片
+                     * @3 分享文字+视频
+                     * @4 分享文字+链接
+                     */
+                    var isText = item.info1
+                    var isPic = item.images
+                        isPic = ''
+                    var isVideo = item.video
+                    var isLink = item.link_title
+                    if (isPic && !isVideo && !isLink) {
+                        // @2
+                        var picArr = ''
+                        isPic.forEach(element => {
+                            picArr += `
+                            <img class="img-item"src="${element}">
+                        `
+                        });
+                        var itemHtml = `
+                            <div class="other-content">
+                                ${picArr}
+                            </div>
+                         `
+                    }
+                    if (isVideo) {
+                        // @3
+                        // 生成6位随机id
+                        console.log(5566)
+                        var newId = root.getRanNum()
+                        var itemHtml = `
+                            <div class="video-bx" style="background-image:url(/attachment/style/src/img/jiazaishibai.png)"  data-status="empty" >
+                                <div class="prism-player" id="${newId}"  data-src="${isVideo}" data-fengmian= "${item.fengmian}"  data-id="${newId}"></div>
+                            </div>
+                            `
+                        // 新获取的video
+                        // if (item.videos) {
+                        //     item.videos.id = newId
+                        //     newVideoArr.push(item.videos)
+                        //     console.log(newVideoArr)
+                        // } else {
+
+                        // }
+
+                        var videos = {}
+                        videos.fengmian = item.fengmian
+                        videos.src = item.video
+                        videos.id = newId
+                        newVideoArr.push(videos)
+
+                    } else if (!isPic && !isVideo && isLink) {
+                        // @4
+                        var itemHtml = `
+                        <div class="other-link" data-href="${item.link_title}">
+                            <div class="link-bx">
+                                <div class="img-bx"><img src="/attachment/style/src//img/linkcover.png"></div>
+                                <div class="link-det">
+                                    <dt class="two-ellipsis">${item.link_title}</dt>
+                                </div>
+                            </div>
+                        </div> 
+                    `
+                    } else {
+                        var itemHtml = ''
+                    }
+                    html += `
+                    <li class="listshow-item" uid="${item.uid}" id="${item.id}" islink="${item.islink}" iszhiding="${item.zdstate}">
+                        <div class="item-bx">
+                            ${newHtml}
+                        <div class="user-info">
+                            <a class="user-det-left" href="${userlink}">
+                                <img src="${item.avatar}" class="touxiang-img">
+                                <div class="my-user-det">
+                                    <div class="user-top">
+                                        ${adminHtml}
+                                        ${hotHtml}
+                                    </div>
+                                    <div class="user-bottom">
+                                        <span class="fatie-time">
+                                            ${item.time}
+                                        </span>
+                                        <div class="tag-bx">
+                                            <span class="tag-item">
+                                                <img src="/attachment/style/src/img/xiaokache.png">
+                                                <span>
+                                                    ${item.fenlei}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <img  src="/attachment/style/src/img/xiala.png" class="xiala-img xiala" isadmin="${item.isadminer}" isself="${item.is_myself}">
+                        </div>
+                        <a class="conten-detail" href="${tiezilink}">
+                            <dd>
+                                <span class="main-content three-ellipsis">
+                                    ${zhidingHtml}
+                                    ${item.title}
+                                </span>
+                            </dd>
+                              ${itemHtml}
+                        </a>
+                        <div class="other-info-bx">
+                            <div class="other-item">
+                                ${locHtml}
+                                <div class="checked-num">${item.looks}次浏览</div>
+                            </div>
+                        </div>
+                        <div class="bar-control mob_1px_t"  shou-status="${isshou}">
+                            ${shouHtml}  ${zhuanHtml}   ${zanHtml}
+                        </div>
+                        </div>
+                    </li>
+                    `
+                })
+
+                $(obj.elem).prepend(html)
+                // 实例 视频
+                if (newVideoArr) {
+                    console.log(newVideoArr)
+                    root.newVideos(newVideoArr)
+                }
+
+                // 管理员下拉
+                // root.showAdmin()
+
+                // 调试模式 直接再编辑 帖子
+                $('.xiala').off().on('click', function () {
+                    // 获取到帖子的id
+                    var thread_id = $(this).parents('li').attr('id')
+                    // 弹出再编辑
+                    $('#newListShow').hide()
+                    $('.my-nav-bx').hide()
+                    $('#newFatie').show('fast')
+                    // 进入重新编辑发帖模式
+                    root.reeditor = {}
+                    root.reeditor.thread_id = thread_id
+                    root.reeditor.islink = 'true'
+                    // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                })
+                // 调用收藏 点赞 转发事件
+                root.mainPageEvent()
+            });
+        }
+        root.getallShTz = getallShTz
 
     }(window.$, window.myLib || (window.myLib = {})));
     /****************************************************************************** */
@@ -1693,6 +2440,8 @@
                     source: 'refuseFriend'
                 })
             })
+
+
         } else if (document.getElementById('userCenter')) {
             // 添加好友
             root.addFriendCenter()
@@ -1791,14 +2540,13 @@
                     })
 
                     // 判断是否是再编辑的帖子
-                    if (root.getQueryString('thread_id')) {
+                    if (root.reeditor) {
                         // 是否是编辑外链
-                        if (root.getQueryString('isLink') == '1') {
+                        if (root.reeditor.islink == true) {
                             $('.main-form').hide()
                             $('.link-bx').show().off()
                             // 外链取消按钮
                             $('.link-bx .cancelBtn').click(function () {
-
                                 return false
                             })
 
@@ -1822,7 +2570,7 @@
                             })
                         }
 
-                        var thread_id = root.getQueryString('thread_id')
+                        var thread_id = root.reeditor.thread_id
                         root.postSubmit({
                             url: baseUrl + urlObj.reEditorGet,
                             data: {
@@ -2229,7 +2977,11 @@
                                 })
                                 break;
                             case '再编辑':
-                                window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
+                                // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
+
+                                root.intoFatie({
+                                    type: 'newindex'
+                                })
                                 break;
                         }
                     }
@@ -2292,9 +3044,21 @@
             //         }
             //     }
             // });
-        } else if (document.getElementById('tieziInfo')) {
+        }
+
+        // 新 帖子详情
+        if (document.getElementById('guide')) {
             // 获取帖子id
             var tid = root.getQueryString('id')
+            var thread_id = tid
+            // 获取帖子详情
+            var tzinfoUrl = baseUrl + urlObj.tieziInfo
+            root.getTzInfoRq(tzinfoUrl, {
+                elem: "#tieziInfo",
+                data: {
+                    thread_id: thread_id
+                }
+            })
 
             // 相册传图片
             $('#upImg').click(function () {
@@ -2343,9 +3107,10 @@
                 }
             })
             // 帖子id
-            // var tzId = $('#tieziInfo').attr('uid')
+            // var tzId = $('#tieziInfo li').attr('id')
             // 打开消息弹窗 回复帖子
             $('#hfBtn').off().click(function () {
+                console.log(344)
                 $('#newHfBx').show()
                 // 修改弹窗mask高度 样式控制
                 // $('.hf-mask').removeClass('upImg').removeClass('hfhf')
@@ -2354,6 +3119,7 @@
                 $('#newHfBx .new-huifu').slideToggle('fast')
                 root.submitMsgTz({
                     type: 1,
+                    tid: tid,
                     url: baseUrl + urlObj.hfTzSend
                 })
             })
@@ -2372,6 +3138,7 @@
                 data.pid = $(this).attr('pid')
                 root.submitMsgTz({
                     type: 2,
+                    tid: tzId,
                     url: baseUrl + urlObj.hfHfSend,
                     data: data
                 })
@@ -2395,6 +3162,7 @@
                 data.hid = $(this).attr('hid')
                 root.submitMsgTz({
                     type: 3,
+                    tid: tzId,
                     url: baseUrl + urlObj.hfzhfSend,
                     data: data
                 })
@@ -2413,50 +3181,6 @@
                 e.preventDefault()
                 return false;
             })
-            // 提交回复
-            /**
-             * @param {type} obj 回复类型 1回复帖子2回复评论3回复子评论
-             * @param {url} obj 三个地址
-             */
-            function submitMsgTz(obj) {
-                var type = obj.type
-                var url = obj.url
-                var newData = obj.data
-                layui.use('form', function () {
-                    var form = layui.form;
-                    //各种基于事件的操作，下面会有进一步介绍
-                    form.on('submit(formHfBtn)', function (data) {
-                        var hfData = {}
-                        hfData = data.field
-                        // 帖子id
-                        hfData.tid = tid
-                        if (type != 1) {
-                            // 回复评论获取的参数 
-                            hfData = Object.assign(newData, hfData)
-                        }
-                        // 空
-                        if (!hfData.info && !hfData.images) {
-                            layer.msg('请填写回复内容')
-                            return false
-                        }
-                        // 只有图片
-                        if (!hfData.info && hfData.images) {
-                            hfData.info = '图片回复'
-                        }
-                        console.log(JSON.stringify(hfData))
-                        root.postSubmit({
-                            url: url,
-                            data: hfData,
-                            source: 'hfTzSend',
-                        })
-
-                        return false
-                    });
-                });
-            }
-
-            root.submitMsgTz = submitMsgTz
-
         }
 
         // 直播页面
@@ -2475,36 +3199,35 @@
                 }
             })
             // 直播聊天和节目列表切换
-            function plusReady() {
-                // root.radioWait = plus.nativeUI.showWaiting("加载中...");
-                var src = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
-                if (!root.radioPlayer) {
-                    root.radioPlayer = new plus.video.VideoPlayer('myVideo', {
-                        src: src,
-                    });
-                }
-                // 播放
-                $('.play-img').off().click(function () {
-                    $(this).hide()
-                    $('.pause-img').show()
-                    root.radioPlayer.play()
-                })
-                // 暂停
-                $('.pause-img').off().click(function () {
-                    $(this).hide()
-                    $('.play-img').show()
-                    root.radioPlayer.pause()
-                })
-
-                // setInterval(() => {
-                //     root.radioWait.close()
-                // }, 500);
-                $('.my-nav').click(function () {
-                    root.radioPlayer.stop()
-                })
-
+            // function plusReady() {
+            // root.radioWait = plus.nativeUI.showWaiting("加载中...");
+            var src = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
+            if (!root.radioPlayer) {
+                root.radioPlayer = new plus.video.VideoPlayer('myVideo', {
+                    src: src,
+                });
             }
-            document.addEventListener('plusready', plusReady, false);
+            // 播放
+            $('.play-img').off().click(function () {
+                $(this).hide()
+                $('.pause-img').show()
+                root.radioPlayer.play()
+            })
+            // 暂停
+            $('.pause-img').off().click(function () {
+                $(this).hide()
+                $('.play-img').show()
+                root.radioPlayer.pause()
+            })
+
+            // setInterval(() => {
+            //     root.radioWait.close()
+            // }, 500);
+            $('.my-nav').click(function () {
+                root.radioPlayer.stop()
+            })
+            // }
+            // document.addEventListener('plusready', plusReady, false);
             // 聊天获取，滚动加载
             setTimeout(() => {
                 // 滚动到最底部
@@ -2764,6 +3487,28 @@
                     })
                 })
 
+            } else if (document.getElementsByClassName(' my-newcollection')[0]) {
+                root.showListFlow(mainurl, {
+                    elem: "#tieziList",
+                    fenlei: '',
+                    load_style: 'collection',
+                    sou: ''
+                })
+
+                // 分类切换
+                $('.tag-bx .tag-item').click(function () {
+                    $('.tag-bx .active').removeClass('active')
+                    $(this).addClass('active')
+                    var textCon = $.trim($(this).text()) // 获取标签
+                    if (textCon == "全 部") {
+                        textCon = ''
+                    }
+                    root.showListFlow(mainurl, {
+                        elem: "#tieziList",
+                        fenlei: textCon,
+                        load_style: 'part',
+                    })
+                })
             } else { // 首页帖子列表分页加载
                 root.showListFlow(mainurl, {
                     elem: "#tieziList",
@@ -2806,6 +3551,15 @@
                     }, 1500);
                     return false
                 })
+            })
+        }
+
+        // 新 审核帖子 
+        if (document.getElementById('newshlist')) {
+            // 获取审核列表
+            var shlistUrl = baseUrl + urlObj.shenheTz
+            root.getallShTz(shlistUrl, {
+                elem: '#tieziList' // 插槽
             })
         }
 

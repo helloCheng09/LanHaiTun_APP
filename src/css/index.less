@@ -1,5 +1,4 @@
 @import './StyleDepend/mReset.css';
-@import './common.css';
 
 // 直播列表
 #zhiboWrap {
@@ -1065,11 +1064,12 @@
         background-size: cover;
         background-position: center;
         background-color: #eee;
+
         .prism-player {
             width: 100%;
             height: 190px;
-           
-            
+
+
         }
     }
 
@@ -1112,9 +1112,16 @@
     height: auto;
     z-index: 999999;
     background-color: #fff;
+
+    .layui-form-radio {
+        padding: 0;
+        margin: 0 4px 4px 0;
+    }
+
     .layui-form {
         .layui-form-item {
             margin-bottom: 0;
+
             .cancle-btn {
                 background-color: #ef4242 !important;
             }
@@ -1419,6 +1426,7 @@
         .cancelBtn {
             background-color: #ef4242;
         }
+
         .fenlei-tag {
             padding: 0 10px;
         }
@@ -1640,440 +1648,42 @@
 
 // 新版帖子列表
 
-#newListShow {
+#newListShow,
+#newshlist {
     min-height: 100vh;
     padding-bottom: 48px;
     background-color: #f0f0f1;
-
-    .search-bx {
-        padding: 2.6%;
-
-        .search-con {
-            display: flex;
-            align-items: center;
-            padding: 1.6% 4%;
-            border-radius: 20px;
-            background-color: #fff;
-        }
-
-        img {
-            width: 14px;
-            height: 14px;
-            margin-right: 6px;
-            margin-top:2px;
-        }
-
-        .search-item {
-            flex: 1;
-
-            input {
-                width: 100%;
-                border: none;
-                outline: none;
-                -webkit-appearance: none;
-                color: #707070;
-            }
-        }
-
-    }
-
-    .swiper-bx {
-
-        .swiper-container {
-            height: 120px;
-        }
-
-        .swiper-slide {
-            width: 100vw;
-            height: 100%;
-
-            img {
-                width: 100%;
-                height: auto;
-                object-fit: cover;
-            }
-        }
-
-        .swiper-pagination-bullet {
-            width: 8px;
-            height: 8px;
-            text-align: center;
-            line-height: 4px;
-            font-size: 12px;
-            color: #fff;
-            opacity: 1;
-            background-color: rgba(0, 0, 0, 0.2);
-        }
-
-        .swiper-pagination-bullet-active {
-            color: #fff;
-            background: #007aff;
-        }
-    }
-
-    .head-title {
-        margin-bottom: 4px;
-        background-color: #fff;
-    }
-
-    .layui-flow-more a i {
-        color: #0075bf !important;
-    }
-
-    .fenlei-tags {
-        padding: 2.6% 2.6% 1%;
-        margin-bottom: 4px;
-        background-color: #fff;
-
-        .tag-bx {
-            margin-right: 6px;
-        }
-
-        .tag-item {
-            display: inline-block;
-            padding: 4px 8px;
-            margin-right: 6px;
-            margin-bottom: 6px;
-            border-radius: 2px;
-            background-color: #a1dbff;
-
-            img {
-                width: 20px;
-                height: 20px;
-                vertical-align: middle;
-            }
-
-            span {
-                font-size: 14px;
-                color: #fff;
-            }
-        }
-
-        .active {
-            background-color: #0075bf;
-        }
-    }
-
-    .prism-player {}
-
-    .prism-player .prism-cover {
-        background-size: cover;
-        background-position: center;
-    }
-
-    .prism-player .prism-big-play-btn {
-        left: 50% !important;
-        bottom: 50% !important;
-        transform: translateX(-50%) !important;
-        margin-bottom: -32px;
-    }
-
-    .list-bx {
-        .layui-flow-more {
-            margin: 0;
-            padding: 10px 0;
-            margin-bottom: 4px;
-            background-color: #fff;
-        }
-
-        .layui-flow-more a cite {
-            background-color: #fff;
-        }
-
-        .listshow-item {
-            padding-bottom: 5px;
-            position: relative;
-
-            .item-bx {
-                position: relative;
-                background-color: #fff;
-            }
-
-            .newtag {
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 99;
-                width: 30px;
-                height: 30px;
-            }
-
-            .user-info {
-                display: inline-block;
-                width: 100%;
-                padding: 2.6% 4% 1%;
-                display: flex;
-                justify-content: space-between;
-
-                .user-det-left {
-                    display: flex;
-                    align-items: center;
-                }
-
-                .touxiang-img {
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 100%;
-                    margin-right: 10px;
-                    object-fit: cover;
-                }
-
-                .my-user-det {
-                    .user-top {
-                        margin-bottom: 2px;
-                        .user-name {
-                            vertical-align: middle;
-                            margin-right: 4px;
-                            font-weight: normal;
-                        }
-
-                        .isadmin {
-                            font-weight: bold;
-                            color: #6ec7ff;
-                        }
-
-                        .admin {
-                            width: 20px;
-                            height: 20px;
-                            vertical-align: middle;
-                        }
-
-                        .hot-tag {
-                            width: 44px;
-                            height: auto;
-                            vertical-align: middle;
-                        }
-                    }
-
-                    .user-bottom {
-                        height: 24px;
-                        display: flex;
-                        align-items: center;
-
-                        .fatie-time {
-                            font-size: 14px;
-                            margin-right: 10px;
-                            // color: #ffd100;
-                            color: #808080;
-                        }
-
-
-                        .tag-bx {
-                            margin-right: 6px;
-                        }
-
-                        .tag-item {
-                            display: inline-block;
-                            padding: 0 6px;
-                            border-radius: 2px;
-                            background-color: #0075bf;
-
-                            img {
-                                width: 20px;
-                                height: 20px;
-                                vertical-align: middle;
-                            }
-
-                            span {
-                                font-size: 14px;
-                                color: #fff;
-                            }
-                        }
-                    }
-                }
-
-                .xiala-img {
-                    width: 24px;
-                    height: 24px;
-                }
-
-            }
-
-            .conten-detail {
-                display: inline-block;
-                width: 100%;
-                padding: 0 2.6%;
-                margin-bottom: 4px;
-
-                dd {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 4px;
-                    vertical-align: middle;
-
-                    .zhiding-img {
-                        font-size: 0;
-                        margin-right: 4px;
-                        display: inline-block;
-                        height: 16px;
-                        vertical-align: sub;
-
-                        img:first-child {
-                            width: 18px;
-                            height: 18px;
-                            margin-right: 2px;
-                        }
-
-                        img:last-child {
-                            width: 35px;
-                            height: auto;
-                        }
-                    }
-
-                    .main-content {
-                        line-height: 1.4em;
-                    }
-                }
-
-                .other-content {
-                    display: flex;
-                    flex-wrap: wrap;
-                    margin-bottom: 4px;
-                    position: relative;
-
-                    .img-item {
-                        width: 31.3vw;
-                        height: 31.3vw;
-                        padding-bottom: 100%;
-                        padding: 0.6%;
-                        object-fit: cover;
-                    }
-                }
-            }
-
-            .video-bx {
-                width: calc(~"100vw - 5.2vw");
-                background-position: center;
-                background-size: 50px auto;
-                background-repeat: no-repeat;
-                background-color: #eee;
-
-                .prism-player {
-                    width: 100%;
-                    height: 190px;
-                }
-            }
-
-            .other-link {
-                display: inline-block;
-                width: 100%;
-                margin-bottom: 4px;
-
-                .link-bx {
-                    display: flex;
-                    padding: 1.6% 2.6%;
-                    align-items: center;
-                    background-color: #f0f0f1;
-                }
-
-                .img-bx {
-
-                    margin-right: 6px;
-                }
-
-                img {
-                    width: 46px;
-                    height: 46px;
-                }
-
-                .link-det {
-                    dt {
-                        line-height: 1.2em;
-                        font-size: 14px;
-                    }
-                }
-                
-
-            }
-
-            .other-info-bx {
-                padding: 0 2.6%;
-                margin-bottom: 4px;
-
-                .other-item {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-bottom: 8px;
-
-                    .loc-bx {
-                        padding: 2px 6px;
-                        border-radius: 2px;
-                        background-color: #eee;
-                    }
-
-                    .loc-img {
-                        display: inline-block;
-                    }
-
-                    img {
-                        width: 24px;
-                        height: 24px;
-                        vertical-align: middle;
-                    }
-
-                    .loc-text {
-                        font-size: 12px;
-                    }
-                }
-
-                .checked-num {
-                    font-size: 12px;
-                    color: #808080;
-                }
-
-
-            }
-
-            .bar-control::before {
-                content: '';
-                border-color: #b0b0b0;
-            }
-
-            .bar-control {
-                margin: 0 2.6%;
-                // padding: 10px 0;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                .zhuanfa:first-child {
-                    img {
-                        width: 20px;
-                    }
-                }
-                .zhuanfa {
-                    display: inline-block;
-                    height: 40px;
-                    line-height: 40px;
-                    flex: 1;
-                    text-align: center;
-                    cursor: pointer;
-
-                    img {
-                        width: 20px;
-                        height: auto;
-                        vertical-align: text-bottom;
-                    }
-
-                    span {
-                        display: inline-block;
-                        min-width: 20px;
-                        font-size: 14px;
-                        color: #808080;
-                    }
-                }
-            }
-        }
-    }
 }
 
 // 我的帖子
-.my-newindex,.my-newpartake {
+.my-newindex,
+.my-newpartake {
     #refresh {
         bottom: 10px;
     }
+
     #goTop {
         bottom: 60px;
     }
+}
+
+// 帖子详情 评论 
+.pl-pn {
+    background-color: #fff;
+}
+
+.footer {
+    border-top: 0.5px solid #ddd;
+}
+
+.footer .huifu-btn {
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    margin-top: 5px;
+    border-radius: 4px;
+}
+
+.weui-cell__bd p {
+    margin-top: 4px;
 }
