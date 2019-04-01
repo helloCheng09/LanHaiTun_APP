@@ -5,6 +5,9 @@
     .chat-bx {
         height: calc(~"100vh - 321px") !important;
     }
+    .video-bx {
+        background-color: transparent!important;
+    }
 }
 
 #showList {
@@ -233,9 +236,8 @@
             margin: 0 10px;
             padding: 8px 0px;
             border-bottom: 1px solid #edeeee;
-
+            display: flex;
             a {
-                display: flex;
                 width: calc(~"100vw - 20px");
             }
         }
@@ -286,6 +288,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 5px 0px;
+            text-align: center;
 
             .add-btn {
                 display: inline-block;
@@ -344,7 +347,7 @@
             }
 
             .top-time {
-                margin-top: 10px;
+                margin-top: 5px;
                 font-size: 12px;
             }
 
@@ -363,6 +366,14 @@
         .btn {
             justify-content: center;
             cursor: pointer;
+        }
+        .btn-del {
+            line-height: 1.8em;
+            padding: 0 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #f50;
         }
     }
 
@@ -408,7 +419,6 @@
         display: inline-block;
         width: 100%;
         box-sizing: content-box;
-
         h1 {
             width: 170px;
             height: 170px;
@@ -560,7 +570,6 @@
     background-position: 50%;
     background-repeat: no-repeat;
     color: #fff;
-
     .login-head {
         padding-bottom: 30px;
     }
@@ -1669,7 +1678,17 @@
 
 // 帖子详情 评论 
 .pl-pn {
-    background-color: #fff;
+    padding-bottom: 50px;
+    margin-bottom: 5px;
+    .tz-hf-item {
+        background-color: #fff;
+    }
+    ul li {
+        img{
+            vertical-align: middle;
+        }
+    }
+
 }
 
 .footer {

@@ -463,3 +463,25 @@ body {
 .list-bx .listshow-item .bar-control .hadzan span {
   color: #22aaff;
 }
+.list-bx .listshow-item .admin-control {
+  justify-content: space-around;
+}
+.list-bx .listshow-item .admin-control span {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+.list-bx .listshow-item .admin-control .admin-refuse,
+.list-bx .listshow-item .admin-control .admin-pass {
+  padding: 0 40px;
+  background-color: #f50;
+  color: #fff;
+}
+.list-bx .listshow-item .admin-control .admin-pass {
+  background-color: #6ec7ff;
+}
+img {
+  object-fit: cover;
+}

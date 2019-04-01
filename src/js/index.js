@@ -1,6 +1,17 @@
-// document.addEventListener("plusready", onPlusReady, false);
-// function onPlusReady() {
-// 扩展API加载完毕，现在可以正常调用扩展API
+/**
+ * 目录：
+ * root.showListFlow @{首页列表渲染， 我的帖子， 我按参与的， 我收藏的} 循环分页。局部分类搜索功能。
+ * load_style加载类型
+    index首页
+    mine我的帖子
+    part我参与的
+    collection收藏
+ * root.getTzInfoRq @{获取帖子详情信息 详情页} 无分页 无循环
+ * root.delFriend 删除好友
+ * root.mainPageEvent 列表渲染后的 点赞 收藏 转发事件绑定
+ * 
+ */
+
 (function () {
     /**
      * 全局数据
@@ -31,11 +42,12 @@
         hfHfSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=huifu1', // 回复评论接口
         hfzhfSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=huifu3', // 回复评论的评论
         dianzanUrl: 'index.php?i=2&c=entry&action=zan&do=Index&m=wyt_luntan', // 点赞接口 tid 帖子id
-        collecUrl: '/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=collection', // 收藏接口 id 帖子id
+        collecUrl: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=collection', // 收藏接口 id 帖子id
         tieziInfo: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=thread_info', // 获取帖子详情接口thread_id  地址栏中的帖子id
         shenheTz: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=shenghe_list', // 获取要审核的帖子列表接口
-        sheheaction: '/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=shenghe', // 审核帖子接口 帖子id shstate 0通过 2拒绝
-
+        sheheaction: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=shenghe', // 审核帖子接口 帖子id shstate 0通过 2拒绝
+        delFriend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=friend_dele', // 删除好友
+        zhuanfaAdd: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=share', // 转发数量增加
     };
 
     /****************************************************************************** */
@@ -196,6 +208,42 @@
                         //     self.find('span').text(zantext)
                         // }
                     }
+                })
+            })
+
+            // 转发操作
+            $('.zfbtn').each (function () {
+                var self = $(this)
+                var shareUrl = baseUrl +  self.parents('li').find('.conten-detail').attr('href').split('./')[1]
+                var sharText =  self.parents('li').find('.main-content').text()
+
+                console.log(shareUrl, sharText)
+                self.off().click(function () {
+                    // 调用转发接口 传帖子id
+                    var tid = self.parents('li').attr('id')
+                    if(navigator.userAgent.indexOf("Html5Plus") > -1) {  
+                        //5+ 原生分享  
+                        window.plusShare({  
+                            title: "【蓝海豚卡车之家App】",//应用名字  
+                            content: sharText, 
+                            href: shareUrl,//分享出去后，点击跳转地址  
+                            thumbs: ["http://lanhaitun.zanhf.com/attachment/style/src/img/linkcover.png"] //分享缩略图  
+                        }, function(result) {  
+                            //分享回调  
+                            // console.log(result)
+                            root.postSubmit({   
+                                url:baseUrl + urlObj.zhuanfaAdd,
+                                source: 'zhuanfaAdd',
+                                data: {
+                                    id: tid
+                                }
+                            })
+                        });  
+                    } else {  
+                        //原有wap分享实现   
+                    }  
+
+                   
                 })
             })
         }
@@ -598,7 +646,7 @@
                                     zhuanfa = '转发'
                                 }
                                 zhuanHtml = `
-                            <span class="zhuanfa">
+                            <span class="zhuanfa zfbtn">
                                 <img src="/attachment/style/src/img/zhuanfa.png">
                                 <span>${zhuanfa}</span>
                             </span>
@@ -684,7 +732,10 @@
                                     `
                                     // 新获取的video
                                     item.videos.id = newId
-                                    newVideoArr.push(item.videos)
+                                    if (item.videos) { // 有视频情况下push
+                                        newVideoArr.push(item.videos)
+                                    }
+                                    
                                 } else if (!isPic && !isVideo && isLink) {
                                     // @4
                                     var itemHtml = `
@@ -917,7 +968,7 @@
                     zhuanfa = '转发'
                 }
                 zhuanHtml = `
-                <span class="zhuanfa">
+                <span class="zhuanfa zfbtn">
                     <img src="/attachment/style/src/img/zhuanfa.png">
                     <span>${zhuanfa}</span>
                 </span>
@@ -1323,6 +1374,68 @@
      * delegate.js
      */
     (function ($, root) {
+        // 删除好友
+        function delFriend () {
+            $('#delFriend').click(function () {
+                var friendid  = $(this).parents('li').attr('friendid')
+                console.log(friendid)
+
+                var confirmMsg = layer.confirm('是否删除此好友？', {
+                    btn: ['确认', '取消'],
+                    title: '提示',
+                    closeBtn: 0,
+                }, function () {
+                    root.postSubmit ({
+                        url: baseUrl + urlObj.delFriend,
+                        data: {
+                            friendid : friendid
+                        },
+                        source: 'delFriend'
+                    })
+                },function () {
+                    layer.close(confirmMsg)
+                    return false;
+                })
+
+            })
+        }
+        root.delFriend = delFriend
+        // 管理员管理帖子  帖子id shstate 0通过 2拒绝
+        function adminAction() {
+            var data, elem, id
+            $('.admin-refuse').off().click(function () { // 拒绝
+                elem = $(this).parents('li')
+                id = elem.attr('id')
+                data = {
+                    shstate: 2,
+                    id: id
+                }
+                root.postSubmit({
+                    url: baseUrl + urlObj.sheheaction,
+                    data: data,
+                    source: 'sheheaction',
+                    elem: elem
+                })
+            })
+            $('.admin-pass').off().click(function () { // 通过
+                elem = $(this).parents('li')
+                id = elem.attr('id')
+                data = {
+                    shstate: 0,
+                    id: id
+                }
+                root.postSubmit({
+                    url: baseUrl + urlObj.sheheaction,
+                    data: data,
+                    source: 'sheheaction',
+                    elem: elem
+                })
+            })
+
+
+
+        }
+        root.adminAction = adminAction
         root.intoFatie({
             type: 'newindex'
         })
@@ -1797,10 +1910,7 @@
                             root.showCamera('video')
                         }
 
-                    }
-
-                    // 提交修改的帖子
-                    if (obj.source == 'reEditorSub') {
+                    } else if (obj.source == 'reEditorSub') { // 提交修改的帖子
                         // alert(JSON.stringify(res))
                         // console.log(JSON.stringify(res))
                         if (res.code == 1) {
@@ -1809,30 +1919,21 @@
                         } else {
                             layer.msg(res.msg)
                         }
-                    }
-
-                    // 直播 提交图片请求
-                    if (obj.source === 'sentTzChat') {
+                    } else if (obj.source === 'sentTzChat') { // 直播 提交图片请求
                         if (res.msg === '未登录') {
                             // 未登录去登陆
                             layer.msg(res.msg)
                             root.navToLogin()
                         }
                         return false
-                    }
-
-                    // 获取短信验证码
-                    if (obj.source === 'getTelYzm') {
+                    } else if (obj.source === 'getTelYzm') { // 获取短信验证码
                         if (res.code == 1) {
                             // 发送成功
                         } else {
                             // 发送失败
                         }
                         layer.msg(res.msg)
-                    }
-
-                    // 提交帖子回复
-                    if (obj.source === 'hfTzSend') {
+                    } else if (obj.source === 'hfTzSend') { // 提交帖子回复
                         if (res.code == 1) {
                             $('#newHfBx .new-huifu').slideToggle('fast')
                             $('#newHfBx').hide()
@@ -1841,10 +1942,7 @@
                             layer.msg(res.msg)
                         }
                         return false;
-                    }
-
-                    // 点赞帖子操作
-                    if (obj.source == 'dianzan') {
+                    } else if (obj.source == 'dianzan') { // 点赞帖子操作
                         console.log(JSON.stringify(res))
                         var self = obj.elem
                         if (res.code == '1') { // 点赞成功
@@ -1863,13 +1961,39 @@
                             layer.msg('点赞失败')
                         }
                         return false;
-                    }
-
-                    // 收藏帖子操作
-                    if (obj.source == 'shoucang') {
+                    } else if (obj.source == 'shoucang') { // 收藏帖子操作
                         var self = obj.elem
                         console.log(res)
+                    } else if (obj.source == 'sheheaction') { // 管理员审核帖子
+                        console.log(res)
+                        if (res.code == 1) { //成功
+                            if (obj.data.shstate == 0) {
+                                // 通过审核
+                                layer.msg('成功发表')
+                            } else {
+                                // 拒绝
+                                layer.msg('已拒绝')
+                            }
+                            obj.elem.remove()
+                        } else {
+                            layer.msg(res.msg)
+                        }
+
+                    } else if (obj.source == 'delFriend') {
+                        if (res.code == 1) {
+                            layer.msg('删除成功')
+                        } else{
+                            layer.msg(res.msg)
+                        }
+                    } else if (obj.source == 'zhuanfaAdd') { // 转发数量增加
+                        if(res.code == 1) {
+                            // 成功
+                        } else{
+                        }
+                        // layer.msg(res.msg)
+                        return false;
                     }
+
                 },
 
 
@@ -2042,7 +2166,7 @@
                         zhuanfa = '转发'
                     }
                     zhuanHtml = `
-                    <span class="zhuanfa">
+                    <span class="zhuanfa zfbtn">
                         <img src="/attachment/style/src/img/zhuanfa.png">
                         <span>${zhuanfa}</span>
                     </span>
@@ -2091,7 +2215,7 @@
                      */
                     var isText = item.info1
                     var isPic = item.images
-                        isPic = ''
+                    isPic = ''
                     var isVideo = item.video
                     var isLink = item.link_title
                     if (isPic && !isVideo && !isLink) {
@@ -2192,8 +2316,13 @@
                                 <div class="checked-num">${item.looks}次浏览</div>
                             </div>
                         </div>
-                        <div class="bar-control mob_1px_t"  shou-status="${isshou}">
-                            ${shouHtml}  ${zhuanHtml}   ${zanHtml}
+                        <div class="bar-control admin-control mob_1px_t"  shou-status="${isshou}">
+                            <span class="admin-refuse">
+                            拒绝
+                            </span>
+                            <span class="admin-pass">
+                                通过
+                            </span>
                         </div>
                         </div>
                     </li>
@@ -2201,9 +2330,11 @@
                 })
 
                 $(obj.elem).prepend(html)
+
+                // 绑定审核事件
+                root.adminAction()
                 // 实例 视频
                 if (newVideoArr) {
-                    console.log(newVideoArr)
                     root.newVideos(newVideoArr)
                 }
 
@@ -3561,7 +3692,14 @@
             root.getallShTz(shlistUrl, {
                 elem: '#tieziList' // 插槽
             })
+        } else if (document.getElementById('friendList')) { //好友列表 
+            // 删除好友操作
+            root.delFriend()
         }
+
+
+
+        
 
     }(window.$, window.myLib || (window.myLib = {})));
 }())
