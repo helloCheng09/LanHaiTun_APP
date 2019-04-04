@@ -9,6 +9,12 @@
  * root.getTzInfoRq @{获取帖子详情信息 详情页} 无分页 无循环
  * root.delFriend 删除好友
  * root.mainPageEvent 列表渲染后的 点赞 收藏 转发事件绑定
+ * root.newInsertTz 重新编辑帖子后 插入原有帖子数据
+ * root.clearContent 清空发送表单、外链表单、重置按钮
+ * root.reSubmitFn(myData) 发帖和重新编辑后发帖
+ * root.formTijiao 提交表单验证
+ * 
+ * 
  * 
  */
 
@@ -31,18 +37,19 @@
         sendMsg: 'index.php?i=2&c=entry&action=friend_chat&do=Index&m=wyt_luntan', // 发送消息接口
         getMsg: 'index.php?i=2&c=entry&action=refresh_chat&do=Index&m=wyt_luntan', // 获取消息列表
         baseUpImg: 'index.php?i=2&c=entry&do=Getimg&m=wyt_luntan', // base64上传图片接口
-        sendTiezi: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=fabu_tiezi', // 发帖接口
-        reEditorGet: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=thead_edit', // 获取修改的帖子信息
-        reEditorSub: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=thead_edit_post', // 提交重新编辑帖子接口
+        // sendTiezi: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=fabu_tiezi', // 发帖接口
+        // reEditorGet: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=thead_edit', // 获取修改的帖子信息
+        // reEditorSub: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=thead_edit_post', // 提交重新编辑帖子接口
         zhiding: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=thread_zhiding', // 管理员置顶帖子接口
         deletTz: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=delete_thread', // 删除帖子接口
-        sentTzChat: 'index.php?i=2&c=entry&rid=9&do=addcomment&m=wxz_wzb', // 发送直播评论接口
+        // sentTzChat: 'index.php?i=2&c=entry&rid=9&do=addcomment&m=wxz_wzb', // 发送直播评论接口
         getTelYzm: 'index.php?i=2&c=entry&do=sendmsg&m=wyt_luntan', // 获取短信验证码接口
         hfTzSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=pinglun', // 回复帖子接口
         hfHfSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=huifu1', // 回复评论接口
         hfzhfSend: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=huifu3', // 回复评论的评论
         dianzanUrl: 'index.php?i=2&c=entry&action=zan&do=Index&m=wyt_luntan', // 点赞接口 tid 帖子id
         collecUrl: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=collection', // 收藏接口 id 帖子id
+        cancleSc: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=quxiao', // 取消收藏
         tieziInfo: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=thread_info', // 获取帖子详情接口thread_id  地址栏中的帖子id
         shenheTz: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=shenghe_list', // 获取要审核的帖子列表接口
         sheheaction: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=shenghe', // 审核帖子接口 帖子id shstate 0通过 2拒绝
@@ -57,6 +64,57 @@
      */
 
     (function ($, root) {
+              // 清空表单内容
+              function clearContent() {
+                layui.use('form', function () {
+                    var form = layui.form
+                    form.val("formLink", {
+                        // 内容
+                        'link_adress': '',
+                        'link_title': '',
+                    })
+                    // 主表单
+                    form.val("formFatie", {
+                        // 标题
+                        'title': '',
+                        'video': '',
+                        "imgVal": ''
+                    })
+    
+                })
+                // 清空值
+                $("textarea[name='title']").val('')
+                $(".uped-pic").remove()
+    
+                // 重置按钮
+                $('#upImg').show()
+                $('#upVideo').show()
+                $('#upImgVideo').show()
+                $('#upLink').show()
+    
+    
+            }
+            root.clearContent = clearContent
+        function hideUpBtn() {
+            // 判断图片数量 隐藏、展示按钮
+            if ($('ul .uped-pic').length > 6 || $('ul .uped-pic').length == 0) {
+                if ($('ul .uped-pic').length == 0) {
+                    root.showCamera()
+                }
+                $('ul .add-img').hide()
+                // 如果没有图片了
+                $('#upVideo').show()
+
+            } else {
+                $('ul .add-img').show()
+                // 增加图片方法
+                $('.img-show-bx ul .add-img').click(function () {
+                    root.getimg()
+                    // 删除图片
+                })
+            }
+        }
+        root.hideUpBtn = hideUpBtn
         // 获取随机大写字母组合
         function getRanNum() {
             var result = [];
@@ -69,11 +127,11 @@
             }
             return result.join('');
         }
-        root.getRanNum = getRanNum
-        // 提交回复
+        root.getRanNum = getRanNum;
+        
         /**
-         * @param {type} obj 回复类型 1回复帖子2回复评论3回复子评论
-         * @param {url} obj 三个地址
+         *   回复类型 1回复帖子2回复评论3回复子评论
+         *   三个地址
          */
         function submitMsgTz(obj) {
             var type = obj.type
@@ -116,14 +174,16 @@
         root.submitMsgTz = submitMsgTz
         // 首页 进入发帖弹窗
         function intoFatie(obj) {
-            $('#dragCircle').off().click(function () {
-                if (obj.type == 'newindex') {
-                    $('#newListShow').hide()
-                    $('.my-nav-bx').hide()
-                    $('#newFatie').show('fast')
-                    // root.newfatieEvent()
-                }
-            })
+            // $('#dragCircle').off().click(function () {
+            //     if (obj.type == 'newindex') {
+            //         $('#newListShow').hide()
+            //         $('.my-nav-bx').hide()
+            //         $('#newFatie').show('fast')
+            //         console.log(99888)
+            //         root.clearContent()
+            //         // root.newfatieEvent()
+            //     }
+            // })
         }
         root.intoFatie = intoFatie
 
@@ -135,7 +195,8 @@
                 // 当前用户是否收藏
                 self.off().click(function () {
                     var scstatus = self.attr('shou-status')
-                    var id = self.find('li').attr('id')
+                    var id = self.parents('li').attr('id')
+                    console.log(id)
                     if (scstatus == '0') { // 当前用户 收藏状态
                         self.attr('shou-status', 1) // 切换收藏状态
                         self.find('.shou-img').hide() // 切换图标
@@ -155,15 +216,14 @@
                         self.find('.shou-hou-img').hide()
                         self.find('span').text("收藏")
                         root.postSubmit({
-                            url: baseUrl + urlObj.collecUrl,
-                            source: 'shoucang',
+                            url: baseUrl + urlObj.cancleSc,
+                            source: '取消收藏',
                             data: {
                                 id: id
                             },
                             elem: self
                         })
                     }
-
                 })
             })
             // 点赞操作
@@ -212,77 +272,118 @@
             })
 
             // 转发操作
-            $('.zfbtn').each (function () {
+            $('.zfbtn').each(function () {
                 var self = $(this)
-                var shareUrl = baseUrl +  self.parents('li').find('.conten-detail').attr('href').split('./')[1]
-                var sharText =  self.parents('li').find('.main-content').text()
-
-                console.log(shareUrl, sharText)
+                var shareUrl = baseUrl + self.parents('li').find('.conten-detail').attr('href').split('./')[1]
+                var sharText =$.trim(self.parents('li').find('.main-content').text())
+                // console.log(shareUrl, sharText)
                 self.off().click(function () {
+                    
                     // 调用转发接口 传帖子id
                     var tid = self.parents('li').attr('id')
-                    if(navigator.userAgent.indexOf("Html5Plus") > -1) {  
+                    if (navigator.userAgent.indexOf("Html5Plus") > -1) {
+                        
                         //5+ 原生分享  
-                        window.plusShare({  
-                            title: "【蓝海豚卡车之家App】",//应用名字  
-                            content: sharText, 
-                            href: shareUrl,//分享出去后，点击跳转地址  
+                        window.plusShare({
+                            title: "【蓝海豚卡车之家App】", //应用名字  
+                            content: sharText,
+                            href: shareUrl, //分享出去后，点击跳转地址  
                             thumbs: ["http://lanhaitun.zanhf.com/attachment/style/src/img/linkcover.png"] //分享缩略图  
-                        }, function(result) {  
+                        }, function (result) {
+                            console.log(JSON.stringify(result))
                             //分享回调  
                             // console.log(result)
-                            root.postSubmit({   
-                                url:baseUrl + urlObj.zhuanfaAdd,
+                            root.postSubmit({
+                                url: baseUrl + urlObj.zhuanfaAdd,
                                 source: 'zhuanfaAdd',
                                 data: {
                                     id: tid
                                 }
                             })
-                        });  
-                    } else {  
+                        });
+                    } else {
                         //原有wap分享实现   
-                    }  
-
-                   
+                    }
                 })
             })
         }
 
         root.mainPageEvent = mainPageEvent
+        // // 相机拍照
+        // function cameraImg() {
+        //     $('#upImg').show()
+        //     $('#upVideo').hide()
+        //     var cmr = plus.camera.getCamera();
+        //     var res = cmr.supportedImageResolutions[0];
+        //     var fmt = cmr.supportedImageFormats[0];
+        //     // console.log("Resolution: " + res + ", Format: " + fmt);
+        //     cmr.captureImage(function (path) {
+        //             // console.log("拍照成功：" + path);
+        //             root.uploadServerImg(path)
+        //         },
+        //         function (error) {
+        //             // alert( "Capture image failed: " + error.message );
+        //         }, {
+        //             resolution: res,
+        //             format: fmt
+        //         }
+        //     );
+        // }
+        // root.cameraImg = cameraImg
+        // // 相机录像
+        // function cameraVideo() {
+        //     $('#upImg').hide()
+        //     $('#upVideo').show()
+        //     var cmr = plus.camera.getCamera();
+        //     var res = cmr.supportedVideoResolutions[0];
+        //     var fmt = cmr.supportedVideoFormats[0];
+        //     cmr.startVideoCapture(function (path) {
+        //             // console.log("录像成功：" + path);
+        //             root.uploadMyVideo(path)
+        //         },
+        //         function (error) {
+        //             // alert( "Capture video failed: " + error.message );
+        //         }, {
+        //             resolution: res,
+        //             format: fmt
+        //         }
+        //     );
+        // }
+        // root.cameraVideo = cameraVideo
 
-        // 调用相机 拍照 录像
-        function showCamera(keyword) {
-            $('#upImgVideo').off()
-            $('#upImgVideo').click(function () {
-                if (!keyword) {
-                    plus.nativeUI.actionSheet({
-                        cancel: "取消",
-                        buttons: [{
-                            title: "拍照"
-                        }, {
-                            title: "录像"
-                        }]
-                    }, function (e) {
-                        switch (e.index) {
-                            case 1:
-                                cameraImg()
-                                break;
-                            case 2:
-                                cameraVideo()
-                                break;
-                        }
-                    });
-                    $('#upImg').show()
-                    $('#upVideo').show()
-                } else if (keyword == 'photo') {
-                    cameraImg()
-                } else if (keyword == 'video') {
-                    cameraVideo()
-                }
-            })
+        // // 调用相机 拍照 录像
+        // function showCamera(keyword) {
+        //     $('#upImgVideo').off()
+        //     $('#upImgVideo').click(function () {
+        //         if (!keyword) {
+        //             plus.nativeUI.actionSheet({
+        //                 cancel: "取消",
+        //                 buttons: [{
+        //                     title: "拍照"
+        //                 }, {
+        //                     title: "录像"
+        //                 }]
+        //             }, function (e) {
+        //                 switch (e.index) {
+        //                     case 1:
+        //                         root.cameraImg()
+        //                         break;
+        //                     case 2:
+        //                         root.cameraVideo()
+        //                         break;
+        //                 }
+        //             });
+        //             $('#upImg').show()
+        //             $('#upVideo').show()
+        //         } else if (keyword == 'photo') {
+        //             root.cameraImg()
+        //         } else if (keyword == 'video') {
+        //             root.cameraVideo()
+        //         }
+        //     })
 
-        }
-        root.showCamera = showCamera
+        // }
+        // root.showCamera = showCamera
         // 首页 帖子列表
         // 管理员管理帖子
         // H5 plus事件处理
@@ -384,10 +485,25 @@
                             break;
                         case '再编辑':
                             // 弹出再编辑
-                            root.intoFatie({
-                                type: 'newindex'
-                            })
-                            // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
+                            // $('#newListShow').hide()
+                            // $('.my-nav-bx').hide()
+                            // $('#newFatie').show('fast')
+                            // root.clearContent()
+                            // console.log(3333)
+                            // root.reeditor = {}
+
+                            // root.reeditor.thread_id = thread_id // 缓存被再编辑帖子id
+                            // root.reeditor.islink = isLink // 缓存状态
+
+                            // root.postSubmit({
+                            //     url: baseUrl + urlObj.reEditorGet,
+                            //     data: {
+                            //         thread_id: thread_id,
+                            //     },
+                            //     source: 'reEditorGet',
+                            // })
+
+                            window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?action=fatie&i=2&c=entry&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
                             break;
                     }
                 }
@@ -526,6 +642,10 @@
                             data.page = +page
                             data.fenlei = obj.fenlei
                             data.load_style = obj.load_style
+                            
+                        } 
+                        if (obj.uid) {
+                            data.uid = obj.uid
                         }
                         var lis = [];
                         $.post(url, data, function (res) {
@@ -550,11 +670,7 @@
                             var isself // 是否当前用户的帖子 string true false
                             var locHtml // 定位
                             var newVideoArr = [] // 存储新的video内容
-                            if (obj.thread_id) { // 如果是获取帖子详情 特殊处理data返回值
-                                data = []
-                                data.push(res.data)
-                                console.log(data)
-                            }
+                            var xialaHtml
                             /** 循环帖子列表数组 */
                             layui.each(data, function (index, item) {
                                 var html = ''
@@ -667,9 +783,13 @@
                             </span>
                         `
                                 // 点赞
+                                dz = item.zan
                                 if (!item.dianzan) { // 用户未点赞
                                     iszan = 0
-                                    dz = '赞'
+                                    // 如果赞的数量是 string 0
+                                    if (dz == '0') {
+                                        dz = '赞'
+                                    } 
                                     zanHtml = ` <span class="zhuanfa dianzan"  zan-status="${iszan}">
                                         <img  class="zan-img" src="/attachment/style/src/img/dianzan.png">
                                         <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png" style="display: none;">
@@ -678,7 +798,6 @@
                                 `
                                 } else {
                                     iszan = 1
-                                    dz = item.zan
                                     zanHtml = ` <span class="zhuanfa dianzan hadzan"  zan-status="${iszan}">
                                         <img  class="zan-img" src="/attachment/style/src/img/dianzan.png" style="display: none;">
                                         <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png">
@@ -706,7 +825,7 @@
                                 `
                                     });
                                     var itemHtml = `
-                                    <div class="other-content">
+                                    <div class="other-content" id="slider">
                                         ${picArr}
                                     </div>
                                  `
@@ -735,21 +854,32 @@
                                     if (item.videos) { // 有视频情况下push
                                         newVideoArr.push(item.videos)
                                     }
-                                    
+
                                 } else if (!isPic && !isVideo && isLink) {
                                     // @4
                                     var itemHtml = `
-                                <div class="other-link" data-href="${item.link_title}">
-                                    <div class="link-bx">
-                                        <div class="img-bx"><img src="/attachment/style/src//img/linkcover.png"></div>
-                                        <div class="link-det">
-                                            <dt class="two-ellipsis">${item.link_title}</dt>
-                                        </div>
-                                    </div>
-                                </div> 
-                            `
+                                        <div class="other-link" data-href="${item.link_title}">
+                                            <div class="link-bx">
+                                                <div class="img-bx"><img src="/attachment/style/src//img/linkcover.png"></div>
+                                                <div class="link-det">
+                                                    <dt class="two-ellipsis">${item.link_title}</dt>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    `
+                                    //   地址改为外链
+                                    tiezilink = item.link_url
                                 } else {
                                     var itemHtml = ''
+                                }
+
+                                // xiala判断
+                                if (item.is_myself == 'true' || item.isadminer == 'true') {
+                             xialaHtml =`
+                                <img  src="/attachment/style/src/img/xiala.png" class="xiala-img xiala" isadmin="${item.isadminer}" isself="${item.is_myself}">
+                                `
+                                } else {
+                                    xialaHtml = ``
                                 }
 
                                 html = `
@@ -779,7 +909,7 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <img  src="/attachment/style/src/img/xiala.png" class="xiala-img xiala" isadmin="${item.isadminer}" isself="${item.is_myself}">
+                                    ${xialaHtml}
                                 </div>
                                 <a class="conten-detail" href="${tiezilink}">
                                     <dd>
@@ -815,7 +945,6 @@
                             // layui.each(res.data, function (index, item) {
                             //     console.log(item)
                             // });
-
                             //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                             //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
                             next(lis.join(''), page < pages);
@@ -825,26 +954,61 @@
                                 root.newVideos(newVideoArr)
                             }
                             // 管理员下拉
-                            // root.showAdmin()
+                            root.showAdmin()
 
                             // 调试模式 直接再编辑 帖子
-                            $('.xiala').off().on('click', function () {
-                                // 获取到帖子的id
-                                var thread_id = $(this).parents('li').attr('id')
-                                // 弹出再编辑
-                                console.log(88887777)
-                                $('#newListShow').hide()
-                                $('.my-nav-bx').hide()
-                                $('#newFatie').show('fast')
-                                // 进入重新编辑发帖模式
-                                root.reeditor = {}
-                                root.reeditor.thread_id = thread_id
-                                root.reeditor.islink = 'true'
+                            // $('.xiala').off().on('click', function () {
+                            //     // 获取到帖子的id
+                            //     var thread_id = $(this).parents('li').attr('id')
+                            //     // 弹出再编辑
+                            //     // $('#newListShow').hide()
+                            //     // $('.my-nav-bx').hide()
+                            //     // $('#newFatie').show('fast')
+                            //     // 进入重新编辑发帖模式
+                            //     root.reeditor = {}
+                            //     root.reeditor.thread_id = thread_id // 缓存被再编辑帖子id
+                            //     root.reeditor.islink = $(this).parents('li').attr('islink') // 缓存状态
+                            //     root.reeditor.elem = $(this).parents('li') // 缓存被再编辑帖子再编辑帖子elem
+                            //     // root.newInsertTz ({
+                            //     //     elem: root.reeditor.elem,
+                            //     // })
+                            //     var thread_id = root.reeditor.thread_id
+                            //     console.log(1111)
+                            //     if (root.reeditor.islink == '1') {
+                            //         // 弹出再编辑
+                            //         $('#newListShow').hide()
+                            //         $('.my-nav-bx').hide()
+                            //         $('#newFatie').show('fast')
+                            //         $('#newFatie .main-form').hide()
+                            //         $('#newFatie .link-bx').show()
+                            //         // $('.main-form').hide()
+                            //         // $('.link-bx').show().off()
+                            //         // // 外链取消按钮
+                            //         // $('.link-bx .cancelBtn').click(function () {
+                            //         //     return false
+                            //         // })
+                            //     } else {
+                            //         $('#newListShow').hide()
+                            //         $('.my-nav-bx').hide()
+                            //         $('#newFatie').show('fast')
+                            //         $('#newFatie .main-form').show()
+                            //         $('#newFatie .link-bx').hide()
+                            //     }
+                            //     // 
+                            //     root.postSubmit({
+                            //         url: baseUrl + urlObj.reEditorGet,
+                            //         data: {
+                            //             thread_id: thread_id,
+                            //         },
+                            //         source: 'reEditorGet',
+                            //     })
 
-                                // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
-                            })
-                            // 调用收藏 点赞 转发事件
-                            root.mainPageEvent()
+                            //     // root.formTijiao ()
+                            //     // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                             
+                            // })
+                            // 收藏转发点赞
+                            root.mainPageEvent ()
                         });
                     }
                 });
@@ -856,7 +1020,6 @@
             $.post(url, obj.data, function (res) {
                 var res = JSON.parse(res)
                 var item = res.data
-
                 console.log(item)
                 // return false
                 var shoucang = "收藏" // 收藏文本 
@@ -989,9 +1152,13 @@
                 </span>
             `
                 // 点赞
+                dz = item.zan
                 if (!item.dianzan) { // 用户未点赞
                     iszan = 0
                     dz = '赞'
+                    if (dz == '0') {
+                        dz = '赞'
+                    }
                     zanHtml = ` <span class="zhuanfa dianzan"  zan-status="${iszan}">
                             <img  class="zan-img" src="/attachment/style/src/img/dianzan.png">
                             <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png" style="display: none;">
@@ -1000,7 +1167,7 @@
                     `
                 } else {
                     iszan = 1
-                    dz = item.zan
+                   
                     zanHtml = ` <span class="zhuanfa dianzan hadzan"  zan-status="${iszan}">
                             <img  class="zan-img" src="/attachment/style/src/img/dianzan.png" style="display: none;">
                             <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png">
@@ -1017,10 +1184,12 @@
                  */
                 var isText = item.info1
                 var isPic = item.images
+              
                 var isVideo = item.video
                 var isLink = item.link_title
                 if (isPic && !isVideo && !isLink) {
                     // @2
+                    console.log(isPic)
                     var picArr = ''
                     isPic.forEach(element => {
                         picArr += `
@@ -1028,12 +1197,11 @@
                     `
                     });
                     var itemHtml = `
-                        <div class="other-content">
+                        <div class="other-content" id="slider">
                             ${picArr}
                         </div>
                      `
-                }
-                if (isVideo) {
+                } else if (isVideo) {
                     // @3
                     // 生成6位随机id
                     console.log(5566)
@@ -1070,6 +1238,7 @@
                         </div>
                     </div> 
                 `
+                tiezilink = item.link_url
                 } else {
                     var itemHtml = ''
                 }
@@ -1101,9 +1270,8 @@
                                 </div>
                             </div>
                         </a>
-                        <img  src="/attachment/style/src/img/xiala.png" class="xiala-img xiala" isadmin="${item.isadminer}" isself="${item.is_myself}">
                     </div>
-                    <a class="conten-detail" href="${tiezilink}">
+                    <a class="conten-detail" href="javascript:;">
                         <dd>
                             <span class="main-content three-ellipsis">
                                 ${zhidingHtml}
@@ -1132,22 +1300,22 @@
                 }
 
                 // 管理员下拉
-                // root.showAdmin()
+                root.showAdmin()
 
                 // 调试模式 直接再编辑 帖子
-                $('.xiala').off().on('click', function () {
-                    // 获取到帖子的id
-                    var thread_id = $(this).parents('li').attr('id')
-                    // 弹出再编辑
-                    $('#newListShow').hide()
-                    $('.my-nav-bx').hide()
-                    $('#newFatie').show('fast')
-                    // 进入重新编辑发帖模式
-                    root.reeditor = {}
-                    root.reeditor.thread_id = thread_id
-                    root.reeditor.islink = 'true'
-                    // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
-                })
+                // $('.xiala').off().on('click', function () {
+                //     // 获取到帖子的id
+                //     var thread_id = $(this).parents('li').attr('id')
+                //     // 弹出再编辑
+                //     $('#newListShow').hide()
+                //     $('.my-nav-bx').hide()
+                //     $('#newFatie').show('fast')
+                //     // 进入重新编辑发帖模式
+                //     root.reeditor = {}
+                //     root.reeditor.thread_id = thread_id
+                //     root.reeditor.islink = 'true'
+                //     // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                // })
                 // 调用收藏 点赞 转发事件
                 root.mainPageEvent()
             });
@@ -1163,89 +1331,92 @@
             return null;
         }
         root.getQueryString = getQueryString
-        // 执行视频生成 
-        function showfsVideo(videoSrc, type) {
-            // h5 生成video 播放器
-            $('#videoPoster .btn-video').off()
-            if (!root.videoPlayer) {
-                $('#video2').show()
+        // // 执行视频生成 
+        // function showfsVideo(videoSrc, type) {
+        //     // h5 生成video 播放器
+        //     $('#videoPoster .btn-video').off()
+        //     if (!root.videoPlayer) {
+        //         $('#video2').show()
 
-                function creatVideo() {
-                    root.videoPlayer = new plus.video.VideoPlayer('video2', {
-                        src: videoSrc,
-                        direction: '',
-                    });
-                    $('#video2').hide()
-                    root.videoPlayer.hide()
-                    // 默认是竖屏
-                    // 竖屏
-                    // $('#videoPoster').addClass('shuping').removeClass('hengping')
-                    // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
-                    // 显示视频
-                    $('#videoPoster').show()
-                    $('.set-poster').show()
-                    root.videoPlayer.addEventListener("fullscreenchange", function (e) {
-                        if (!e.detail.fullScreen) {
-                            $('#video2').hide()
-                            root.videoPlayer.pause()
-                            root.videoPlayer.hide()
-                            $('#videoPoster .btn-video').show()
-                        }
-                        // 判断视频比例 
-                        // if (e.detail.direction == 'horizontal') {
-                        //     // 如果不是竖屏 而是横屏
-                        //     // 横屏
-                        //     $('#videoPoster').addClass('hengping').removeClass('shuping')
-                        //     $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
-                        // }
-                    })
-                }
-                if (type == 'newfatie') {
-                    creatVideo()
-                } else {
-                    // 再编辑 苹果手机直接执行  安卓手机 plusready
-                    var u = navigator.userAgent;
-                    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-                    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-                    if (isAndroid) {
-                        document.addEventListener('plusready', creatVideo, false);
-                    }
-                    if (isiOS) {
-                        creatVideo()
-                    }
-                }
-                document.addEventListener('plusready', creatVideo, false);
+        //         function creatVideo() {
+        //             root.videoPlayer = new plus.video.VideoPlayer('video2', {
+        //                 src: videoSrc,
+        //                 direction: '',
+        //             });
+        //             $('#video2').hide()
+        //             root.videoPlayer.hide()
+        //             // 默认是竖屏
+        //             // 竖屏
+        //             // $('#videoPoster').addClass('shuping').removeClass('hengping')
+        //             // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
+        //             // 显示视频
+        //             $('#videoPoster').show()
+        //             $('.set-poster').show()
+        //             root.videoPlayer.addEventListener("fullscreenchange", function (e) {
+        //                 if (!e.detail.fullScreen) {
+        //                     $('#video2').hide()
+        //                     root.videoPlayer.pause()
+        //                     root.videoPlayer.hide()
+        //                     $('#videoPoster .btn-video').show()
+        //                 }
+        //                 // 判断视频比例 
+        //                 // if (e.detail.direction == 'horizontal') {
+        //                 //     // 如果不是竖屏 而是横屏
+        //                 //     // 横屏
+        //                 //     $('#videoPoster').addClass('hengping').removeClass('shuping')
+        //                 //     $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
+        //                 // }
+        //             })
+        //         }
+        //         if (type == 'newfatie') {
+        //             creatVideo()
+        //         } else {
+        //             // 再编辑 苹果手机直接执行  安卓手机 plusready
+        //             var u = navigator.userAgent;
+        //             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        //             var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); 
+        //             console.log(isAndroid, isiOS)
+        //             //ios终端
+        //             // if (isAndroid) {
+        //             //     document.addEventListener('plusready', creatVideo, false);
+        //             // }
+        //             // if (isiOS) {
+        //             //     creatVideo()
+        //             // }
+        //             creatVideo()
+        //         }
+        //         document.addEventListener('plusready', creatVideo, false);
 
-            } else {
-                root.videoPlayer.setStyles({
-                    src: videoSrc
-                })
-            }
+        //     } else {
+        //         root.videoPlayer.setStyles({
+        //             src: videoSrc
+        //         })
+        //     }
 
-            // 视频操作
-            $('#videoPoster .btn-video').on('click', function () {
-                // 关闭视频点击按钮
-                $(this).hide()
-                // 如果已经有video实例
-                // 全屏 播放
-                root.videoPlayer.show()
-                root.videoPlayer.play()
-                root.videoPlayer.requestFullScreen(0)
-                return false
-            })
+        //     // 视频操作
+        //     $('#videoPoster .btn-video').on('click', function () {
+        //         // 关闭视频点击按钮
+        //         $(this).hide()
+        //         // 如果已经有video实例
+        //         // 全屏 播放
+        //         root.videoPlayer.show()
+        //         root.videoPlayer.play()
+        //         root.videoPlayer.requestFullScreen(0)
+        //         return false
+        //     })
 
-            // 点击删除视频
-            $('#videoPoster .del-icon').on('click', function () {
-                // 删除上传的值
-                $("input[name='video']").val('')
-                $('#videoPoster').hide()
-                $('.set-poster').hide()
-                // 恢复图片上传 相机拍照
-                root.showCamera('')
-            })
-            return false
-        }
-        root.showfsVideo = showfsVideo
+        //     // 点击删除视频
+        //     $('#videoPoster .del-icon').on('click', function () {
+        //         // 删除上传的值
+        //         $("input[name='video']").val('')
+        //         $('#videoPoster').hide()
+        //         $('.set-poster').hide()
+        //         // 恢复图片上传 相机拍照
+        //         root.showCamera('')
+        //     })
+        //     return false
+        // }
+        // root.showfsVideo = showfsVideo
 
         // function closeVideoFs(videoEle) {
         //     // 展示封面点击按钮
@@ -1374,10 +1545,125 @@
      * delegate.js
      */
     (function ($, root) {
+
+  
+        // 提交验证
+        function formTijiao() {
+            // 帖子提交 验证事件
+            layui.use('form', function () {
+                var form = layui.form;
+
+                //监听提交
+                form.on('submit(fatieFormSub)', function (data) {
+                    //    console.log(JSON.stringify(data.field));
+                    // layer.msg(JSON.stringify(data.field))
+                    var myData = data.field
+                    // 全部为空 提示
+                    if (!myData.video && !myData.img && !myData.title) {
+                        layer.msg('发送失败~帖子为空')
+                        return false;
+                    } else {
+                        if (myData.title && !myData.video && !myData.img) { // 优化后 去掉info，只保留title字段
+                            // 只有标题 没有内容
+                            // layer.msg('发送失败~暂无内容')
+                            // return false;
+                        } else if (myData.img && !myData.title) {
+                            // 分享图片
+                            myData.title = '分享图片'
+                        } else if (myData.video && !myData.title) {
+                            // 分享视频
+                            myData.title = '分享视频'
+                        }
+                        console.log(JSON.stringify(myData))
+                        // return false
+                        //  root.getQueryString('thread_id'))
+                        // alert(JSON.stringify(myData))
+                        root.reSubmitFn(myData)
+                    }
+                    return false;
+                });
+
+
+                //监听提交
+                form.on('submit(formLinkSub)', function (data) {
+                    // islink  1有外链  0无外链
+                    // link_url  链接地址，没有传空值
+                    // link_title  标题。没有传空值
+                    // link_info  描述。没有传空值
+                    var myData = data.field
+                    myData.islink = 1
+                    if (!myData.link_title || !myData.link_adress) {
+                        layer.msg('发送失败~请完善外链信息')
+                    } else {
+                        // layer.msg(JSON.stringify(myData))
+                        // 判断 发新外链、 修改外链
+                        myData.title = "分享链接"
+                        root.reSubmitFn(myData)
+                    }
+                    return false;
+                });
+
+                // 取消按钮
+                $('.cancle-btn').click(function (e) {
+                    var confirmMsg = layer.confirm('确认取消吗？', {
+                        btn: ['确认', '取消'],
+                        title: '提示',
+                        closeBtn: 0,
+                    }, function () {
+                        $('#newListShow').show()
+                        $('.my-nav-bx').show()
+                        $('#newFatie').hide('fast')
+                        root.reeditor = {}
+                        layer.close(confirmMsg)
+                        return false;
+                    }, function () {
+                        layer.close(confirmMsg)
+                        return false;
+                    })
+                    e.preventDefault()
+                    return false;
+                })
+
+                // 判断是否是再编辑的帖子
+                // if (root.reeditor != {}) {
+                //     // 是否是编辑外链
+                //     if (root.reeditor.islink == '1') {
+                //         // $('.main-form').hide()
+                //         // $('#newFatie .link-bx').show()
+                //         // $('.main-form').hide()
+                //         // $('.link-bx').show().off()
+                //         // // 外链取消按钮
+                //         // $('.link-bx .cancelBtn').click(function () {
+                //         //     return false
+                //         // })
+                //         // var thread_id = root.reeditor.thread_id
+                //         // root.postSubmit({
+                //         //     url: baseUrl + urlObj.reEditorGet,
+                //         //     data: {
+                //         //         thread_id: thread_id,
+                //         //     },
+                //         //     source: 'reEditorGet',
+                //         // })
+                //         // console.log(1111)
+                //     }
+
+                //     // var thread_id = root.reeditor.thread_id
+                //     // root.postSubmit({
+                //     //     url: baseUrl + urlObj.reEditorGet,
+                //     //     data: {
+                //     //         thread_id: thread_id,
+                //     //     },
+                //     //     source: 'reEditorGet',
+                //     // })
+                // }
+            });
+        }
+
+        root.formTijiao = formTijiao
         // 删除好友
-        function delFriend () {
+        function delFriend() {
             $('#delFriend').click(function () {
-                var friendid  = $(this).parents('li').attr('friendid')
+                var friendid = $(this).parents('li').attr('friendid')
                 console.log(friendid)
 
                 var confirmMsg = layer.confirm('是否删除此好友？', {
@@ -1385,14 +1671,14 @@
                     title: '提示',
                     closeBtn: 0,
                 }, function () {
-                    root.postSubmit ({
+                    root.postSubmit({
                         url: baseUrl + urlObj.delFriend,
                         data: {
-                            friendid : friendid
+                            friendid: friendid
                         },
                         source: 'delFriend'
                     })
-                },function () {
+                }, function () {
                     layer.close(confirmMsg)
                     return false;
                 })
@@ -1551,27 +1837,33 @@
      * getData.js
      */
     (function ($, root) {
-        // 修改帖子 或 新帖子 提交
-        function reSubmitFn(myData) {
-            if (!root.getQueryString('thread_id')) { // 发新的帖子 提交后台
-                root.postSubmit({
-                    url: baseUrl + urlObj.sendTiezi,
-                    data: myData,
-                    source: 'sendTiezi'
-                })
-            } else {
-                var thread_id = root.getQueryString('thread_id')
-                myData.thread_id = thread_id
-                // layer.msg(myData)
-                // 修改帖子
-                root.postSubmit({
-                    url: baseUrl + urlObj.reEditorSub,
-                    data: myData,
-                    source: 'reEditorSub'
-                })
-            }
-        }
-        root.reSubmitFn = reSubmitFn
+        // // 修改帖子 或 新帖子 提交
+        // function reSubmitFn(myData) {
+        //     // if (!root.getQueryString('thread_id')) { // 发新的帖子 提交后台
+        //     if (!root.reeditor) { // 发新的帖子 提交后台
+        //         console.log(111)
+        //         root.postSubmit({
+        //             url: baseUrl + urlObj.sendTiezi,
+        //             data: myData,
+        //             source: 'sendTiezi'
+        //         })
+        //         return false
+        //     } else {
+        //         // var thread_id = root.getQueryString('thread_id')
+        //         var thread_id = root.reeditor.thread_id
+        //         myData.thread_id = thread_id
+        //         // layer.msg(myData)
+        //         // 修改帖子
+        //         root.postSubmit({
+        //             url: baseUrl + urlObj.reEditorSub,
+        //             data: myData,
+        //             source: 'reEditorSub'
+        //         })
+        //         root.reeditor = {}
+        //         return false
+        //     }
+        // }
+        // root.reSubmitFn = reSubmitFn
         var loginAni
         // obj => {url, data, source}
         let postSubmit = (obj) => {
@@ -1776,23 +2068,25 @@
                         } else {}
                     }
 
-                    // 发帖
-                    if (obj.source === 'sendTiezi') {
-                        // console.log(JSON.stringify(res))
-                        if (res.code == 1) {
-                            layer.msg(res.msg)
-                            // root.navToHome()
-                            setTimeout(() => {
-                                $('#newListShow').show()
-                                $('.my-nav-bx').show()
-                                $('#newFatie').hide('fast')
-                            }, 1000);
+                    // // 发帖
+                    // if (obj.source === 'sendTiezi') {
+                    //     // console.log(JSON.stringify(res))
+                    //     if (res.code == 1) {
+                    //         layer.msg(res.msg)
+                    //         // root.navToHome()
+                    //         setTimeout(() => {
+                    //             $('#newListShow').show()
+                    //             $('.my-nav-bx').show()
+                    //             $('#newFatie').hide('fast')
+                    //             window.location.reload()
+                    //         }, 1000);
+                            
 
-                        } else if (res.code == 2) {
-                            layer.msg(res.msg)
-                            root.navToLogin()
-                        }
-                    }
+                    //     } else if (res.code == 2) {
+                    //         layer.msg(res.msg)
+                    //         root.navToLogin()
+                    //     }
+                    // }
 
                     // 首页置顶帖子
                     if (obj.source === 'zhiding') {
@@ -1824,101 +2118,116 @@
                     }
 
                     // 获取要修改帖子内容
-                    if (obj.source == 'reEditorGet') {
-                        var data = res.data
-                        var form = layui.form;
-                        if (data.link_url) {
-                            // 外链
-                            form.val("formLink", {
-                                // 内容
-                                'link_adress': data.link_url,
-                                'link_title': data.link_title,
-                                'link_des': data.link_info,
-                            })
-                        }
-                        form.val("formFatie", {
-                            // 标题
-                            'title': data.title,
-                        })
-                        // 内容
-                        if (data.info) {
-                            form.val("formFatie", {
-                                // 内容
-                                'info': data.info,
-                            })
-                        }
-                        //  分类
-                        if (data.fenlei) {
-                            form.val("formFatie", {
-                                // 分类
-                                'fenlei': data.fenlei,
-                            })
-                        }
-                        // 视频封面
-                        if (data.fengmian) {
-                            $('#videoPoster .poster-img').attr('src', data.fengmian)
-                            form.val("formFatie", {
-                                // 视频封面
-                                'fengmian': data.fengmian
-                            })
-                        }
-                        //   图片
-                        if (data.images) {
-                            var html
-                            data.images.forEach(function (item, index) {
-                                form.val("formFatie", {
-                                    // 视频封面
-                                    imgVal: item
-                                })
-                                html += `
-                                        <li>
-                                            <img class="main-pic" src="${item}">
-                                            <img class="del-icon" src="/attachment/style/src/img/shanchu.png">
-                                            <input name="images[]" value="${item}" hidden>
-                                        </li>
-                                    `
-                            })
-                            $('.add-img').show()
-                            $('.img-show-bx ul ').prepend(html)
-                            $('.img-show-bx ul .add-img').click(function () {
-                                // 增加图片
-                                root.getimg()
-                            })
-                            // 增加图片删除事件
-                            $('ul li .del-icon').click(function () {
-                                $(this).parents('li').remove()
-                                // 上传按钮
-                                hideUpBtn()
-                            })
+                    // if (obj.source == 'reEditorGet') {
+                    //     console.log(1111)
+                    //     layui.use('form', function () {
+                    //         console.log(22222222)
+                    //         var data = res.data
+                    //         var form = layui.form;
+                    //         console.log(JSON.stringify(data))
 
-                            // 隐藏相机拍照和视频上传
-                            $('#upVideo').hide()
-                            root.showCamera('photo')
-                        }
+                    //         form.val("formFatie", {
+                    //             // 标题
+                    //             'title': data.title,
+                    //         })
 
-                        // 视频
-                        if (data.video) {
-                            // 视频封面img
-                            form.val("formFatie", {
-                                // 视频
-                                'video': data.video,
-                            })
-                            // 实例化 视频对象
-                            root.showfsVideo(data.video, 'reEdit')
-                            // 隐藏相机录像和图片上传
-                            $('#upImg').hide()
-                            root.showCamera('video')
-                        }
+                    //         if (data.link_url) {
+                    //             // 外链
+                    //             form.val("formLink", {
+                    //                 // 内容
+                    //                 'link_adress': data.link_url,
+                    //                 'link_title': data.link_title,
+                    //                 // 'link_des': data.link_info,
+                    //             })
+                    //         }
 
-                    } else if (obj.source == 'reEditorSub') { // 提交修改的帖子
-                        // alert(JSON.stringify(res))
-                        // console.log(JSON.stringify(res))
-                        if (res.code == 1) {
-                            layer.msg(res.msg)
-                            root.navToHome()
-                        } else {
-                            layer.msg(res.msg)
-                        }
+                    //         // 内容
+                    //         // if (data.info) {
+                    //         //     form.val("formFatie", {
+                    //         //         // 内容
+                    //         //         'info': data.info,
+                    //         //     })
+                    //         // }
+                    //         //  分类
+                    //         if (data.fenlei) {
+                    //             form.val("formFatie", {
+                    //                 // 分类
+                    //                 'fenlei': data.fenlei,
+                    //             })
+                    //         }
+                    //         // 视频封面
+                    //         if (data.fengmian) {
+                    //             $('#videoPoster .poster-img').attr('src', data.fengmian)
+                    //             form.val("formFatie", {
+                    //                 // 视频封面
+                    //                 'fengmian': data.fengmian
+                    //             })
+                    //         }
+                    //         //   图片
+                    //         if (data.images) {
+                    //             var html
+                    //             data.images.forEach(function (item, index) {
+                    //                 form.val("formFatie", {
+                    //                     // 视频封面
+                    //                     "imgVal": item
+                    //                 })
+                    //                 html += `
+                    //                     <li  class='uped-pic'>
+                    //                         <img class="main-pic" src="${item}">
+                    //                         <img class="del-icon" src="/attachment/style/src/img/shanchu.png">
+                    //                         <input name="images[]" value="${item}" hidden>
+                    //                     </li>
+                    //                 `
+                    //             })
+
+                    //             $('.img-show-bx ul ').prepend(html)
+                    //             if ($('.img-show-bx ul li').length = !6) {
+                    //                 $('.add-img').show()
+                    //             }
+                    //             $('.img-show-bx ul .add-img').click(function () {
+                    //                 // 增加图片
+                    //                 root.getimg()
+                    //             })
+                    //             // 增加图片删除事件
+                    //             $('ul li .del-icon').click(function () {
+                    //                 $(this).parents('li').remove()
+                    //                 // 上传按钮
+                    //                 root.hideUpBtn()
+                    //             })
+
+                    //             // 隐藏相机拍照和视频上传
+                    //             $('#upVideo').hide()
+                    //             root.showCamera('photo')
+                    //         }
+
+                    //         // 视频
+                    //         if (data.video) {
+                    //             // 视频封面img
+                    //             form.val("formFatie", {
+                    //                 // 视频
+                    //                 'video': data.video,
+                    //             })
+                                
+                    //             // 实例化 视频对象
+                    //             root.showfsVideo(data.video, 'reEdit')
+                    //             // 隐藏相机录像和图片上传
+                    //             $('#upImg').hide()
+                    //             root.showCamera('video')
+                    //         }
+
+                    //     })
+
+
+                    // }  
+                    if (obj.source == 'reEditorSub') { // 提交修改的帖子
+                        // // alert(JSON.stringify(res))
+                        // // console.log(JSON.stringify(res))
+                        // if (res.code == 1) {
+                        //     layer.msg(res.msg)
+                        //     root.navToHome()
+                        // } else {
+                        //     layer.msg(res.msg)
+                        // }
                     } else if (obj.source === 'sentTzChat') { // 直播 提交图片请求
                         if (res.msg === '未登录') {
                             // 未登录去登陆
@@ -1953,8 +2262,9 @@
                             if (self.find('span').text() == '赞') { // 数量增加方式判断
                                 self.find('span').text('1')
                             } else {
-                                self.find('span').text() = Number(zantext) + 1
-                                self.find('span').text(zantext)
+                                var zantext = self.find('span').text()
+                                self.find('span').text(Number(zantext) + 1) 
+                                // self.find('span').text(zantext)
                             }
                             self.addClass('hadzan') // 字体颜色切换蓝色
                         } else {
@@ -1982,16 +2292,19 @@
                     } else if (obj.source == 'delFriend') {
                         if (res.code == 1) {
                             layer.msg('删除成功')
-                        } else{
+                        } else {
                             layer.msg(res.msg)
                         }
                     } else if (obj.source == 'zhuanfaAdd') { // 转发数量增加
-                        if(res.code == 1) {
+                        if (res.code == 1) {
                             // 成功
-                        } else{
-                        }
+                        } else {}
                         // layer.msg(res.msg)
                         return false;
+                    }
+
+                    if (obj.source == '取消收藏') {
+                        console.log(res)
                     }
 
                 },
@@ -2014,7 +2327,15 @@
      * render.js
      */
     (function ($, root) {
+        // 新改帖子 插入数据
+        function newInsertTz(obj) {
+            // console.log(obj.elem)
+            var tzTitle = $.trim(obj.elem.find('.main-content').text())
+            // 插入图片
 
+
+        }
+        root.newInsertTz = newInsertTz
         // 跳转回登陆页面
         let navToLogin = () => {
             setTimeout(() => {
@@ -2059,6 +2380,11 @@
                 // return false
                 var html = ''
                 var newVideoArr = [] // 存储新的video内容
+
+                if(!data) {
+                    return false
+                }
+
                 data.forEach(function (item) {
                     var shoucang = "收藏" // 收藏文本 
                     var isshou = 0 // 收藏状态 布尔型 true false
@@ -2187,9 +2513,12 @@
                     </span>
                 `
                     // 点赞
+                    dz = item.zan
                     if (!item.dianzan) { // 用户未点赞
                         iszan = 0
-                        dz = '赞'
+                        if (dz == '0') {
+                              dz = '赞'
+                        }
                         zanHtml = ` <span class="zhuanfa dianzan"  zan-status="${iszan}">
                                 <img  class="zan-img" src="/attachment/style/src/img/dianzan.png">
                                 <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png" style="display: none;">
@@ -2198,7 +2527,6 @@
                         `
                     } else {
                         iszan = 1
-                        dz = item.zan
                         zanHtml = ` <span class="zhuanfa dianzan hadzan"  zan-status="${iszan}">
                                 <img  class="zan-img" src="/attachment/style/src/img/dianzan.png" style="display: none;">
                                 <img class="zan-hou-img"  src="/attachment/style/src/img/dianzanhou.png">
@@ -2215,7 +2543,7 @@
                      */
                     var isText = item.info1
                     var isPic = item.images
-                    isPic = ''
+                    // isPic = ''
                     var isVideo = item.video
                     var isLink = item.link_title
                     if (isPic && !isVideo && !isLink) {
@@ -2227,12 +2555,11 @@
                         `
                         });
                         var itemHtml = `
-                            <div class="other-content">
+                            <div class="other-content" id="slider">
                                 ${picArr}
                             </div>
                          `
-                    }
-                    if (isVideo) {
+                    } else if (isVideo) {
                         // @3
                         // 生成6位随机id
                         console.log(5566)
@@ -2299,7 +2626,6 @@
                                     </div>
                                 </div>
                             </a>
-                            <img  src="/attachment/style/src/img/xiala.png" class="xiala-img xiala" isadmin="${item.isadminer}" isself="${item.is_myself}">
                         </div>
                         <a class="conten-detail" href="${tiezilink}">
                             <dd>
@@ -2339,22 +2665,22 @@
                 }
 
                 // 管理员下拉
-                // root.showAdmin()
+                root.showAdmin()
 
                 // 调试模式 直接再编辑 帖子
-                $('.xiala').off().on('click', function () {
-                    // 获取到帖子的id
-                    var thread_id = $(this).parents('li').attr('id')
-                    // 弹出再编辑
-                    $('#newListShow').hide()
-                    $('.my-nav-bx').hide()
-                    $('#newFatie').show('fast')
-                    // 进入重新编辑发帖模式
-                    root.reeditor = {}
-                    root.reeditor.thread_id = thread_id
-                    root.reeditor.islink = 'true'
-                    // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
-                })
+                // $('.xiala').off().on('click', function () {
+                //     // 获取到帖子的id
+                //     var thread_id = $(this).parents('li').attr('id')
+                //     // 弹出再编辑
+                //     $('#newListShow').hide()
+                //     $('.my-nav-bx').hide()
+                //     $('#newFatie').show('fast')
+                //     // 进入重新编辑发帖模式
+                //     root.reeditor = {}
+                //     root.reeditor.thread_id = thread_id
+                //     root.reeditor.islink = $(this).parents('li').attr('islink')
+                //     // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                // })
                 // 调用收藏 点赞 转发事件
                 root.mainPageEvent()
             });
@@ -2398,14 +2724,6 @@
             //注册提交
             layui.use('form', function () {
                 var form = layui.form;
-                // form.verify({
-                //     pass: [
-                //         /^[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*$/, '密码必须是数字和字母的组合'
-                //     ],
-                //     rePass: [
-                //         /^[0-9]+[a-zA-Z]+[0-9a-zA-Z]*|[a-zA-Z]+[0-9]+[0-9a-zA-Z]*$/, '密码必须是数字和字母的组合'
-                //     ]
-                // });
                 //监听提交
                 form.on('submit(formDemo)', function (data) {
                     // 验证注册密码一致性
@@ -2573,434 +2891,360 @@
             })
 
 
-        } else if (document.getElementById('userCenter')) {
-            // 添加好友
-            root.addFriendCenter()
-        }
-
+        } 
+       
         // 独立出来的新 发帖页面
-        function newfatieEvent() {
-            if (document.getElementById('newFatie')) {
+        // if (document.getElementById('newFatie')) {
 
-                // 提交外链
-                $('#upLink').click(function () {
-                    $('.link-bx').slideToggle('fast')
-                    // $('.main-form').click(function () {
-                    //     $('.link-bx').slideToggle('fast')
-                    //     $('.main-form').off()
-                    // })
-                })
-                $('.link-bx .cancelBtn').click(function () {
-                    $('.link-bx').slideToggle('fast')
-                })
+        //     // 提交外链
+        //     $('#upLink').click(function () {
+        //         $('.link-bx').slideToggle('fast')
+        //         // $('.main-form').click(function () {
+        //         //     $('.link-bx').slideToggle('fast')
+        //         //     $('.main-form').off()
+        //         // })
+        //     })
+        //     $('.link-bx .cancelBtn').click(function () {
+        //         $('#newFatie .link-bx').hide()
+        //         $('#newFatie .main-form').show()
+        //     })
 
-                // 新 发帖样式
-                var textInput = document.getElementById('textarea')
-                root.autoTextarea(textInput)
+        //     // 新 发帖样式
+        //     var textInput = document.getElementById('textarea')
+        //     root.autoTextarea(textInput)
 
-                // 帖子提交 验证事件
-                layui.use('form', function () {
-                    var form = layui.form;
+        //     // // 帖子提交 验证事件
+        //     // layui.use('form', function () {
+        //     //     var form = layui.form;
 
-                    //监听提交
-                    form.on('submit(fatieFormSub)', function (data) {
-                        //    console.log(JSON.stringify(data.field));
-                        // layer.msg(JSON.stringify(data.field))
-                        var myData = data.field
-                        // 全部为空 提示
-                        if (!myData.video && !myData.img && !myData.title) {
-                            layer.msg('发送失败~帖子为空')
-                            return false;
-                        } else {
-                            if (myData.title && !myData.video && !myData.img) { // 优化后 去掉info，只保留title字段
-                                // 只有标题 没有内容
-                                // layer.msg('发送失败~暂无内容')
-                                // return false;
-                            } else if (myData.img && !myData.title) {
-                                // 分享图片
-                                myData.title = '分享图片'
-                            } else if (myData.video && !myData.title) {
-                                // 分享视频
-                                myData.title = '分享视频'
-                            }
-                            // console.log(JSON.stringify(myData), root.getQueryString('thread_id'))
-                            // alert(JSON.stringify(myData))
-                            root.reSubmitFn(myData)
-                        }
-                        return false;
-                    });
+        //     //     //监听提交
+        //     //     form.on('submit(fatieFormSub)', function (data) {
+        //     //         //    console.log(JSON.stringify(data.field));
+        //     //         // layer.msg(JSON.stringify(data.field))
+        //     //         var myData = data.field
+        //     //         // 全部为空 提示
+        //     //         if (!myData.video && !myData.img && !myData.title) {
+        //     //             layer.msg('发送失败~帖子为空')
+        //     //             return false;
+        //     //         } else {
+        //     //             if (myData.title && !myData.video && !myData.img) { // 优化后 去掉info，只保留title字段
+        //     //                 // 只有标题 没有内容
+        //     //                 // layer.msg('发送失败~暂无内容')
+        //     //                 // return false;
+        //     //             } else if (myData.img && !myData.title) {
+        //     //                 // 分享图片
+        //     //                 myData.title = '分享图片'
+        //     //             } else if (myData.video && !myData.title) {
+        //     //                 // 分享视频
+        //     //                 myData.title = '分享视频'
+        //     //             }
+        //     //             console.log(JSON.stringify(myData))
+        //     //             // return false
+        //     //             //  root.getQueryString('thread_id'))
+        //     //             // alert(JSON.stringify(myData))
+        //     //             root.reSubmitFn(myData)
+        //     //         }
+        //     //         return false;
+        //     //     });
 
 
-                    //监听提交
-                    form.on('submit(formLinkSub)', function (data) {
-                        // islink  1有外链  0无外链
-                        // link_url  链接地址，没有传空值
-                        // link_title  标题。没有传空值
-                        // link_info  描述。没有传空值
-                        var myData = data.field
-                        myData.islink = 1
-                        if (!myData.link_title || !myData.link_adress) {
-                            layer.msg('发送失败~请完善外链信息')
-                        } else {
-                            // layer.msg(JSON.stringify(myData))
-                            // 判断 发新外链、 修改外链
-                            myData.title = "分享链接"
-                            root.reSubmitFn(myData)
-                        }
-                        return false;
-                    });
+        //     //     //监听提交
+        //     //     form.on('submit(formLinkSub)', function (data) {
+        //     //         // islink  1有外链  0无外链
+        //     //         // link_url  链接地址，没有传空值
+        //     //         // link_title  标题。没有传空值
+        //     //         // link_info  描述。没有传空值
+        //     //         var myData = data.field
+        //     //         myData.islink = 1
+        //     //         if (!myData.link_title || !myData.link_adress) {
+        //     //             layer.msg('发送失败~请完善外链信息')
+        //     //         } else {
+        //     //             // layer.msg(JSON.stringify(myData))
+        //     //             // 判断 发新外链、 修改外链
+        //     //             myData.title = "分享链接"
+        //     //             root.reSubmitFn(myData)
+        //     //         }
+        //     //         return false;
+        //     //     });
 
-                    // 取消按钮
-                    $('.cancle-btn').click(function (e) {
-                        var confirmMsg = layer.confirm('确认取消吗？', {
-                            btn: ['确认', '取消'],
-                            title: '提示',
-                            closeBtn: 0,
-                        }, function () {
-                            $('#newListShow').show()
-                            $('.my-nav-bx').show()
-                            $('#newFatie').hide('fast')
-                            layer.close(confirmMsg)
-                            return false;
-                        }, function () {
-                            layer.close(confirmMsg)
-                            return false;
-                        })
-                        e.preventDefault()
-                        return false;
-                    })
+        //     //     // 取消按钮
+        //     //     $('.cancle-btn').click(function (e) {
+        //     //         var confirmMsg = layer.confirm('确认取消吗？', {
+        //     //             btn: ['确认', '取消'],
+        //     //             title: '提示',
+        //     //             closeBtn: 0,
+        //     //         }, function () {
+        //     //             $('#newListShow').show()
+        //     //             $('.my-nav-bx').show()
+        //     //             $('#newFatie').hide('fast')
+        //     //             root.reeditor = {}
+        //     //             console.log(root.reeditor, 2223344)
+        //     //             layer.close(confirmMsg)
+        //     //             return false;
+        //     //         }, function () {
+        //     //             layer.close(confirmMsg)
+        //     //             return false;
+        //     //         })
+        //     //         e.preventDefault()
+        //     //         return false;
+        //     //     })
 
-                    // 判断是否是再编辑的帖子
-                    if (root.reeditor) {
-                        // 是否是编辑外链
-                        if (root.reeditor.islink == true) {
-                            $('.main-form').hide()
-                            $('.link-bx').show().off()
-                            // 外链取消按钮
-                            $('.link-bx .cancelBtn').click(function () {
-                                return false
-                            })
+        //     //     // 判断是否是再编辑的帖子
+        //     //     // if (root.reeditor != {}) {
+        //     //     //     // 是否是编辑外链
+        //     //     //     if (root.reeditor.islink == '1') {
+        //     //     //         // $('.main-form').hide()
+        //     //     //         // $('#newFatie .link-bx').show()
+        //     //     //         // $('.main-form').hide()
+        //     //     //         // $('.link-bx').show().off()
+        //     //     //         // // 外链取消按钮
+        //     //     //         // $('.link-bx .cancelBtn').click(function () {
+        //     //     //         //     return false
+        //     //     //         // })
+        //     //     //         // var thread_id = root.reeditor.thread_id
+        //     //     //         // root.postSubmit({
+        //     //     //         //     url: baseUrl + urlObj.reEditorGet,
+        //     //     //         //     data: {
+        //     //     //         //         thread_id: thread_id,
+        //     //     //         //     },
+        //     //     //         //     source: 'reEditorGet',
+        //     //     //         // })
+        //     //     //         // console.log(1111)
+        //     //     //     }
 
-                        } else {
-                            // 展示取消按钮
-                            $('.cancle-btn').click(function (e) {
-                                var confirmMsg = layer.confirm('确认取消吗？', {
-                                    btn: ['确认', '取消'],
-                                    title: '提示',
-                                    closeBtn: 0,
-                                }, function () {
-                                    $('#newListShow').show()
-                                    $('.my-nav-bx').show()
-                                    $('#newFatie').hide('fast')
-                                }, function () {
-                                    layer.close(confirmMsg)
-                                    return false;
-                                })
-                                e.preventDefault()
-                                return false;
-                            })
-                        }
+        //     //     //     // var thread_id = root.reeditor.thread_id
+        //     //     //     // root.postSubmit({
+        //     //     //     //     url: baseUrl + urlObj.reEditorGet,
+        //     //     //     //     data: {
+        //     //     //     //         thread_id: thread_id,
+        //     //     //     //     },
+        //     //     //     //     source: 'reEditorGet',
+        //     //     //     // })
+        //     //     // }
+        //     // });
+        //     root.formTijiao()
+        //     // 选择相册
+        //     $('#upImg').click(function () {
+        //         root.getimg()
+        //     })
 
-                        var thread_id = root.reeditor.thread_id
-                        root.postSubmit({
-                            url: baseUrl + urlObj.reEditorGet,
-                            data: {
-                                thread_id: thread_id,
-                            },
-                            source: 'reEditorGet',
-                        })
+        //     // 上传视频
+        //     $('#upVideo').click(function () {
+        //         root.getMyVideo()
+        //     })
 
-                    }
+        //     //获取图片
+        //     function getimg() {
+        //         var imgNum = 6 - $('ul .uped-pic').length
+        //         plus.gallery.pick(function (e) {
+        //             // 提示等待
+        //             root.imgW = plus.nativeUI.showWaiting()
+        //             for (var i in e.files) {
+        //                 var num = Number(i) + 1
+        //                 var len = e.files.length
+        //                 var lastone = false
+        //                 if (num == len) {
+        //                     lastone = true
+        //                 }
+        //                 root.uploadServerImg(e.files[i], lastone)
+        //             }
+        //         }, function () {}, {
+        //             multiple: true,
+        //             maximum: imgNum,
+        //             system: false
+        //         })
+        //     }
 
-                });
+        //     root.getimg = getimg
 
-                // 选择相册
-                $('#upImg').click(function () {
-                    root.getimg()
-                })
+        //     // 获取视频
+        //     function getMyVideo() {
+        //         plus.gallery.pick(function (e) {
+        //             root.uploadMyVideo(e)
+        //         }, function () {}, {
+        //             filter: 'video',
+        //         })
+        //     }
 
-                // 上传视频
-                $('#upVideo').click(function () {
-                    root.getMyVideo()
-                })
+        //     root.getMyVideo = getMyVideo
 
-                //获取图片
-                function getimg() {
-                    var imgNum = 6 - $('ul .uped-pic').length
-                    plus.gallery.pick(function (e) {
-                        // 提示等待
-                        root.imgW = plus.nativeUI.showWaiting()
-                        for (var i in e.files) {
-                            var num = Number(i) + 1
-                            var len = e.files.length
-                            var lastone = false
-                            if (num == len) {
-                                lastone = true
-                            }
-                            root.uploadServerImg(e.files[i], lastone)
-                        }
-                    }, function () {}, {
-                        multiple: true,
-                        maximum: imgNum,
-                        system: false
-                    })
-                }
+        //     //上传图片
+        //     function uploadServerImg(imgPath, lastone) {
+        //         // console.log(imgPath)
+        //         // jpg','jpeg','gif','png'
+        //         // 如果上传图片
+        //         plus.zip.compressImage({
+        //             src: imgPath,
+        //             dst: "_doc/chat/gallery//" + imgPath,
+        //             quality: 20,
+        //             overwrite: true,
+        //         }, function (e) {
+        //             // 新建上传任务 图片
+        //             /*
+        //              */
+        //             // 关闭等待
+        //             if (lastone) {
+        //                 root.imgW.close()
+        //             }
+        //             var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+        //                 method: "POST",
+        //             }, function (res) {
+        //                 var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+        //                 console.log(imgUrl)
+        //                 var showPicEle = $('.img-show-bx ul')
+        //                 // 判断是否第一次上传相片 插入上传按钮
+        //                 // 给input img一个值
+        //                 $("input[name='img']").val(imgUrl)
+        //                 if ($('.img-show-bx ul li').length == 0 || $('.img-show-bx ul li').length == 6) {
+        //                     // 隐藏上传按钮
+        //                     $('.img-show-bx .add-img').hide()
+        //                     // 插入最后一次图片
+        //                     if ($('.img-show-bx ul li').length == 6) {
+        //                         $('.img-show-bx ul').prepend(`
+        //                                 <li class='uped-pic'>
+        //                                     <img class="main-pic" src="${imgUrl}">
+        //                                     <img class="del-icon" src="  http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
+        //                                     <input name="images[]" value="${imgUrl}" hidden>
+        //                                 </li>
+        //                             `)
+        //                     }
+        //                 } else {
+        //                     $('.img-show-bx .add-img').show()
+        //                     $('.img-show-bx ul').prepend(`
+        //                             <li class='uped-pic'>
+        //                                 <img class="main-pic" src="${imgUrl}">
+        //                                 <img class="del-icon" src="  http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
+        //                                 <input name="images[]" value="${imgUrl}" hidden>
+        //                             </li>
+        //                         `)
+        //                 }
+        //                 // 上传图片即隐藏video上传
+        //                 if ($('.img-show-bx ul li').length == 2) {
+        //                     // 隐藏相机拍照和
+        //                     $('#upVideo').hide()
+        //                     root.showCamera('photo')
+        //                 }
+        //                 // 上传按钮
+        //                 root.hideUpBtn()
+        //                 // 增加图片删除事件
+        //                 $('ul li .del-icon').click(function () {
+        //                     $(this).parents('li').remove()
+        //                     // 上传按钮
+        //                     root.hideUpBtn()
+        //                 })
+        //             });
+        //             task.addFile(e.target, {
+        //                 key: "file"
+        //             });
+        //             task.start();
+        //         }, function (error) {
+        //             layer.msg('图片上传失败~')
+        //         });
+        //     }
+        //     root.uploadServerImg = uploadServerImg
 
-                root.getimg = getimg
+        //     // 上传视频方法 
+        //     function uploadMyVideo(videoPath) {
+        //         //  开等待提示
+        //         var w = plus.nativeUI.showWaiting();
+        //         // 新建上传任务 视频
+        //         var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=upload_video", {
+        //             method: "POST",
+        //         }, function (res) {
+        //             // alert(JSON.stringify(res))
+        //             // alert(res.msg)
+        //             // 关闭图片上传 相机只能录像
+        //             root.showCamera('video')
+        //             // 关闭等待
+        //             w.close()
+        //             // alert(JSON.stringify(res))
+        //             var res = JSON.parse(res.responseText)
+        //             var videoSrc = res.data
+        //             if (res.code == 1) {
+        //                 //  赋值给input
+        //                 $("input[name='video']").val(videoSrc)
+        //                 // 展示视频封面
+        //                 root.showfsVideo(videoSrc, 'newfatie')
+        //             } else {
+        //                 // 开启图片上传 相机只能录像
+        //                 root.showCamera()
+        //                 layer.msg(res.msg)
+        //             }
+        //         });
+        //         task.addFile(videoPath, {
+        //             key: "file"
+        //         });
+        //         task.start();
 
-                // 获取视频
-                function getMyVideo() {
-                    plus.gallery.pick(function (e) {
-                        root.uploadMyVideo(e)
-                    }, function () {}, {
-                        filter: 'video',
-                    })
-                }
+        //     }
+        //     root.uploadMyVideo = uploadMyVideo
 
-                root.getMyVideo = getMyVideo
+        //     // 相册获取封面
+        //     function getPoster() {
+        //         plus.gallery.pick(function (e) {
+        //             // console.log(e)
+        //             root.uploadPoster(e)
+        //         }, function () {}, {
+        //             multiple: false,
+        //             maximum: 1,
+        //             system: false
+        //         })
+        //     }
+        //     root.getPoster = getPoster
 
-                //上传图片
-                function uploadServerImg(imgPath, lastone) {
-                    // console.log(imgPath)
-                    // jpg','jpeg','gif','png'
-                    // 如果上传图片
-                    plus.zip.compressImage({
-                        src: imgPath,
-                        dst: "_doc/chat/gallery//" + imgPath,
-                        quality: 20,
-                        overwrite: true,
-                    }, function (e) {
-                        // 新建上传任务 图片
-                        /*
-                         */
-                        // 关闭等待
-                        if (lastone) {
-                            root.imgW.close()
-                        }
-                        var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
-                            method: "POST",
-                        }, function (res) {
-                            var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
-                            console.log(imgUrl)
-                            var showPicEle = $('.img-show-bx ul')
-                            // 判断是否第一次上传相片 插入上传按钮
-                            // 给input img一个值
-                            $("input[name='img']").val(imgUrl)
-                            if ($('.img-show-bx ul li').length == 0 || $('.img-show-bx ul li').length == 6) {
-                                // 隐藏上传按钮
-                                $('.img-show-bx .add-img').hide()
-                                // 插入最后一次图片
-                                if ($('.img-show-bx ul li').length == 6) {
-                                    $('.img-show-bx ul').prepend(`
-                                        <li class='uped-pic'>
-                                            <img class="main-pic" src="${imgUrl}">
-                                            <img class="del-icon" src="  http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
-                                            <input name="images[]" value="${imgUrl}" hidden>
-                                        </li>
-                                    `)
-                                }
-                            } else {
-                                $('.img-show-bx .add-img').show()
-                                $('.img-show-bx ul').prepend(`
-                                    <li class='uped-pic'>
-                                        <img class="main-pic" src="${imgUrl}">
-                                        <img class="del-icon" src="  http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
-                                        <input name="images[]" value="${imgUrl}" hidden>
-                                    </li>
-                                `)
-                            }
-                            // 上传图片即隐藏video上传
-                            if ($('.img-show-bx ul li').length == 2) {
-                                // 隐藏相机拍照和
-                                $('#upVideo').hide()
-                                root.showCamera('photo')
-                            }
-                            // 上传按钮
-                            hideUpBtn()
-                            // 增加图片删除事件
-                            $('ul li .del-icon').click(function () {
-                                $(this).parents('li').remove()
-                                // 上传按钮
-                                hideUpBtn()
-                            })
+        //     // 上传封面接口
+        //     function uploadPoster(imgPath) {
+        //         // 如果上传图片
+        //         plus.zip.compressImage({
+        //             src: imgPath,
+        //             dst: "_doc/chat/gallery//" + imgPath,
+        //             quality: 20,
+        //             overwrite: true,
+        //         }, function (e) {
+        //             // console.log('上传封面', e)
+        //             // 新建上传任务 图片
+        //             /*
+        //              */
+        //             var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+        //                 method: "POST",
+        //             }, function (res) {
+        //                 var posterUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+        //                 // console.log(posterUrl)
+        //                 $("input[name='fengmian']").val(posterUrl)
+        //                 $("#videoPoster .poster-img").attr('src', posterUrl)
+        //             });
+        //             task.addFile(e.target, {
+        //                 key: "file"
+        //             });
+        //             task.start();
+        //         }, function (error) {
+        //             layer.msg('图片上传失败~')
+        //         });
+        //     }
+        //     root.uploadPoster = uploadPoster
+        //     // 修改视频封面
+        //     $('.set-poster').click(function () {
+        //         root.getPoster()
+        //     })
 
-                            function hideUpBtn() {
-                                // 判断图片数量 隐藏、展示按钮
-                                if ($('ul .uped-pic').length == 6 || $('ul .uped-pic').length == 0) {
-                                    $('ul .add-img').hide()
-                                    // 如果没有图片了
-                                    $('#upVideo').show()
-                                    root.showCamera()
-                                } else {
-                                    $('ul .add-img').show()
-                                    // 增加图片方法
-                                    $('.img-show-bx ul .add-img').click(function () {
-                                        root.getimg()
-                                        // 删除图片
-                                    })
-                                }
-                            }
-                            root.hideUpBtn = hideUpBtn
-                        });
-                        task.addFile(e.target, {
-                            key: "file"
-                        });
-                        task.start();
-                    }, function (error) {
-                        layer.msg('图片上传失败~')
-                    });
-                }
-                root.uploadServerImg = uploadServerImg
+        //     // 开启相机 拍照+摄像选择
+        //     root.showCamera()
+        //     console.log(9999)
+        //     // 定位 引入dcloud重写h5原生定位文件 plusGeolocation.js
+        //     // 扩展API加载完毕后调用onPlusReady回调函数 
+        //     document.addEventListener('plusready', onPlusReadyLoc, false);
+        //     // 扩展API加载完毕，现在可以正常调用扩展API
+        //     function onPlusReadyLoc() {
+        //         plus.geolocation.getCurrentPosition(function (p) {
+        //             var loc = p.address.city + '·' + p.address.district + '·' + p.address.street + p.address.streetNum
+        //             $('.loc-text').text(loc)
+        //             $("input[name='address']").val(loc)
+        //         }, function (e) {
+        //             layer.msg('获取定位失败~');
+        //         });
+        //     }
+        // }
 
-                // 上传视频方法 
-                function uploadMyVideo(videoPath) {
-                    //  开等待提示
-                    var w = plus.nativeUI.showWaiting();
-                    // 新建上传任务 视频
-                    var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=upload_video", {
-                        method: "POST",
-                    }, function (res) {
-                        // alert(JSON.stringify(res))
-                        // alert(res.msg)
-                        // 关闭图片上传 相机只能录像
-
-                        root.showCamera('video')
-                        // 关闭等待
-                        w.close()
-                        // alert(JSON.stringify(res))
-                        var res = JSON.parse(res.responseText)
-                        var videoSrc = res.data
-                        console.log(videoSrc)
-                        if (res.code == 1) {
-                            //  赋值给input
-                            $("input[name='video']").val(videoSrc)
-                            // 展示视频封面
-                            root.showfsVideo(videoSrc, 'newfatie')
-                        } else {
-                            // 开启图片上传 相机只能录像
-                            root.showCamera()
-                        }
-
-                        layer.msg(res.msg)
-                    });
-                    task.addFile(videoPath, {
-                        key: "file"
-                    });
-                    task.start();
-
-                }
-                root.uploadMyVideo = uploadMyVideo
-
-                // 相册获取封面
-                function getPoster() {
-                    plus.gallery.pick(function (e) {
-                        // console.log(e)
-                        root.uploadPoster(e)
-                    }, function () {}, {
-                        multiple: false,
-                        maximum: 1,
-                        system: false
-                    })
-                }
-                root.getPoster = getPoster
-
-                // 上传封面接口
-                function uploadPoster(imgPath) {
-                    // 如果上传图片
-                    plus.zip.compressImage({
-                        src: imgPath,
-                        dst: "_doc/chat/gallery//" + imgPath,
-                        quality: 20,
-                        overwrite: true,
-                    }, function (e) {
-                        // console.log('上传封面', e)
-                        // 新建上传任务 图片
-                        /*
-                         */
-                        var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
-                            method: "POST",
-                        }, function (res) {
-                            var posterUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
-                            // console.log(posterUrl)
-                            $("input[name='fengmian']").val(posterUrl)
-                            $("#videoPoster .poster-img").attr('src', posterUrl)
-                        });
-                        task.addFile(e.target, {
-                            key: "file"
-                        });
-                        task.start();
-                    }, function (error) {
-                        layer.msg('图片上传失败~')
-                    });
-                }
-                root.uploadPoster = uploadPoster
-                // 修改视频封面
-                $('.set-poster').click(function () {
-                    root.getPoster()
-                })
-                // 相机拍照
-                function cameraImg() {
-                    $('#upImg').show()
-                    $('#upVideo').hide()
-                    var cmr = plus.camera.getCamera();
-                    var res = cmr.supportedImageResolutions[0];
-                    var fmt = cmr.supportedImageFormats[0];
-                    // console.log("Resolution: " + res + ", Format: " + fmt);
-                    cmr.captureImage(function (path) {
-                            // console.log("拍照成功：" + path);
-                            root.uploadServerImg(path)
-                        },
-                        function (error) {
-                            // alert( "Capture image failed: " + error.message );
-                        }, {
-                            resolution: res,
-                            format: fmt
-                        }
-                    );
-                }
-                // 相机录像
-                function cameraVideo() {
-                    $('#upImg').hide()
-                    $('#upVideo').show()
-                    var cmr = plus.camera.getCamera();
-                    var res = cmr.supportedVideoResolutions[0];
-                    var fmt = cmr.supportedVideoFormats[0];
-                    cmr.startVideoCapture(function (path) {
-                            // console.log("录像成功：" + path);
-                            root.uploadMyVideo(path)
-                        },
-                        function (error) {
-                            // alert( "Capture video failed: " + error.message );
-                        }, {
-                            resolution: res,
-                            format: fmt
-                        }
-                    );
-                }
-                // 开启相机 拍照+摄像选择
-                root.showCamera()
-
-                // 定位 引入dcloud重写h5原生定位文件 plusGeolocation.js
-                // 扩展API加载完毕后调用onPlusReady回调函数 
-                document.addEventListener('plusready', onPlusReadyLoc, false);
-
-                // 扩展API加载完毕，现在可以正常调用扩展API
-                function onPlusReadyLoc() {
-                    navigator.geolocation.getCurrentPosition(function (p) {
-                        // alert(JSON.stringify(p))
-                        var loc = p.address.city + '·' + p.address.district + '·' + p.address.street + p.address.streetNum
-                        $('.loc-text').text(loc)
-                        $("input[name='address']").val(loc)
-                    }, function (e) {
-                        layer.msg('获取定位失败~');
-                    });
-                }
-            }
-        }
-
-        root.newfatieEvent = newfatieEvent
-
-        root.newfatieEvent()
         if (document.getElementById('indexWrap')) {
             // 通过缓存判断是否刷新页面
             // console.log(localStorage.getItem('ifReload'))
@@ -3011,113 +3255,125 @@
             // 首页 帖子列表
             // 管理员管理帖子
             // H5 plus事件处理
-            function popChoice(obj) {
-                // console.log(JSON.stringify(obj) )
-                // return
-                var thread_id = obj.thread_id
-                var isLink = obj.isLink
-                var zdStatus = 1
-                var btnArr = null
-                if (obj.isadmin == 'true') {
-                    if (obj.iszhiding == "1") {
-                        // 是管理员 此贴已经置顶了
-                        zdStatus = 0
-                        btnArr = [{
-                            title: "取消置顶"
-                        }, {
-                            title: "删除"
-                        }, {
-                            title: "再编辑"
-                        }]
-                    } else {
-                        // 是管理员 此贴未置顶
-                        btnArr = [{
-                            title: "置顶"
-                        }, {
-                            title: "删除"
-                        }, {
-                            title: "再编辑"
-                        }]
-                    }
-                } else {
-                    if (obj.isself == 'true') {
-                        // 是否是自己的帖子
-                        // 是自己的帖子
-                        btnArr = [{
-                            title: "再编辑"
-                        }, {
-                            title: "删除"
-                        }]
-                    }
-                }
+            // function popChoice(obj) {
+            //     // console.log(JSON.stringify(obj) )
+            //     // return
+            //     var thread_id = obj.thread_id
+            //     var isLink = obj.isLink
+            //     var zdStatus = 1
+            //     var btnArr = null
+            //     if (obj.isadmin == 'true') {
+            //         if (obj.iszhiding == "1") {
+            //             // 是管理员 此贴已经置顶了
+            //             zdStatus = 0
+            //             btnArr = [{
+            //                 title: "取消置顶"
+            //             }, {
+            //                 title: "删除"
+            //             }, {
+            //                 title: "再编辑"
+            //             }]
+            //         } else {
+            //             // 是管理员 此贴未置顶
+            //             btnArr = [{
+            //                 title: "置顶"
+            //             }, {
+            //                 title: "删除"
+            //             }, {
+            //                 title: "再编辑"
+            //             }]
+            //         }
+            //     } else {
+            //         if (obj.isself == 'true') {
+            //             // 是否是自己的帖子
+            //             // 是自己的帖子
+            //             btnArr = [{
+            //                 title: "再编辑"
+            //             }, {
+            //                 title: "删除"
+            //             }]
+            //         }
+            //     }
 
-                // 弹出系统选择按钮框
-                plus.nativeUI.actionSheet({
-                    // title: "管理帖子",
-                    cancel: "取消",
-                    buttons: btnArr
-                }, function (e) {
-                    // console.log("弹出层" + e);
-                    // layer.msg(JSON.stringify(e))
-                    if (e.index != 0) {
-                        var index = e.index - 1
-                        var choice = btnArr[index].title
-                        switch (choice) {
-                            case "置顶":
-                                // 置顶帖子
-                                // 发送post请求 返回 zdstate  状态（1置顶，0取消置顶）
-                                // console.log(333)
-                                root.postSubmit({
-                                    url: baseUrl + urlObj.zhiding,
-                                    data: {
-                                        thread_id: thread_id,
-                                        zdstate: 1
-                                    },
-                                    source: 'zhiding',
-                                })
-                                break;
-                            case "取消置顶":
-                                // 置顶帖子
-                                // 发送post请求 返回 zdstate  状态（1置顶，0取消置顶）
-                                // console.log(333)
-                                root.postSubmit({
-                                    url: baseUrl + urlObj.zhiding,
-                                    data: {
-                                        thread_id: thread_id,
-                                        zdstate: 0
-                                    },
-                                    source: 'zhiding',
-                                })
-                                break;
-                            case "删除":
-                                var confirmMsg = layer.confirm('确认删除吗？', {
-                                    btn: ['确认', '取消'],
-                                    title: '提示',
-                                    closeBtn: 0,
-                                }, function () {
-                                    root.postSubmit({
-                                        url: baseUrl + urlObj.deletTz,
-                                        data: {
-                                            thread_id: thread_id,
-                                        },
-                                        source: 'deletTz',
-                                    })
-                                }, function () {
-                                    layer.close(confirmMsg)
-                                    return false;
-                                })
-                                break;
-                            case '再编辑':
-                                // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
+            //     // 弹出系统选择按钮框
+            //     plus.nativeUI.actionSheet({
+            //         // title: "管理帖子",
+            //         cancel: "取消",
+            //         buttons: btnArr
+            //     }, function (e) {
+            //         // console.log("弹出层" + e);
+            //         // layer.msg(JSON.stringify(e))
+            //         if (e.index != 0) {
+            //             var index = e.index - 1
+            //             var choice = btnArr[index].title
+            //             switch (choice) {
+            //                 case "置顶":
+            //                     // 置顶帖子
+            //                     // 发送post请求 返回 zdstate  状态（1置顶，0取消置顶）
+            //                     // console.log(333)
+            //                     root.postSubmit({
+            //                         url: baseUrl + urlObj.zhiding,
+            //                         data: {
+            //                             thread_id: thread_id,
+            //                             zdstate: 1
+            //                         },
+            //                         source: 'zhiding',
+            //                     })
+            //                     break;
+            //                 case "取消置顶":
+            //                     // 置顶帖子
+            //                     // 发送post请求 返回 zdstate  状态（1置顶，0取消置顶）
+            //                     // console.log(333)
+            //                     root.postSubmit({
+            //                         url: baseUrl + urlObj.zhiding,
+            //                         data: {
+            //                             thread_id: thread_id,
+            //                             zdstate: 0
+            //                         },
+            //                         source: 'zhiding',
+            //                     })
+            //                     break;
+            //                 case "删除":
+            //                     var confirmMsg = layer.confirm('确认删除吗？', {
+            //                         btn: ['确认', '取消'],
+            //                         title: '提示',
+            //                         closeBtn: 0,
+            //                     }, function () {
+            //                         root.postSubmit({
+            //                             url: baseUrl + urlObj.deletTz,
+            //                             data: {
+            //                                 thread_id: thread_id,
+            //                             },
+            //                             source: 'deletTz',
+            //                         })
+            //                     }, function () {
+            //                         layer.close(confirmMsg)
+            //                         return false;
+            //                     })
+            //                     break;
+            //                 case '再编辑':
+            //                     // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
 
-                                root.intoFatie({
-                                    type: 'newindex'
-                                })
-                                break;
-                        }
-                    }
-                });
-            }
+            //                     root.reeditor = {}
+            //                     root.reeditor.thread_id = thread_id // 缓存被再编辑帖子id
+            //                     root.reeditor.islink = isLink // 缓存状态
+
+            //                     // root.postSubmit({
+            //                     //     url: baseUrl + urlObj.reEditorGet,
+            //                     //     data: {
+            //                     //         thread_id: thread_id,
+            //                     //     },
+            //                     //     source: 'reEditorGet',
+            //                     // })
+            //                     // console.log(99888)
+            //                     // root.intoFatie({
+            //                     //     type: 'newindex'
+            //                     // })
+            //                     break;
+            //             }
+            //         }
+            //     });
+            // }
 
             // 调试模式 直接再编辑 帖子
             // $('.xiala').on('click', function () {
@@ -3181,6 +3437,7 @@
         if (document.getElementById('guide')) {
             // 获取帖子id
             var tid = root.getQueryString('id')
+            // var tid = $('.listshow-item').attr('id')
             var thread_id = tid
             // 获取帖子详情
             var tzinfoUrl = baseUrl + urlObj.tieziInfo
@@ -3237,8 +3494,6 @@
                     })
                 }
             })
-            // 帖子id
-            // var tzId = $('#tieziInfo li').attr('id')
             // 打开消息弹窗 回复帖子
             $('#hfBtn').off().click(function () {
                 console.log(344)
@@ -3267,9 +3522,10 @@
                 data.hname = $(this).attr('hname')
                 // pid 评论id
                 data.pid = $(this).attr('pid')
+                data.tid = tid
                 root.submitMsgTz({
                     type: 2,
-                    tid: tzId,
+                    tid: tid,
                     url: baseUrl + urlObj.hfHfSend,
                     data: data
                 })
@@ -3291,9 +3547,10 @@
                 data.pid = $(this).attr('pid')
                 // hid 子评论的id
                 data.hid = $(this).attr('hid')
+                data.tid = tid
                 root.submitMsgTz({
                     type: 3,
-                    tid: tzId,
+                    tid: tid,
                     url: baseUrl + urlObj.hfzhfSend,
                     data: data
                 })
@@ -3315,230 +3572,245 @@
         }
 
         // 直播页面
-        if (document.getElementById('videoMode')) {
-            $('.TAstate li').click(function () {
-                $('.TAstate li').toggleClass('currentli')
-                if ($(this).index() === 0) {
-                    $('.chat-bx').show()
-                    $('#showList').hide()
-                } else {
-                    $('.chat-bx').hide()
-                    $('#showList').show()
-                    var zhiboList = document.getElementById('showList')
-                    // 要滚动的高度
-                    zhiboList.scrollTop = ($('.zhibo-bx').position().top) - 353
-                }
-            })
-            // 直播聊天和节目列表切换
-            // function plusReady() {
-            // root.radioWait = plus.nativeUI.showWaiting("加载中...");
-            var src = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
-            if (!root.radioPlayer) {
-                root.radioPlayer = new plus.video.VideoPlayer('myVideo', {
-                    src: src,
-                });
-            }
-            // 播放
-            $('.play-img').off().click(function () {
-                $(this).hide()
-                $('.pause-img').show()
-                root.radioPlayer.play()
-            })
-            // 暂停
-            $('.pause-img').off().click(function () {
-                $(this).hide()
-                $('.play-img').show()
-                root.radioPlayer.pause()
-            })
+        // if (document.getElementById('videoMode')) {
+        //     $('.TAstate li').click(function () {
+        //         $('.TAstate li').toggleClass('currentli')
+        //         if ($(this).index() === 0) {
+        //             $('.chat-bx').show()
+        //             $('#showList').hide()
+        //         } else {
+        //             $('.chat-bx').hide()
+        //             $('#showList').show()
+        //             var zhiboList = document.getElementById('showList')
+        //             // 要滚动的高度
+        //             zhiboList.scrollTop = ($('.zhibo-bx').position().top) - 353
+        //         }
+        //     })
+        //     // 直播聊天和节目列表切换
+        //     function plusReady() {
+        //         // root.radioWait = plus.nativeUI.showWaiting("加载中...");
+        //         var src = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
+        //         if (!root.radioPlayer) {
+        //             root.radioPlayer = new plus.video.VideoPlayer('myVideo', {
+        //                 src: src,
+        //             });
+        //         }
+        //         // 播放
+        //         $('.play-img').off().click(function () {
+        //             $(this).hide()
+        //             $('.pause-img').show()
+        //             root.radioPlayer.play()
+        //         })
+        //         // 暂停
+        //         $('.pause-img').off().click(function () {
+        //             $(this).hide()
+        //             $('.play-img').show()
+        //             root.radioPlayer.pause()
+        //         })
 
-            // setInterval(() => {
-            //     root.radioWait.close()
-            // }, 500);
-            $('.my-nav').click(function () {
-                root.radioPlayer.stop()
-            })
-            // }
-            // document.addEventListener('plusready', plusReady, false);
-            // 聊天获取，滚动加载
-            setTimeout(() => {
-                // 滚动到最底部
-                var my_scroll = document.getElementsByClassName('chat_title')[0]
-                my_scroll.scrollTop = 20000000
-                // 获取rid
-                var timer = setInterval(() => {
-                    // 获取rid
-                    var rid = root.getQueryString('rid')
-                    // 获取最后一条留言时间
-                    var lastTime = $('.chat_title li:last .char_name span').text()
-                    // 请求最新留言 发送最近留言时间
-                    var huifuUrl = "/app/index.php?i=2&c=entry&m=wxz_wzb&do=GetComment"
-                    var huifuData = {
-                        rid: rid,
-                        last_time: lastTime
-                    }
-                    $.ajax({
-                        url: huifuUrl,
-                        type: 'POST',
-                        data: huifuData,
-                        dataType: 'JSON',
-                        success(res) {
-                            var newData = res.data
-                            // console.log(res)
-                            if (newData) {
-                                // 清除定时器
-                                var htmlLt = ''
-                                newData.forEach(item => {
-                                    if (item.ispic == 0) {
-                                        // 如果是图片评论
-                                        htmlLt += `
-                                        <li data-id=${item.id}>
-                                        <div class="chat_left">
-                                            <div class="head_portrait">
-                                            <img src="${item.headimgurl}">
-                                            </div>
-                                            </div>
-                                            <div class="chat_right">
-                                            <div class="char_name">${item.nickname}
-                                            <span style="display:block;color:gray;font-size:12px;">${item.time}</span>
-                                            </div>
-                                            <div class="char_message">${item.content}
-                                            </div>
-                                        </div>
-                                        </li>`
-                                    } else {
-                                        // 非图片评论
-                                        htmlLt += `
-                                        <li data-id=${item.id}>
-                                        <div class="chat_left">
-                                            <div class="head_portrait">
-                                            <img src="${item.headimgurl}">
-                                            </div>
-                                            </div>
-                                            <div class="chat_right">
-                                            <div class="char_name">${item.nickname}
-                                            <span style="display:block;color:gray;font-size:12px;">${item.time}</span>
-                                            </div>
-                                            <div class="char_message">
-                                            <img src="${item.content}" style="CURSOR: hand" id="215" bigimgurl="http://lanhaitun.zanhf.com/attachment/images/2/2019/03/X3AgFggxqy0vU3vLQrzLZ0Ax6VVrqF.jpg" onclick="imageClick(this)">
-                                            <div class="send">
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </li>`
-                                    }
-                                });
-                                $('.chat_title').append(htmlLt)
-                                setTimeout(() => {
-                                    my_scroll.scrollTop = 2000000000
-                                }, 200);
-                            } else {
-                                return
-                            }
-                        },
-                        error(res) {
-                            clearInterval(timer)
-                            layer.msg("链接超时，重新刷新尝试！")
-                        }
-                    })
-                }, 1000);
-                setTimeout(() => {
-                    $('.chat_title').css('opacity', "1")
-                }, 1000);
-            }, 100);
-            // 点赞数增加
-            $('.zan-box').click(function () {
-                var curNum = Number($(this).find('.zan-num').text()) + 1
-                $(this).find('.zan-num').text(curNum)
-            })
+        //         // setInterval(() => {
+        //         //     root.radioWait.close()
+        //         // }, 500);
+        //         $('.my-nav').click(function () {
+        //             root.radioPlayer.stop()
+        //         })
+        //     }
+        //     document.addEventListener('plusready', plusReady, false);
+        //     // 聊天获取，滚动加载
+        //     setTimeout(() => {
+        //         // 滚动到最底部
+        //         var my_scroll = document.getElementsByClassName('chat_title')[0]
+        //         my_scroll.scrollTop = 20000000
+        //         // 获取rid
+        //         var timer = setInterval(() => {
+        //             // 获取rid
+        //             var rid = root.getQueryString('rid')
+        //             // 获取最后一条留言时间
+        //             var lastTime = $('.chat_title li:last .char_name span').text()
+        //             // 请求最新留言 发送最近留言时间
+        //             var huifuUrl = "/app/index.php?i=2&c=entry&m=wxz_wzb&do=GetComment"
+        //             var huifuData = {
+        //                 rid: rid,
+        //                 last_time: lastTime
+        //             }
+        //             $.ajax({
+        //                 url: huifuUrl,
+        //                 type: 'POST',
+        //                 data: huifuData,
+        //                 dataType: 'JSON',
+        //                 success(res) {
+        //                     var newData = res.data
+        //                     // console.log(res)
+        //                     if (newData) {
+        //                         // 清除定时器
+        //                         var htmlLt = ''
+        //                         newData.forEach(item => {
+        //                             if (item.ispic == 0) {
+        //                                 // 如果是图片评论
+        //                                 htmlLt += `
+        //                                 <li data-id=${item.id}>
+        //                                 <div class="chat_left">
+        //                                     <div class="head_portrait">
+        //                                     <img src="${item.headimgurl}">
+        //                                     </div>
+        //                                     </div>
+        //                                     <div class="chat_right">
+        //                                     <div class="char_name">${item.nickname}
+        //                                     <span style="display:block;color:gray;font-size:12px;">${item.time}</span>
+        //                                     </div>
+        //                                     <div class="char_message">${item.content}
+        //                                     </div>
+        //                                 </div>
+        //                                 </li>`
+        //                             } else {
+        //                                 // 非图片评论
+        //                                 htmlLt += `
+        //                                 <li data-id=${item.id}>
+        //                                 <div class="chat_left">
+        //                                     <div class="head_portrait">
+        //                                     <img src="${item.headimgurl}">
+        //                                     </div>
+        //                                     </div>
+        //                                     <div class="chat_right">
+        //                                     <div class="char_name">${item.nickname}
+        //                                     <span style="display:block;color:gray;font-size:12px;">${item.time}</span>
+        //                                     </div>
+        //                                     <div class="char_message">
+        //                                     <img src="${item.content}" style="CURSOR: hand" id="215" bigimgurl="http://lanhaitun.zanhf.com/attachment/images/2/2019/03/X3AgFggxqy0vU3vLQrzLZ0Ax6VVrqF.jpg" onclick="imageClick(this)">
+        //                                     <div class="send">
+        //                                     </div>
+        //                                     </div>
+        //                                 </div>
+        //                                 </li>`
+        //                             }
+        //                         });
+        //                         $('.chat_title').append(htmlLt)
+        //                         setTimeout(() => {
+        //                             my_scroll.scrollTop = 2000000000
+        //                         }, 200);
+        //                     } else {
+        //                         return
+        //                     }
+        //                 },
+        //                 error(res) {
+        //                     clearInterval(timer)
+        //                     layer.msg("链接超时，重新刷新尝试！")
+        //                 }
+        //             })
+        //         }, 1000);
+        //         setTimeout(() => {
+        //             $('.chat_title').css('opacity', "1")
+        //         }, 1000);
+        //     }, 100);
+        //     // 点赞数增加
+        //     $('.zan-box').click(function () {
+        //         var curNum = Number($(this).find('.zan-num').text()) + 1
+        //         $(this).find('.zan-num').text(curNum)
+        //     })
 
-            // 回听功能
-            // http://live.xmcdn.com/history/2485/24.m3u8?start=1553616000000&end=1553623200000&transcode=ts
-            $('.pass').click(function () {
-                var $self = $(this)
-                var startTime = $self.attr('start')
-                var endTime = $self.attr('end')
-                $('.zhibo-bx').removeClass('zhibo-bx')
-                $self.addClass('zhibo-bx')
+        //     // 回听功能
+        //     // http://live.xmcdn.com/history/2485/24.m3u8?start=1553616000000&end=1553623200000&transcode=ts
+        //     $('.pass').click(function () {
+        //         var $self = $(this)
+        //         var startTime = $self.attr('start')
+        //         var endTime = $self.attr('end')
+        //         $('.zhibo-bx').removeClass('zhibo-bx')
+        //         $self.addClass('zhibo-bx')
 
-                var reListenSrc = 'http://live.xmcdn.com/history/2485/24.m3u8?start=' + startTime + "&end=" + endTime + "&transcode=ts"
-                if (root.radioPlayer) {
-                    root.radioPlayer.setStyles({
-                        src: reListenSrc
-                    })
-                    $('.play-img').hide()
-                    $('.pause-img').show()
-                    root.radioPlayer.play()
-                }
-            })
-            // 回到直播
-            $('.current-jiemu').click(function () {
-                $('.zhibo-bx').removeClass('zhibo-bx')
-                $(this).addClass('zhibo-bx')
-                var curSrc = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
-                if (root.radioPlayer) {
-                    root.radioPlayer.setStyles({
-                        src: curSrc
-                    })
-                    $('.play-img').hide()
-                    $('.pause-img').show()
-                    root.radioPlayer.play()
-                }
-            })
+        //         var reListenSrc = 'http://live.xmcdn.com/history/2485/24.m3u8?start=' + startTime + "&end=" + endTime + "&transcode=ts"
+        //         if (root.radioPlayer) {
+        //             root.radioPlayer.setStyles({
+        //                 src: reListenSrc
+        //             })
+        //             $('.play-img').hide()
+        //             $('.pause-img').show()
+        //             root.radioPlayer.play()
+        //             var title = $self.find('.left .title').text()
+        //             console.log(title)
+        //             $('.video-bx .video-title').text(title)
+        //             $('#videoMode .video-zhibo').text('回听中')
+        //         }
+        //     })
+        //     // 回到直播
+        //     $('.current-jiemu').click(function () {
+        //         $('.zhibo-bx').removeClass('zhibo-bx')
+        //         $(this).addClass('zhibo-bx')
+        //         var $self = $(this)
+        //         var curSrc = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
+        //         if (root.radioPlayer) {
+        //             root.radioPlayer.setStyles({
+        //                 src: curSrc
+        //             })
+        //             $('.play-img').hide()
+        //             $('.pause-img').show()
+        //             root.radioPlayer.play()
+        //             var title = $self.find('.left .title').text()
+        //             $('.video-bx .video-title').text(title)
+        //             $('#videoMode .video-zhibo').text('直播中')
+        //         }
+        //     })
 
-            // 直播发送图片
-            $('#chatImgUpload').click(function () {
-                $(".showfunction").hide();
+        //     // 直播发送图片
+        //     $('#chatImgUpload').click(function () {
+        //         $(".showfunction").hide();
 
-                function uploadOnePic() {
-                    plus.gallery.pick(function (path) {
-                        // 提示等待
-                        // alert(JSON.stringify(path))
-                        // root.imgW = plus.nativeUI.showWaiting()
-                        // root.uploadServerImg(e.files, true)
-                        plus.zip.compressImage({
-                            src: path,
-                            dst: "_doc/chat/gallery//" + path,
-                            quality: 20,
-                            overwrite: true,
-                        }, function (e) {
-                            // layer.msg(JSON.stringify(e.target))
-                            var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
-                                    method: "POST",
-                                },
-                                function (res) {
-                                    var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
-                                    root.postSubmit({
-                                        url: baseUrl + urlObj.sentTzChat,
-                                        data: {
-                                            ispic: 1,
-                                            content: imgUrl
-                                        },
-                                        source: 'sentTzChat'
-                                    })
-                                }
-                            );
-                            task.addFile(e.target, {
-                                key: "file"
-                            });
-                            task.start();
-                        }, function (error) {
-                            layer.msg('图片上传失败~')
-                        });
-                    }, function () {}, {
-                        system: false
-                    })
-                }
-                uploadOnePic()
-            })
-            // 刷新页面
-            $('#refreshBtnmy').click(function () {
-                root.radioPlayer.stop()
-                window.location.reload()
-            })
+        //         function uploadOnePic() {
+        //             plus.gallery.pick(function (path) {
+        //                 // 提示等待
+        //                 // alert(JSON.stringify(path))
+        //                 // root.imgW = plus.nativeUI.showWaiting()
+        //                 // root.uploadServerImg(e.files, true)
+        //                 plus.zip.compressImage({
+        //                     src: path,
+        //                     dst: "_doc/chat/gallery//" + path,
+        //                     quality: 20,
+        //                     overwrite: true,
+        //                 }, function (e) {
+        //                     // layer.msg(JSON.stringify(e.target))
+        //                     var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+        //                             method: "POST",
+        //                         },
+        //                         function (res) {
+        //                             var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+        //                             root.postSubmit({
+        //                                 url: baseUrl + urlObj.sentTzChat,
+        //                                 data: {
+        //                                     ispic: 1,
+        //                                     content: imgUrl
+        //                                 },
+        //                                 source: 'sentTzChat'
+        //                             })
+        //                         }
+        //                     );
+        //                     task.addFile(e.target, {
+        //                         key: "file"
+        //                     });
+        //                     task.start();
+        //                 }, function (error) {
+        //                     layer.msg('图片上传失败~')
+        //                 });
+        //             }, function () {}, {
+        //                 system: false
+        //             })
+        //         }
+        //         uploadOnePic()
+        //     })
+        //     // 刷新页面
+        //     $('#refreshBtnmy').click(function () {
+        //         root.radioPlayer.stop()
+        //         window.location.reload()
+        //     })
+        // }
+
+        if (document.getElementById('userCenter')) {
+            // 添加好友
+            root.addFriendCenter()
+
+
         }
-
         // 新首页
         if (document.getElementById('newListShow')) {
+           
             /**
              * 回到顶部
              */
@@ -3556,14 +3828,7 @@
             $('#refresh').click(function () {
                 window.location.reload()
             })
-            // 实例 轮播
-            var swiper = new Swiper('.swiper-container', {
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-            });
-
+         
             if (document.getElementsByClassName('my-newindex')[0]) { // 我的帖子引用主页帖子列表
                 /**
                  * 流加载
@@ -3595,7 +3860,7 @@
                     })
                 })
 
-            } else if (document.getElementsByClassName(' my-newpartake')[0]) { // 我参与的帖子
+            } else if (document.getElementsByClassName('my-newpartake')[0]) { // 我参与的帖子
                 root.showListFlow(mainurl, {
                     elem: "#tieziList",
                     fenlei: '',
@@ -3618,7 +3883,7 @@
                     })
                 })
 
-            } else if (document.getElementsByClassName(' my-newcollection')[0]) {
+            } else if (document.getElementsByClassName('my-newcollection')[0]) {
                 root.showListFlow(mainurl, {
                     elem: "#tieziList",
                     fenlei: '',
@@ -3637,15 +3902,15 @@
                     root.showListFlow(mainurl, {
                         elem: "#tieziList",
                         fenlei: textCon,
-                        load_style: 'part',
+                        load_style: 'collection',
                     })
                 })
-            } else { // 首页帖子列表分页加载
-                root.showListFlow(mainurl, {
+            } else if (document.getElementsByClassName('other-center')[0]) {
+                 // 首页帖子列表分页加载
+                 var uid = root.getQueryString('uid')
+                 root.showListFlow(mainurl, {
                     elem: "#tieziList",
-                    fenlei: '',
-                    load_style: 'index',
-                    sou: ''
+                    uid: uid
                 })
 
                 // 分类切换
@@ -3659,9 +3924,89 @@
                     root.showListFlow(mainurl, {
                         elem: "#tieziList",
                         fenlei: textCon,
+                        uid: uid,
                     })
                 })
+            } else  { // 首页帖子列表分页加载
+                root.showListFlow(mainurl, {
+                    elem: "#tieziList",
+                    fenlei: '',
+                    load_style: 'index',
+                    sou: ''
+                })
+                // 实例 轮播
+                var swiper = new Swiper('.swiper-container', {
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                });
+                // 分类切换
+                $('.tag-bx .tag-item').click(function () {
+                    $('.tag-bx .active').removeClass('active')
+                    $(this).addClass('active')
+                    var textCon = $.trim($(this).text()) // 获取标签
+                    if (textCon == "全 部") {
+                        textCon = ''
+                    }
+                    root.showListFlow(mainurl, {
+                        elem: "#tieziList",
+                        fenlei: textCon,
+                    })
+                })
+
+                 // alert(23)
+            function myBrowser() {
+                var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+                var isOpera = userAgent.indexOf("Opera") > -1;
+                if (isOpera) {
+                    return "Opera"
+                }; //判断是否Opera浏览器
+                if (userAgent.indexOf("Firefox") > -1) {
+                    return "FF";
+                } //判断是否Firefox浏览器
+                if (userAgent.indexOf("Chrome") > -1) {
+                    return "Chrome";
+                }
+                if (userAgent.indexOf("Safari") > -1) {
+                    return "Safari";
+                } //判断是否Safari浏览器
+                if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+                    return "IE";
+                }; //判断是否IE浏览器
+        
+                return false
             }
+            //以下是调用上面的函数
+            var mb = myBrowser();
+            console.log(mb)
+            if (mb) {
+        
+                var html = `
+                <ul id="dian" class="my-nav-bx ">
+                <li class="my-nav active">
+                    <a href="./index.php?i=2&c=entry&do=index&m=wyt_luntan">
+                        <img src="/attachment/style/src/img/home_icon_selected@2x.png">
+                        <span class="lht-home ">海豚之家</span>
+                    </a>
+                </li>
+                <li class="my-nav ">
+                    <a href="http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=index2&rid=9">
+                        <img src="/attachment/style/src/img/radio_icon_default@2x.png">
+                        <span class="lht-home">海豚电台</span>
+                    </a>
+                </li>
+                <li class="my-nav">
+                    <a class="active" href="./index.php?i=2&c=entry&action=user&do=Index&m=wyt_luntan">
+                        <img src="/attachment/style/src/img/me_icon_default@2x.png">
+                        <span class="lht-home ">个人中心</span>
+                    </a>
+                </li>
+            </ul>
+                `
+                // $('#newListShow').append(html)
+            }
+            } 
 
             // 搜索
             $('.search-item input').on('focus', function () {
@@ -3692,14 +4037,27 @@
             root.getallShTz(shlistUrl, {
                 elem: '#tieziList' // 插槽
             })
+               /**
+             * 回到顶部
+             */
+            function scrollToTop(anchorId) {
+                $(anchorId).on('click', function () {
+                    var dis = $(window).scrollTop();
+                    $('html,body').animate({
+                        scrollTop: '0px'
+                    }, 300);
+                })
+            }
+            root.scrollToTop = scrollToTop
+            root.scrollToTop('#goTop')
+            // 刷新
+            $('#refresh').click(function () {
+                window.location.reload()
+            })
         } else if (document.getElementById('friendList')) { //好友列表 
             // 删除好友操作
             root.delFriend()
         }
-
-
-
-        
 
     }(window.$, window.myLib || (window.myLib = {})));
 }())

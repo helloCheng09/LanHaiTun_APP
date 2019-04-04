@@ -3,16 +3,21 @@
 // 直播列表
 #zhiboWrap {
     .chat-bx {
-        height: calc(~"100vh - 321px") !important;
+        height: calc(~"100vh - 325px") !important;
     }
+
     .video-bx {
-        background-color: transparent!important;
+        background-color: transparent !important;
+    }
+
+    .showthisd {
+        height: calc(~"100vh - 327px") !important;
     }
 }
 
 #showList {
     // max-height: calc(~"100vh - 194px") !important;
-    height: calc(~"100vh - 254px") !important;
+    height: calc(~"100vh - 274px") !important;
     overflow-y: scroll;
     font-size: 16px;
     font-weight: normal;
@@ -237,6 +242,7 @@
             padding: 8px 0px;
             border-bottom: 1px solid #edeeee;
             display: flex;
+
             a {
                 width: calc(~"100vw - 20px");
             }
@@ -367,6 +373,7 @@
             justify-content: center;
             cursor: pointer;
         }
+
         .btn-del {
             line-height: 1.8em;
             padding: 0 10px;
@@ -382,6 +389,7 @@
 // 登陆
 #login {
     // font-family: PingFang Medium;
+    // min-height: calc(~"100vh - 48px");
     min-height: 100vh;
     padding-top: 40px;
     padding-bottom: 32px;
@@ -419,6 +427,7 @@
         display: inline-block;
         width: 100%;
         box-sizing: content-box;
+
         h1 {
             width: 170px;
             height: 170px;
@@ -479,7 +488,7 @@
 // 忘记密码
 #forget {
     // font-family: PingFang Medium;
-    padding-top: 32px;
+    padding-top: 76px;
     padding-bottom: 32px;
     min-height: 100vh;
 
@@ -500,7 +509,11 @@
         flex: 1;
 
         .layui-form-label {
-            font-weight: bold;
+            display: inline-block;
+            margin-top: 12px;
+            padding: 0;
+            font-size: 14px;
+            width: 100%;
             // font-family: PingFang-SC-Bold;
         }
 
@@ -508,7 +521,7 @@
             border: none;
             height: auto;
             line-height: 1em;
-            padding-bottom: 20px;
+            padding: 10px 0;
             padding-left: 0;
         }
 
@@ -570,6 +583,7 @@
     background-position: 50%;
     background-repeat: no-repeat;
     color: #fff;
+
     .login-head {
         padding-bottom: 30px;
     }
@@ -1053,7 +1067,7 @@
 
 // 自定义播放器
 #videoMode {
-    padding-top: 20px;
+    padding-top: 40px;
     background-size: cover;
     background-position: center;
 
@@ -1078,13 +1092,12 @@
             width: 100%;
             height: 190px;
 
-
         }
     }
 
     .video-zhibo {
         position: absolute;
-        top: 30px;
+        top: 50px;
         left: 30px;
         font-size: 16px;
         color: #fa6666;
@@ -1094,7 +1107,7 @@
         position: absolute;
         display: inline-block;
         left: 40px;
-        top: 65px;
+        top: 85px;
         font-size: 26px;
         color: #1690e5;
 
@@ -1104,7 +1117,7 @@
     .pause-img {
         position: absolute;
         right: 40px;
-        top: 94px;
+        top: 104px;
         width: 64px;
         height: 64px;
 
@@ -1185,7 +1198,7 @@
                     position: fixed;
                     top: 175px;
                     left: 20px;
-                    z-index: 1100000;
+                    z-index: 99;
                     width: 24px;
                     height: 24px;
                 }
@@ -1334,6 +1347,7 @@
 
         .layui-input-block {
             margin-left: 0;
+            line-height: 3em;
 
             input,
             textarea {
@@ -1358,8 +1372,11 @@
             text-align: right;
         }
 
-        .layui-btn {
+        .fasong-fs {
+            margin-right: 10px;
+        }
 
+        .layui-btn {
             background-color: #6ec7ff;
         }
 
@@ -1449,7 +1466,8 @@
 
 // 刷新
 #refresh,
-#goTop {
+#goTop,
+#gohome {
     position: fixed;
     text-align: center;
     z-index: 999999999;
@@ -1478,6 +1496,16 @@
 #goTop {
     bottom: 188px;
     right: 10px;
+}
+
+#gohome {
+    bottom: 60px;
+    right: 10px;
+
+    a {
+        color: #1690e5;
+    }
+
 }
 
 #refresh {
@@ -1662,6 +1690,10 @@
     min-height: 100vh;
     padding-bottom: 48px;
     background-color: #f0f0f1;
+
+    .head-title {
+        margin-bottom: 0;
+    }
 }
 
 // 我的帖子
@@ -1680,11 +1712,14 @@
 .pl-pn {
     padding-bottom: 50px;
     margin-bottom: 5px;
+
     .tz-hf-item {
+        padding-top: 10px;
         background-color: #fff;
     }
+
     ul li {
-        img{
+        img {
             vertical-align: middle;
         }
     }
@@ -1705,4 +1740,310 @@
 
 .weui-cell__bd p {
     margin-top: 4px;
+}
+
+#myselfZb {
+    position: relative;
+    height: calc(~"100vh - 274px") !important;
+    overflow-y: scroll;
+    padding-bottom: 60px;
+    background-color: #f0f0f1;
+
+    .zb-wrap {
+        // height: calc(~"100vh -174px") !important;
+        // overflow-y: scroll;
+        // font-size: 16px;
+        // font-weight: normal;
+
+    }
+
+    .text-ts {
+        display: block;
+        width: 61%;
+        padding: 10px 0;
+        margin: 10px auto 20px;
+        text-align: center;
+        border-radius: 4px;
+        background-color: #ddd;
+        color: #fff;
+    }
+
+    #chatBx {
+
+        .chat-item {
+            padding: 10px 10px 0;
+            margin-bottom: 5px;
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .item-left {
+            a {
+                display: flex;
+                align-items: center;
+
+                .tx {
+                    width: 34px;
+                    height: 34px;
+                    margin-right: 6px;
+                    border-radius: 100%;
+                    object-fit: cover;
+                }
+
+                .right {
+
+                    div {
+                        line-height: 1.4em;
+                    }
+
+                    .time {
+                        font-size: 12px;
+                        color: #808080;
+                    }
+                }
+            }
+        }
+
+        .item-right {
+
+            .banuser,
+            .clearwords,
+            .letout {
+                display: inline-block;
+                line-height: 24px;
+                line-height: 24px;
+                padding: 0 5px;
+                margin: 0 4px;
+                color: #fff;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .letout {
+                // background: rgb(23, 153, 23);
+            }
+
+            .banuser {
+                // background-color: #f50;
+            }
+
+            .clearwords {
+                // background-color: #1690e5;
+            }
+        }
+
+    }
+
+    .item-con {
+        display: inline-block;
+        position: relative;
+       padding: 5px 12px;
+        margin: 0 40px;
+        border-radius: 4px;
+
+    }
+
+    .text-con {
+        background-color: #fff;
+    }
+
+    .text-con::before {
+        content: '';
+        position: absolute;
+        top: -13px;
+        left: 10px;
+        z-index: 999;
+        border-width: 8px;
+        border-style: solid;
+        border-color: transparent transparent #fff transparent;
+    }
+
+    .words {
+        display: inline-block;
+        word-break: break-all;
+
+        img {
+            width: 28px;
+            height: auto;
+        }
+    }
+
+    .imgs {
+        display: inline-block;
+    }
+
+    .img-item {
+        display: inline-block;
+        width: 120px;
+        height: auto;
+        height: 190px;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+
+    .biaoqing {
+        img {
+            width: 28px;
+            height: auto;
+        }
+    }
+
+    .control-pn {
+        position: fixed;
+        bottom: 48px;
+        left: 0;
+        right: 0;
+        z-index: 999;
+
+        background: #fff;
+
+        .bx {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 10px;
+        }
+
+        .upPic {
+            width: 28px;
+            height: 28px;
+            margin-bottom: 4px;
+        }
+
+        #zbtextarea {
+            flex: 1;
+            height: 34px;
+            line-height: 1.2em;
+            // padding: 10px;
+            padding-top:8px;
+            padding-left: 4px;
+            margin: 0 8px;
+            resize: none;
+            font-size: 14px;
+            border-radius: 2px;
+            -webkit-appearance: none;
+        }
+
+        .bqbtn,
+        .jianpanbtn {
+            width: 28px;
+            height: 28px;
+            margin-right: 5px;
+            margin-bottom: 4px;
+            // display: none;
+        }
+
+        .jianpanbtn {
+            display: none;
+        }
+
+        .fasongbtn {
+            height: 30px;
+            line-height: 30px;
+            margin-bottom: 4px;
+        }
+
+    }
+
+    .bq-bx {
+        padding: 10px;
+        background-color: #f0f0f1;
+        display: none;
+    }
+
+    .browlist {
+        display: flex;
+        flex-wrap: wrap;
+        width: 324px;
+        margin: 0 auto;
+
+        li {
+            position: relative;
+            margin: 0 4px;
+
+            img {
+                width: 28px;
+                height: auto;
+            }
+        }
+    }
+}
+
+.TAstate li {
+    width: 50%;
+    height: 34px;
+    line-height: 34px;
+    color: #808080;
+    text-align: center;
+    float: left;
+    cursor: pointer;
+}
+
+.fixedfile #videoMode .video-bx {
+    background-color: transparent;
+}
+
+.content {
+    .fixedfile {
+        width: 100%;
+        z-index: 3;
+        overflow: hidden;
+    }
+
+    .TAstate {
+        height: 34px;
+        width: 100%;
+        background-color: #fff;
+        z-index: 3;
+        max-width: 640px;
+    }
+
+    .borb {
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    .TAstate li {
+        width: 50%;
+        height: 34px;
+        line-height: 34px;
+        color: #808080;
+        text-align: center;
+        float: left;
+        cursor: pointer;
+    }
+
+    .currentli {
+        color: #6ec7ff !important;
+        border-bottom: 2px solid #6ec7ff;
+    }
+}
+
+.show-fs {
+    position: fixed;
+    bottom: 54px;
+    right: 10px;
+    z-index: 99999;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 100%;
+    font-size: 14px;
+    color: #fff;
+    background-color: #22aaff;
+}
+
+// 直播
+#zhibowrap{
+    margin-bottom: 48px;
+    #refresh {
+        bottom: 115px;
+    right: 16px;
+    }
 }

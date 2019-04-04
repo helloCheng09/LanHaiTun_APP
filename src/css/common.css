@@ -3,8 +3,8 @@ body {
   color: #333;
 }
 .prism-cover {
-  background-size: cover!important;
-  background-position: center!important;
+  background-size: cover !important;
+  background-position: center !important;
 }
 .input-bx {
   position: fixed;
@@ -484,4 +484,52 @@ body {
 }
 img {
   object-fit: cover;
+}
+/* 新增导航样式 */
+body {
+  position: relative;
+  /* background-color: #f0f0f0; */
+}
+.my-nav-bx::before {
+  border-color: #ddd;
+}
+.my-nav-bx {
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  z-index: 999999;
+  display: flex;
+  padding: 6px 0;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  background-color: #fff;
+}
+.my-nav-bx a {
+  display: inline-block;
+  height: 36px;
+  line-height: 1;
+  color: #999;
+}
+.my-nav {
+  height: 36px;
+  font-size: 0;
+}
+.my-nav-bx .active a {
+  color: #6ec7ff;
+}
+.my-nav-bx span {
+  display: inline-block;
+  width: 100%;
+}
+.my-nav img {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  font-size: 0;
+}
+.lht-home {
+  font-size: 12px;
+  line-height: 1.2em;
 }

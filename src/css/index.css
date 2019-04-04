@@ -1,12 +1,15 @@
 @import 'StyleDepend/mReset.css';
 #zhiboWrap .chat-bx {
-  height: calc(100vh - 321px) !important;
+  height: calc(100vh - 325px) !important;
 }
 #zhiboWrap .video-bx {
-  background-color: transparent!important;
+  background-color: transparent !important;
+}
+#zhiboWrap .showthisd {
+  height: calc(100vh - 327px) !important;
 }
 #showList {
-  height: calc(100vh - 254px) !important;
+  height: calc(100vh - 274px) !important;
   overflow-y: scroll;
   font-size: 16px;
   font-weight: normal;
@@ -399,7 +402,7 @@
   color: #fff;
 }
 #forget {
-  padding-top: 32px;
+  padding-top: 76px;
   padding-bottom: 32px;
   min-height: 100vh;
 }
@@ -417,13 +420,17 @@
   flex: 1;
 }
 #forget .my-input .layui-form-label {
-  font-weight: bold;
+  display: inline-block;
+  margin-top: 12px;
+  padding: 0;
+  font-size: 14px;
+  width: 100%;
 }
 #forget .my-input input {
   border: none;
   height: auto;
   line-height: 1em;
-  padding-bottom: 20px;
+  padding: 10px 0;
   padding-left: 0;
 }
 #forget .my-input input:placeholder {
@@ -777,7 +784,7 @@
 /* uploadImage css begin*/
 /* uploadImage css end*/
 #videoMode {
-  padding-top: 20px;
+  padding-top: 40px;
   background-size: cover;
   background-position: center;
 }
@@ -803,7 +810,7 @@
 }
 #videoMode .video-zhibo {
   position: absolute;
-  top: 30px;
+  top: 50px;
   left: 30px;
   font-size: 16px;
   color: #fa6666;
@@ -812,7 +819,7 @@
   position: absolute;
   display: inline-block;
   left: 40px;
-  top: 65px;
+  top: 85px;
   font-size: 26px;
   color: #1690e5;
 }
@@ -820,7 +827,7 @@
 #videoMode .pause-img {
   position: absolute;
   right: 40px;
-  top: 94px;
+  top: 104px;
   width: 64px;
   height: 64px;
 }
@@ -885,7 +892,7 @@
   position: fixed;
   top: 175px;
   left: 20px;
-  z-index: 1100000;
+  z-index: 99;
   width: 24px;
   height: 24px;
 }
@@ -1004,6 +1011,7 @@
 }
 #newFatie .layui-form .layui-input-block {
   margin-left: 0;
+  line-height: 3em;
 }
 #newFatie .layui-form .layui-input-block input,
 #newFatie .layui-form .layui-input-block textarea {
@@ -1020,6 +1028,9 @@
 #newFatie .layui-form .btn-bx {
   padding: 10px;
   text-align: right;
+}
+#newFatie .layui-form .fasong-fs {
+  margin-right: 10px;
 }
 #newFatie .layui-form .layui-btn {
   background-color: #6ec7ff;
@@ -1086,7 +1097,8 @@
   color: #6ec7ff;
 }
 #refresh,
-#goTop {
+#goTop,
+#gohome {
   position: fixed;
   text-align: center;
   z-index: 999999999;
@@ -1096,7 +1108,8 @@
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
 }
 #refresh a,
-#goTop a {
+#goTop a,
+#gohome a {
   width: 100%;
   height: 100%;
   display: flex;
@@ -1106,7 +1119,8 @@
   background-color: #fff;
 }
 #refresh a img,
-#goTop a img {
+#goTop a img,
+#gohome a img {
   display: inline-block;
   width: 26px;
   height: 26px;
@@ -1114,6 +1128,13 @@
 #goTop {
   bottom: 188px;
   right: 10px;
+}
+#gohome {
+  bottom: 60px;
+  right: 10px;
+}
+#gohome a {
+  color: #1690e5;
 }
 #refresh {
   bottom: 138px;
@@ -1253,6 +1274,10 @@
   padding-bottom: 48px;
   background-color: #f0f0f1;
 }
+#newListShow .head-title,
+#newshlist .head-title {
+  margin-bottom: 0;
+}
 .my-newindex #refresh,
 .my-newpartake #refresh {
   bottom: 10px;
@@ -1266,6 +1291,7 @@
   margin-bottom: 5px;
 }
 .pl-pn .tz-hf-item {
+  padding-top: 10px;
   background-color: #fff;
 }
 .pl-pn ul li img {
@@ -1283,4 +1309,230 @@
 }
 .weui-cell__bd p {
   margin-top: 4px;
+}
+#myselfZb {
+  position: relative;
+  height: calc(100vh - 274px) !important;
+  overflow-y: scroll;
+  padding-bottom: 60px;
+  background-color: #f0f0f1;
+}
+#myselfZb .text-ts {
+  display: block;
+  width: 61%;
+  padding: 10px 0;
+  margin: 10px auto 20px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: #ddd;
+  color: #fff;
+}
+#myselfZb #chatBx .chat-item {
+  padding: 10px 10px 0;
+  margin-bottom: 5px;
+}
+#myselfZb #chatBx .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+#myselfZb #chatBx .item-left a {
+  display: flex;
+  align-items: center;
+}
+#myselfZb #chatBx .item-left a .tx {
+  width: 34px;
+  height: 34px;
+  margin-right: 6px;
+  border-radius: 100%;
+  object-fit: cover;
+}
+#myselfZb #chatBx .item-left a .right div {
+  line-height: 1.4em;
+}
+#myselfZb #chatBx .item-left a .right .time {
+  font-size: 12px;
+  color: #808080;
+}
+#myselfZb #chatBx .item-right .banuser,
+#myselfZb #chatBx .item-right .clearwords,
+#myselfZb #chatBx .item-right .letout {
+  display: inline-block;
+  line-height: 24px;
+  padding: 0 5px;
+  margin: 0 4px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+#myselfZb .item-con {
+  display: inline-block;
+  position: relative;
+  padding: 5px 12px;
+  margin: 0 40px;
+  border-radius: 4px;
+}
+#myselfZb .text-con {
+  background-color: #fff;
+}
+#myselfZb .text-con::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 10px;
+  z-index: 999;
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+}
+#myselfZb .words {
+  display: inline-block;
+  word-break: break-all;
+}
+#myselfZb .words img {
+  width: 28px;
+  height: auto;
+}
+#myselfZb .imgs {
+  display: inline-block;
+}
+#myselfZb .img-item {
+  display: inline-block;
+  width: 120px;
+  height: auto;
+  height: 190px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+#myselfZb .biaoqing img {
+  width: 28px;
+  height: auto;
+}
+#myselfZb .control-pn {
+  position: fixed;
+  bottom: 48px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #fff;
+}
+#myselfZb .control-pn .bx {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 10px;
+}
+#myselfZb .control-pn .upPic {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 4px;
+}
+#myselfZb .control-pn #zbtextarea {
+  flex: 1;
+  height: 34px;
+  line-height: 1.2em;
+  padding-top: 8px;
+  padding-left: 4px;
+  margin: 0 8px;
+  resize: none;
+  font-size: 14px;
+  border-radius: 2px;
+  -webkit-appearance: none;
+}
+#myselfZb .control-pn .bqbtn,
+#myselfZb .control-pn .jianpanbtn {
+  width: 28px;
+  height: 28px;
+  margin-right: 5px;
+  margin-bottom: 4px;
+}
+#myselfZb .control-pn .jianpanbtn {
+  display: none;
+}
+#myselfZb .control-pn .fasongbtn {
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 4px;
+}
+#myselfZb .bq-bx {
+  padding: 10px;
+  background-color: #f0f0f1;
+  display: none;
+}
+#myselfZb .browlist {
+  display: flex;
+  flex-wrap: wrap;
+  width: 324px;
+  margin: 0 auto;
+}
+#myselfZb .browlist li {
+  position: relative;
+  margin: 0 4px;
+}
+#myselfZb .browlist li img {
+  width: 28px;
+  height: auto;
+}
+.TAstate li {
+  width: 50%;
+  height: 34px;
+  line-height: 34px;
+  color: #808080;
+  text-align: center;
+  float: left;
+  cursor: pointer;
+}
+.fixedfile #videoMode .video-bx {
+  background-color: transparent;
+}
+.content .fixedfile {
+  width: 100%;
+  z-index: 3;
+  overflow: hidden;
+}
+.content .TAstate {
+  height: 34px;
+  width: 100%;
+  background-color: #fff;
+  z-index: 3;
+  max-width: 640px;
+}
+.content .borb {
+  border-bottom: 1px solid #f2f2f2;
+}
+.content .TAstate li {
+  width: 50%;
+  height: 34px;
+  line-height: 34px;
+  color: #808080;
+  text-align: center;
+  float: left;
+  cursor: pointer;
+}
+.content .currentli {
+  color: #6ec7ff !important;
+  border-bottom: 2px solid #6ec7ff;
+}
+.show-fs {
+  position: fixed;
+  bottom: 54px;
+  right: 10px;
+  z-index: 99999;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 100%;
+  font-size: 14px;
+  color: #fff;
+  background-color: #22aaff;
+}
+#zhibowrap {
+  margin-bottom: 48px;
+}
+#zhibowrap #refresh {
+  bottom: 115px;
+  right: 16px;
 }

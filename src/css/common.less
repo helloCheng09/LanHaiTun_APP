@@ -2,10 +2,11 @@ body {
     background-color: #fff;
     color: #333;
 }
+
 // 视频封面重置
 .prism-cover {
-    background-size: cover!important;
-    background-position: center!important;
+    background-size: cover !important;
+    background-position: center !important;
 }
 
 // 发送私信
@@ -27,7 +28,7 @@ body {
         flex: 1;
         height: 2em;
         margin: 10px 0;
-        padding:5px 0 0 5px;
+        padding: 5px 0 0 5px;
         resize: none;
         outline: none;
         -webkit-appearance: none;
@@ -177,7 +178,7 @@ body {
         width: 14px;
         height: 14px;
         margin-right: 6px;
-        margin-top:2px;
+        margin-top: 2px;
     }
 
     .search-item {
@@ -338,6 +339,7 @@ body {
             .my-user-det {
                 .user-top {
                     margin-bottom: 2px;
+
                     .user-name {
                         vertical-align: middle;
                         font-weight: normal;
@@ -411,6 +413,7 @@ body {
             padding: 0 2.6%;
             margin-bottom: 4px;
             color: #333;
+
             dd {
                 display: flex;
                 align-items: center;
@@ -498,7 +501,7 @@ body {
                     font-size: 14px;
                 }
             }
-            
+
 
         }
 
@@ -558,6 +561,7 @@ body {
                     width: 20px;
                 }
             }
+
             .zhuanfa {
                 display: inline-block;
                 height: 40px;
@@ -565,7 +569,7 @@ body {
                 flex: 1;
                 text-align: center;
                 cursor: pointer;
-                
+
                 img {
                     width: 20px;
                     height: auto;
@@ -579,13 +583,15 @@ body {
                     color: #808080;
                 }
             }
-            .hadzan span{
+
+            .hadzan span {
                 color: #22aaff;
             }
         }
 
         .admin-control {
-            justify-content: space-around;   
+            justify-content: space-around;
+
             span {
                 display: inline-block;
                 height: 30px;
@@ -593,11 +599,14 @@ body {
                 margin: 10px 0;
                 border-radius: 8px;
             }
-            .admin-refuse,.admin-pass {
+
+            .admin-refuse,
+            .admin-pass {
                 padding: 0 40px;
                 background-color: #f50;
                 color: #fff;
             }
+
             .admin-pass {
                 background-color: #6ec7ff;
             }
@@ -609,3 +618,61 @@ body {
 img {
     object-fit: cover;
 }
+
+/* 新增导航样式 */
+body {
+    position: relative;
+    /* background-color: #f0f0f0; */
+}
+
+.my-nav-bx::before {
+    border-color: #ddd;
+}
+
+.my-nav-bx {
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    z-index: 999999;
+    display: flex;
+    padding: 6px 0;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+}
+
+.my-nav-bx a {
+    display: inline-block;
+    height: 36px;
+    line-height: 1;
+    color: #999;
+}
+
+.my-nav {
+    height: 36px;
+    font-size: 0;
+}
+
+.my-nav-bx .active a {
+    color: #6ec7ff;
+}
+
+.my-nav-bx span {
+    display: inline-block;
+    width: 100%;
+}
+
+.my-nav img {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    font-size: 0;
+}
+
+
+.lht-home {
+	font-size: 12px;
+	line-height: 1.2em;
+  }
