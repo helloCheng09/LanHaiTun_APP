@@ -854,7 +854,7 @@
   margin-top: 5px;
 }
 #newFatie .layui-form .main-content {
-  min-height: calc(100vh - 154px);
+  min-height: calc(100vh - 164px);
 }
 #newFatie .layui-form .main-content .fenlei-tag {
   padding: 0 10px;
