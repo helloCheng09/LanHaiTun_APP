@@ -57,12 +57,12 @@
                 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
                 console.log(isAndroid, isiOS)
                 //ios终端
-                // if (isAndroid) {
-                //     document.addEventListener('plusready', creatVideo, false);
-                // }
-                // if (isiOS) {
-                //     creatVideo()
-                // }
+                if (isAndroid) {
+                    document.addEventListener('plusready', creatVideo, false);
+                }
+                if (isiOS) {
+                    creatVideo()
+                }
                 creatVideo()
             }
             document.addEventListener('plusready', creatVideo, false);
