@@ -55,7 +55,7 @@ gulp.task("js", () => {
             .pipe(babel({
                 presets: ['es2015']
             }))
-            // .pipe(uglify())
+            .pipe(uglify())
     }
     page.pipe(gulp.dest(folder.build + "js"))
 

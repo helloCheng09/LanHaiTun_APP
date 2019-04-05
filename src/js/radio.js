@@ -235,7 +235,6 @@
                     layer.close(confirmMsg)
                     return false;
                 })
-                
             })
         })
 

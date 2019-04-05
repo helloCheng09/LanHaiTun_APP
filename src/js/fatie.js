@@ -125,6 +125,7 @@
                     // }, 1000);
                     root.navToHome()
 
+
                 } else if (res.code == 2) {
                     layer.msg(res.msg)
                     root.navToLogin()
@@ -316,10 +317,10 @@
                 form.verify({
                     linkurl: function (value, item) {
                         console.log(value)
-                        if (!reg.test(value)) {
-                            layer.msg('请填写正确的链接地址')
-                            return false
-                        } else {
+                        // if (!reg.test(value)) {
+                        //     layer.msg('请填写正确的链接地址')
+                        //     return false
+                        // } else {
                             if (!myData.link_title || !myData.link_adress) {
                                 layer.msg('发送失败~请完善外链信息')
                                 return false
@@ -332,7 +333,7 @@
                                 $('.link-bx .layui-btn:last-child').removeAttr('lay-submit').addClass("layui-btn-disabled")
                             }
                         }
-                    }
+                    // }
                 })
 
 
