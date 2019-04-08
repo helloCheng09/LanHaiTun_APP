@@ -189,6 +189,9 @@
 }
 #friendList .main-list li a,
 #addFriend .main-list li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: calc(100vw - 20px);
 }
 #friendList .main-list .left,
@@ -200,6 +203,7 @@
 }
 #friendList .main-list .left img,
 #addFriend .main-list .left img {
+  display: block;
   width: 48px;
   height: 48px;
   border-radius: 100%;

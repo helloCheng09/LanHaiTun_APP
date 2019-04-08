@@ -2010,7 +2010,7 @@ if (!isWeixin) {
                                                 </li>
                                             `
                                     }
-                                    $('.list').append(html)
+                                    $('.list').empty().append(html)
                                     // 如果不是好友，添加好友操作
                                     if (obj.source === 'searchUser') {
                                         root.addFriend()
@@ -2896,7 +2896,8 @@ if (!isWeixin) {
 
                     timer = setTimeout(() => {
                         var serData = {
-                            telephone: _self.val()
+                            // telephone: _self.val()
+                            nickname: _self.val()
                         }
                         root.postSubmit({
                             url: baseUrl + urlObj.searUser,
@@ -3619,6 +3620,27 @@ if (!isWeixin) {
             } else if (document.getElementById('friendList')) { //好友列表 
                 // 删除好友操作
                 root.delFriend()
+                 // 搜索框防抖
+                // 搜索好友
+                var timer
+                $('.ser-input').keydown(function () {
+                    var _self = $(this)
+                    if (timer) {
+                        clearTimeout(timer)
+                    }
+
+                    timer = setTimeout(() => {
+                        var serData = {
+                            // telephone: _self.val()
+                            nickname: _self.val()
+                        }
+                        root.postSubmit({
+                            url: baseUrl + urlObj.searUser,
+                            data: serData,
+                            source: 'searchUser'
+                        })
+                    }, 1500);
+                })
             }
 
         }(window.$, window.myLib || (window.myLib = {})));
