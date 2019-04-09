@@ -404,14 +404,18 @@
         var cmr = plus.camera.getCamera();
         var res = cmr.supportedVideoResolutions[0];
         var fmt = cmr.supportedVideoFormats[0];
+        alert(JSON.stringify(res.supportedVideoResolutions))
+        alert(JSON.stringify(cmr.supportedVideoResolutions))
+
         cmr.startVideoCapture(function (path) {
+            layer.msg(JSON.stringify(path))
                 // console.log("录像成功：" + path);
                 root.uploadMyVideo(path)
             },
             function (error) {
                 alert(JSON.stringify(error));
             }, {
-                format: fmt
+                format: '640*480'
             }
         );
         // }
@@ -534,15 +538,19 @@
         // 新建上传任务 视频
         var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=upload_video", {
             method: "POST",
-        }, function (res) {
+            timeout: 120
+        }, function (res, status) {
+            
             // alert(JSON.stringify(res))
             // alert(res.msg)
             // 关闭图片上传 相机只能录像
             root.showCamera('video')
             // 关闭等待
             w.close()
-            // alert(JSON.stringify(res))
+            
             var res = JSON.parse(res.responseText)
+            alert((JSON.stringify(res)))
+            layer.msg(JSON.stringify(status))
             var videoSrc = res.data
             if (res.code == 1) {
                 //  赋值给input

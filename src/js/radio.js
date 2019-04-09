@@ -11,7 +11,7 @@
         jinyan: "/index.php?i=2&c=entry&m=wxz_wzb&do=Isshutup", // 禁言接口
         lastMsg: "/index.php?i=2&c=entry&m=wxz_wzb&do=LastComment", // 最后一条信息 请求参 last_time
     }
-    
+
     function getNewMsg() {
         // 定时获取最新
         // 获取rid
@@ -173,7 +173,13 @@
         $('#myselfZb').off().scroll(function () {
             var _self = $(this)
             var scrolltop = _self.scrollTop()
-            if (scrolltop < 300) {
+            if (scrolltop < 600) {
+                var index = layer.load(4, {
+                    shade: [0.4, "#000"]
+                });
+                setTimeout(() => {
+                    layer.close(index)
+                }, 1000);
                 $('#myselfZb').off()
                 // 获取分页的弹幕信息 第一页
                 // 获取rid
@@ -184,7 +190,6 @@
                     data: {
                         page: root.page,
                         rid: root.rid
-
                     },
                     source: 'getPages'
                 })
@@ -372,7 +377,7 @@
                     }
 
                     if (res.s == '-2') {
-                         layer.msg(res.msg)
+                        layer.msg(res.msg)
                     }
                     // layer.msg(res.msg)
 
@@ -475,7 +480,7 @@
             // }, 500);
             $('.my-nav').click(function () {
                 root.radioPlayer.stop()
-            })    
+            })
 
             // if (!root.radioPlayer) {
             //     root.radioPlayer = new plus.video.VideoPlayer('myVideo', {
@@ -514,7 +519,7 @@
             $('#refresh').click(function () {
                 window.location.reload()
             })
-           
+
         }
         document.addEventListener('plusready', plusReady, false);
         // 点赞数增加
