@@ -3,7 +3,7 @@
      * 全局数据
      * data.js
      */
-    var baseUrl = 'http://lanhaitun.zanhf.com/app/'
+    var baseUrl = 'http://lanhaitun.kachezhisheng.com/app/'
     var urlObj = {
         // sentTzChat: 'index.php?i=2&c=entry&rid=9&do=addcomment&m=wxz_wzb', // 发送直播评论接口
         reEditorGet: 'index.php?i=2&c=entry&do=index&m=wyt_luntan&action=thead_edit', // 获取修改的帖子信息
@@ -28,7 +28,7 @@
                 // 默认是竖屏
                 // 竖屏
                 // $('#videoPoster').addClass('shuping').removeClass('hengping')
-                // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
+                // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
                 // 显示视频
                 $('#videoPoster').show()
                 $('.set-poster').show()
@@ -44,7 +44,7 @@
                     //     // 如果不是竖屏 而是横屏
                     //     // 横屏
                     //     $('#videoPoster').addClass('hengping').removeClass('shuping')
-                    //     $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
+                    //     $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
                     // }
                 })
             }
@@ -404,8 +404,6 @@
         var cmr = plus.camera.getCamera();
         var res = cmr.supportedVideoResolutions[0];
         var fmt = cmr.supportedVideoFormats[0];
-        alert(JSON.stringify(res.supportedVideoResolutions))
-        alert(JSON.stringify(cmr.supportedVideoResolutions))
 
         cmr.startVideoCapture(function (path) {
             layer.msg(JSON.stringify(path))
@@ -474,10 +472,10 @@
             if (lastone) {
                 root.imgW.close()
             }
-            var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+            var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
                 method: "POST",
             }, function (res) {
-                var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+                var imgUrl = 'http://lanhaitun.kachezhisheng.com/' + JSON.parse(res.responseText).data.file_path
                 console.log(imgUrl)
                 var showPicEle = $('.img-show-bx ul')
                 // 判断是否第一次上传相片 插入上传按钮
@@ -491,7 +489,7 @@
                         $('.img-show-bx ul').prepend(`
                                     <li class='uped-pic'>
                                         <img class="main-pic" src="${imgUrl}">
-                                        <img class="del-icon" src="  http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
+                                        <img class="del-icon" src="  http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
                                         <input name="images[]" value="${imgUrl}" hidden>
                                     </li>
                                 `)
@@ -501,7 +499,7 @@
                     $('.img-show-bx ul').prepend(`
                                 <li class='uped-pic'>
                                     <img class="main-pic" src="${imgUrl}">
-                                    <img class="del-icon" src="  http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
+                                    <img class="del-icon" src="  http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/shanchu.png">
                                     <input name="images[]" value="${imgUrl}" hidden>
                                 </li>
                             `)
@@ -536,7 +534,7 @@
         //  开等待提示
         var w = plus.nativeUI.showWaiting();
         // 新建上传任务 视频
-        var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=upload_video", {
+        var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=upload_video", {
             method: "POST",
             timeout: 120
         }, function (res, status) {
@@ -549,8 +547,6 @@
             w.close()
             
             var res = JSON.parse(res.responseText)
-            alert((JSON.stringify(res)))
-            layer.msg(JSON.stringify(status))
             var videoSrc = res.data
             if (res.code == 1) {
                 //  赋值给input
@@ -596,10 +592,10 @@
             // 新建上传任务 图片
             /*
              */
-            var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+            var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
                 method: "POST",
             }, function (res) {
-                var posterUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+                var posterUrl = 'http://lanhaitun.kachezhisheng.com/' + JSON.parse(res.responseText).data.file_path
                 // console.log(posterUrl)
                 $("input[name='fengmian']").val(posterUrl)
                 $("#videoPoster .poster-img").attr('src', posterUrl)
@@ -791,7 +787,7 @@
 //   "id": "player-con",
 //   // "source": "http://lhttp.qingting.fm/live/4804/64k.mp3",
 //   // "source": "http://ls.qingting.fm/live/20211612/64k.m3u8",
-//   "source": 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=audio',
+//   "source": 'http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=audio',
 //   "width": "100%",
 //   "height": "160px",
 //   "autoplay": true,

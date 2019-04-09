@@ -68,7 +68,7 @@ if (!isWeixin) {
          * 全局数据
          * data.js
          */
-        var baseUrl = 'http://lanhaitun.zanhf.com/app/'
+        var baseUrl = 'http://lanhaitun.kachezhisheng.com/app/'
         var urlObj = {
             loginUrl: 'index.php?i=2&c=entry&do=login_post&m=wyt_luntan', // 登陆接口
             registerUrl: 'index.php?i=2&c=entry&do=register&m=wyt_luntan', // 注册接口
@@ -334,7 +334,7 @@ if (!isWeixin) {
                                 title: "【蓝海豚卡车之家App】", //应用名字  
                                 content: sharText,
                                 href: shareUrl, //分享出去后，点击跳转地址  
-                                thumbs: ["http://lanhaitun.zanhf.com/attachment/style/src/img/linkcover.png"] //分享缩略图  
+                                thumbs: ["http://lanhaitun.kachezhisheng.com/attachment/style/src/img/linkcover.png"] //分享缩略图  
                             }, function (result) {
                                 console.log(JSON.stringify(result))
                                 //分享回调  
@@ -514,7 +514,7 @@ if (!isWeixin) {
                             case "删除":
                                 var confirmMsg = layer.confirm('确认删除吗？', {
                                     btn: ['确认', '取消'],
-                                    title: '提示',
+                                    title: '蓝海豚卡车之家',
                                     closeBtn: 0,
                                 }, function () {
                                     root.postSubmit({
@@ -549,7 +549,7 @@ if (!isWeixin) {
                                 //     source: 'reEditorGet',
                                 // })
 
-                                window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?action=fatie&i=2&c=entry&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
+                                window.location.href = 'http://lanhaitun.kachezhisheng.com/app/index.php?action=fatie&i=2&c=entry&do=Index&m=wyt_luntan&thread_id=' + thread_id + '&isLink=' + isLink
                                 break;
                         }
                     }
@@ -1050,7 +1050,7 @@ if (!isWeixin) {
                                 //     })
 
                                 //     // root.formTijiao ()
-                                //     // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                                //     // window.location.href = 'http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
 
                                 // })
                                 // 收藏转发点赞
@@ -1360,7 +1360,7 @@ if (!isWeixin) {
                     //     root.reeditor = {}
                     //     root.reeditor.thread_id = thread_id
                     //     root.reeditor.islink = 'true'
-                    //     // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                    //     // window.location.href = 'http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
                     // })
                     // 调用收藏 点赞 转发事件
                     root.mainPageEvent()
@@ -1394,7 +1394,7 @@ if (!isWeixin) {
             //             // 默认是竖屏
             //             // 竖屏
             //             // $('#videoPoster').addClass('shuping').removeClass('hengping')
-            //             // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
+            //             // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
             //             // 显示视频
             //             $('#videoPoster').show()
             //             $('.set-poster').show()
@@ -1410,7 +1410,7 @@ if (!isWeixin) {
             //                 //     // 如果不是竖屏 而是横屏
             //                 //     // 横屏
             //                 //     $('#videoPoster').addClass('hengping').removeClass('shuping')
-            //                 //     $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
+            //                 //     $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
             //                 // }
             //             })
             //         }
@@ -1504,12 +1504,12 @@ if (!isWeixin) {
                     if (canvas.width > canvas.height) {
                         // 横屏
                         $(posterIdName).addClass('hengping')
-                        $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
+                        $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
                         $('.show-my-video ').removeClass('shuping-video')
                     } else {
                         // 竖屏
                         $(posterIdName).addClass('shuping')
-                        $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.zanhf.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
+                        $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
                         $('.show-my-video ').addClass('shuping-video')
                     }
                     $('#videoPoster').show()
@@ -1652,7 +1652,7 @@ if (!isWeixin) {
                     $('.cancle-btn').click(function (e) {
                         var confirmMsg = layer.confirm('确认取消吗？', {
                             btn: ['确认', '取消'],
-                            title: '提示',
+                            title: '蓝海豚卡车之家',
                             closeBtn: 0,
                         }, function () {
                             $('#newListShow').show()
@@ -1713,7 +1713,7 @@ if (!isWeixin) {
 
                     var confirmMsg = layer.confirm('是否删除此好友？', {
                         btn: ['确认', '取消'],
-                        title: '提示',
+                        title: '蓝海豚卡车之家',
                         closeBtn: 0,
                     }, function () {
                         root.postSubmit({
@@ -2722,7 +2722,7 @@ if (!isWeixin) {
                     //     root.reeditor = {}
                     //     root.reeditor.thread_id = thread_id
                     //     root.reeditor.islink = $(this).parents('li').attr('islink')
-                    //     // window.location.href = 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
+                    //     // window.location.href = 'http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
                     // })
                     // 调用收藏 点赞 转发事件
                     root.mainPageEvent()
@@ -3026,11 +3026,11 @@ if (!isWeixin) {
                                 overwrite: true,
                             }, function (e) {
                                 // layer.msg(JSON.stringify(e.target))
-                                var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+                                var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
                                         method: "POST",
                                     },
                                     function (res) {
-                                        var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+                                        var imgUrl = 'http://lanhaitun.kachezhisheng.com/' + JSON.parse(res.responseText).data.file_path
                                         // $("input[name='images']").val(imgUrl)
                                         var html = `
                                             <img src="${imgUrl}">
@@ -3239,7 +3239,7 @@ if (!isWeixin) {
             //                                     <span style="display:block;color:gray;font-size:12px;">${item.time}</span>
             //                                     </div>
             //                                     <div class="char_message">
-            //                                     <img src="${item.content}" style="CURSOR: hand" id="215" bigimgurl="http://lanhaitun.zanhf.com/attachment/images/2/2019/03/X3AgFggxqy0vU3vLQrzLZ0Ax6VVrqF.jpg" onclick="imageClick(this)">
+            //                                     <img src="${item.content}" style="CURSOR: hand" id="215" bigimgurl="http://lanhaitun.kachezhisheng.com/attachment/images/2/2019/03/X3AgFggxqy0vU3vLQrzLZ0Ax6VVrqF.jpg" onclick="imageClick(this)">
             //                                     <div class="send">
             //                                     </div>
             //                                     </div>
@@ -3330,11 +3330,11 @@ if (!isWeixin) {
             //                     overwrite: true,
             //                 }, function (e) {
             //                     // layer.msg(JSON.stringify(e.target))
-            //                     var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+            //                     var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
             //                             method: "POST",
             //                         },
             //                         function (res) {
-            //                             var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+            //                             var imgUrl = 'http://lanhaitun.kachezhisheng.com/' + JSON.parse(res.responseText).data.file_path
             //                             root.postSubmit({
             //                                 url: baseUrl + urlObj.sentTzChat,
             //                                 data: {
@@ -3554,7 +3554,7 @@ if (!isWeixin) {
                         </a>
                     </li>
                     <li class="my-nav ">
-                        <a href="http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=index2&rid=9">
+                        <a href="http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=index2&rid=9">
                             <img src="/attachment/style/src/img/radio_icon_default@2x.png">
                             <span class="lht-home">海豚电台</span>
                         </a>

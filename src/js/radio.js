@@ -3,7 +3,7 @@
      * 全局数据
      * data.js
      */
-    var baseUrl = 'http://lanhaitun.zanhf.com/app/'
+    var baseUrl = 'http://lanhaitun.kachezhisheng.com/app/'
     var urlObj = {
         sentTzChat: 'index.php?i=2&c=entry&rid=9&do=addcomment&m=wxz_wzb', // 发送直播评论接口
         getNewMsg: "/index.php?i=2&c=entry&m=wxz_wzb&do=GetComment", // 获取最新弹幕 rid（url） 最后一条的时间 lastTime
@@ -107,7 +107,7 @@
             topHtml = `
             <div class="top">
             <div class="item-left">
-                    <a href="http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&action=other&do=Index&m=wyt_luntan&uid=${item.uid}">
+                    <a href="http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&action=other&do=Index&m=wyt_luntan&uid=${item.uid}">
                             <img class="tx" src="${item.headimgurl}">
                             <div class="right">
                                     <div>${item.nickname}</div>
@@ -180,9 +180,9 @@
                 setTimeout(() => {
                     layer.close(index)
                 }, 1000);
-                $('#myselfZb').off()
                 // 获取分页的弹幕信息 第一页
                 // 获取rid
+                $(this).off()
                 root.rid = root.getQueryString('rid')
                 root.page = ++root.page
                 root.postSubmit({
@@ -587,11 +587,11 @@
                         overwrite: true,
                     }, function (e) {
                         // layer.msg(JSON.stringify(e.target))
-                        var task = plus.uploader.createUpload("http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
+                        var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
                                 method: "POST",
                             },
                             function (res) {
-                                var imgUrl = 'http://lanhaitun.zanhf.com/' + JSON.parse(res.responseText).data.file_path
+                                var imgUrl = 'http://lanhaitun.kachezhisheng.com/' + JSON.parse(res.responseText).data.file_path
                                 root.postSubmit({
                                     url: baseUrl + urlObj.sentTzChat,
                                     data: {
@@ -764,7 +764,7 @@
 //   "id": "player-con",
 //   // "source": "http://lhttp.qingting.fm/live/4804/64k.mp3",
 //   // "source": "http://ls.qingting.fm/live/20211612/64k.m3u8",
-//   "source": 'http://lanhaitun.zanhf.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=audio',
+//   "source": 'http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=audio',
 //   "width": "100%",
 //   "height": "160px",
 //   "autoplay": true,
