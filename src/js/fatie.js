@@ -245,123 +245,123 @@
     // 提交验证
     function formTijiao() {
         // 帖子提交 验证事件
-            var form = layui.form;
-            // 修改帖子 或 新帖子 提交
-            function reSubmitFn(myData) {
-                if (!root.getQueryString('thread_id')) { // 发新的帖子 提交后台
-                    // if (!root.thread_id) { // 发新的帖子 提交后台
-                    console.log(111)
-                    root.postSubmit({
-                        url: baseUrl + urlObj.sendTiezi,
-                        data: myData,
-                        source: 'sendTiezi'
-                    })
-                    return false
-                } else {
-                    var thread_id = root.getQueryString('thread_id')
-                    myData.thread_id = thread_id
-                    // layer.msg(myData)
-                    // 修改帖子
-                    root.postSubmit({
-                        url: baseUrl + urlObj.reEditorSub,
-                        data: myData,
-                        source: 'reEditorSub'
-                    })
-                    root.reeditor = {}
-                    return false
-                }
-            }
-            root.reSubmitFn = reSubmitFn
-            //监听提交
-            form.on('submit(fatieFormSub)', function (data) {
-                //    console.log(JSON.stringify(data.field));
-                // layer.msg(JSON.stringify(data.field))
-                var myData = data.field
-                // 全部为空 提示
-                if (!myData.video && !myData.img && !myData.title) {
-                    layer.msg('发送失败~帖子为空')
-                    return false;
-                } else {
-                    if (myData.title && !myData.video && !myData.img) { // 优化后 去掉info，只保留title字段
-                        // 只有标题 没有内容
-                        // layer.msg('发送失败~暂无内容')
-                        // return false;
-                    } else if (myData.img && !myData.title) {
-                        // 分享图片
-                        myData.title = '分享图片'
-                    } else if (myData.video && !myData.title) {
-                        // 分享视频
-                        myData.title = '分享视频'
-                    }
-                    console.log(JSON.stringify(myData))
-                    // return false
-                    //  root.getQueryString('thread_id'))
-                    // alert(JSON.stringify(myData))
-                    root.reSubmitFn(myData) 
-                    $('.main-form .fasong-fs').remove()
-                     return false;
-                }
-            });
-
-
-            //监听提交
-            form.on('submit(formLinkSub)', function (data) {
-                // islink  1有外链  0无外链
-                // link_url  链接地址，没有传空值
-                // link_title  标题。没有传空值
-                // link_info  描述。没有传空值
-                var reg = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/; //网址正则
-                var myData = data.field
-              
-                myData.islink = 1
-                form.verify({
-                    linkurl: function (value, item) {
-                        console.log(value)
-                        // if (!reg.test(value)) {
-                        //     layer.msg('请填写正确的链接地址')
-                        //     return false
-                        // } else {
-                            if (!myData.link_title || !myData.link_adress) {
-                                layer.msg('发送失败~请完善外链信息')
-                                return false
-                            } else {
-                                console.log('验证链接地址');
-                                // layer.msg(JSON.stringify(myData))
-                                // 判断 发新外链、 修改外链
-                                myData.title = "分享链接"
-                                root.reSubmitFn(myData)
-                                $('.link-bx .layui-btn:last-child').removeAttr('lay-submit').addClass("layui-btn-disabled")
-                            }
-                        }
-                    // }
+        var form = layui.form;
+        // 修改帖子 或 新帖子 提交
+        function reSubmitFn(myData) {
+            if (!root.getQueryString('thread_id')) { // 发新的帖子 提交后台
+                // if (!root.thread_id) { // 发新的帖子 提交后台
+                console.log(111)
+                root.postSubmit({
+                    url: baseUrl + urlObj.sendTiezi,
+                    data: myData,
+                    source: 'sendTiezi'
                 })
-
-
-
-
+                return false
+            } else {
+                var thread_id = root.getQueryString('thread_id')
+                myData.thread_id = thread_id
+                // layer.msg(myData)
+                // 修改帖子
+                root.postSubmit({
+                    url: baseUrl + urlObj.reEditorSub,
+                    data: myData,
+                    source: 'reEditorSub'
+                })
+                root.reeditor = {}
+                return false
+            }
+        }
+        root.reSubmitFn = reSubmitFn
+        //监听提交
+        form.on('submit(fatieFormSub)', function (data) {
+            //    console.log(JSON.stringify(data.field));
+            // layer.msg(JSON.stringify(data.field))
+            var myData = data.field
+            // 全部为空 提示
+            if (!myData.video && !myData.img && !myData.title) {
+                layer.msg('发送失败~帖子为空')
                 return false;
-            });
+            } else {
+                if (myData.title && !myData.video && !myData.img) { // 优化后 去掉info，只保留title字段
+                    // 只有标题 没有内容
+                    // layer.msg('发送失败~暂无内容')
+                    // return false;
+                } else if (myData.img && !myData.title) {
+                    // 分享图片
+                    myData.title = '分享图片'
+                } else if (myData.video && !myData.title) {
+                    // 分享视频
+                    myData.title = '分享视频'
+                }
+                console.log(JSON.stringify(myData))
+                // return false
+                //  root.getQueryString('thread_id'))
+                // alert(JSON.stringify(myData))
+                root.reSubmitFn(myData)
+                $('.main-form .fasong-fs').remove()
+                return false;
+            }
+        });
 
-            // 取消按钮
-            // $('.cancle-btn').click(function (e) {
-            //     var confirmMsg = layer.confirm('确认取消吗？', {
-            //         btn: ['确认', '取消'],
-            //         title: '提示',
-            //         closeBtn: 0,
-            //     }, function () {
-            //         $('#newListShow').show()
-            //         $('.my-nav-bx').show()
-            //         $('#newFatie').hide('fast')
-            //         root.reeditor = {}
-            //         layer.close(confirmMsg)
-            //         return false;
-            //     }, function () {
-            //         layer.close(confirmMsg)
-            //         return false;
-            //     })
-            //     e.preventDefault()
-            //     return false;
-            // })
+
+        //监听提交
+        form.on('submit(formLinkSub)', function (data) {
+            // islink  1有外链  0无外链
+            // link_url  链接地址，没有传空值
+            // link_title  标题。没有传空值
+            // link_info  描述。没有传空值
+            var reg = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/; //网址正则
+            var myData = data.field
+
+            myData.islink = 1
+            form.verify({
+                linkurl: function (value, item) {
+                    console.log(value)
+                    // if (!reg.test(value)) {
+                    //     layer.msg('请填写正确的链接地址')
+                    //     return false
+                    // } else {
+                    if (!myData.link_title || !myData.link_adress) {
+                        layer.msg('发送失败~请完善外链信息')
+                        return false
+                    } else {
+                        console.log('验证链接地址');
+                        // layer.msg(JSON.stringify(myData))
+                        // 判断 发新外链、 修改外链
+                        myData.title = "分享链接"
+                        root.reSubmitFn(myData)
+                        $('.link-bx .layui-btn:last-child').removeAttr('lay-submit').addClass("layui-btn-disabled")
+                    }
+                }
+                // }
+            })
+
+
+
+
+            return false;
+        });
+
+        // 取消按钮
+        // $('.cancle-btn').click(function (e) {
+        //     var confirmMsg = layer.confirm('确认取消吗？', {
+        //         btn: ['确认', '取消'],
+        //         title: '提示',
+        //         closeBtn: 0,
+        //     }, function () {
+        //         $('#newListShow').show()
+        //         $('.my-nav-bx').show()
+        //         $('#newFatie').hide('fast')
+        //         root.reeditor = {}
+        //         layer.close(confirmMsg)
+        //         return false;
+        //     }, function () {
+        //         layer.close(confirmMsg)
+        //         return false;
+        //     })
+        //     e.preventDefault()
+        //     return false;
+        // })
     }
 
     root.formTijiao = formTijiao
@@ -409,12 +409,13 @@
                 root.uploadMyVideo(path)
             },
             function (error) {
-                // alert( "Capture video failed: " + error.message );
+                alert(JSON.stringify(error));
             }, {
-                resolution: res,
                 format: fmt
             }
         );
+        // }
+
     }
     root.cameraVideo = cameraVideo
 

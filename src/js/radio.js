@@ -12,12 +12,6 @@
         lastMsg: "/index.php?i=2&c=entry&m=wxz_wzb&do=LastComment", // 最后一条信息 请求参 last_time
     }
     
-    // 刷新页面
-    $('#refresh').click(function () {
-        root.radioPlayer.stop()
-        window.location.reload()
-    })
-
     function getNewMsg() {
         // 定时获取最新
         // 获取rid
@@ -458,19 +452,8 @@
         function plusReady() {
             // root.radioWait = plus.nativeUI.showWaiting("加载中...");
             var src = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
-            
-            if (!root.radioPlayer) {
-                root.radioPlayer = new plus.video.VideoPlayer('myVideo', {
-                    src: src,
-                    direction: '',
-                });
-
-                
-              
-            }
-            setTimeout(function () {
-                window.radioPlayer = root.radioPlayer
-                 console.log(JSON.stringify(root.radioPlayer))
+            var audio = document.getElementById('audio');
+            root.radioPlayer = audio
             // 播放
             $('.play-img').off().click(function () {
                 console.log(1223)
@@ -492,9 +475,45 @@
             // }, 500);
             $('.my-nav').click(function () {
                 root.radioPlayer.stop()
-            })
+            })    
 
-            }, 1000)
+            // if (!root.radioPlayer) {
+            //     root.radioPlayer = new plus.video.VideoPlayer('myVideo', {
+            //         src: src,
+            //         direction: '',
+            //     });
+            // }
+            // setTimeout(function () {
+            //     window.radioPlayer = root.radioPlayer
+            //      console.log(JSON.stringify(root.radioPlayer))
+            //     // 播放
+            //     $('.play-img').off().click(function () {
+            //         console.log(1223)
+            //         $(this).hide()
+            //         $('.pause-img').show()
+            //         root.radioPlayer.play()
+            //     })
+            //     // 暂停
+            //     $('.pause-img').off().click(function () {
+            //         $(this).hide()
+            //         $('.play-img').show()
+            //         root.radioPlayer.pause(function (e) {
+            //             console.log(JSON.stringify(e))
+            //         })
+            //     })
+
+            //     // setInterval(() => {
+            //     //     root.radioWait.close()
+            //     // }, 500);
+            //     $('.my-nav').click(function () {
+            //         root.radioPlayer.stop()
+            //     })
+            // }, 1000)
+
+            // 刷新页面
+            $('#refresh').click(function () {
+                window.location.reload()
+            })
            
         }
         document.addEventListener('plusready', plusReady, false);
@@ -515,9 +534,10 @@
 
             var reListenSrc = 'http://live.xmcdn.com/history/2485/24.m3u8?start=' + startTime + "&end=" + endTime + "&transcode=ts"
             if (root.radioPlayer) {
-                root.radioPlayer.setStyles({
-                    src: reListenSrc
-                })
+                // root.radioPlayer.setStyles({
+                //     src: reListenSrc
+                // })
+                root.radioPlayer.setAttribute('src', reListenSrc)
                 $('.play-img').hide()
                 $('.pause-img').show()
                 root.radioPlayer.play()
@@ -533,9 +553,10 @@
             var $self = $(this)
             var curSrc = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
             if (root.radioPlayer) {
-                root.radioPlayer.setStyles({
-                    src: curSrc
-                })
+                // root.radioPlayer.setStyles({
+                //     src: curSrc
+                // })
+                root.radioPlayer.setAttribute('src', curSrc)
                 $('.play-img').hide()
                 $('.pause-img').show()
                 root.radioPlayer.play()
@@ -593,6 +614,7 @@
         })
         // 刷新页面
         $('#refreshBtnmy').click(function () {
+            alert('刷新？')
             root.radioPlayer.stop()
             $('.play-img').show()
             root.radioPlayer.pause()
