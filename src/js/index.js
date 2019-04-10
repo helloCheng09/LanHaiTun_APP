@@ -71,6 +71,7 @@ if (!isWeixin) {
         var baseUrl = 'http://lanhaitun.kachezhisheng.com/app/'
         var urlObj = {
             loginUrl: 'index.php?i=2&c=entry&do=login_post&m=wyt_luntan', // 登陆接口
+            layoutUrl: 'index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=login_out', // 退出登录接口
             registerUrl: 'index.php?i=2&c=entry&do=register&m=wyt_luntan', // 注册接口
             yzTxyzm: 'index.php?i=2&c=entry&do=imgcode&m=wyt_luntan', // 验证图形验证码接口
             forgetUrl: 'index.php?i=2&c=entry&do=forget&m=wyt_luntan', //忘记密码接口
@@ -234,88 +235,99 @@ if (!isWeixin) {
             root.intoFatie = intoFatie
 
             function mainPageEvent() {
+                if (localStorage.getItem('lhtIsLogin') == 'false') { // 未登录
+                    $('.zhuanfa').click(function () {
+                        // 提示登陆
+                        layer.msg('未登录')
+                        root.navToLogin()
+                    })
+                    
 
-                // 收藏操作
-                $('.shoucang').each(function () {
-                    var self = $(this)
-                    // 当前用户是否收藏
-                    self.off().click(function () {
-                        var scstatus = self.attr('shou-status')
-                        var id = self.parents('li').attr('id')
-                        console.log(id)
-                        if (scstatus == '0') { // 当前用户 收藏状态
-                            self.attr('shou-status', 1) // 切换收藏状态
-                            self.find('.shou-img').hide() // 切换图标
-                            self.find('.shou-hou-img').show()
-                            self.find('span').text("已收藏")
-                            root.postSubmit({
-                                url: baseUrl + urlObj.collecUrl,
-                                source: 'shoucang',
-                                data: {
-                                    id: id
-                                },
-                                elem: self
-                            })
-                        } else {
-                            self.attr('shou-status', 0)
-                            self.find('.shou-img').show()
-                            self.find('.shou-hou-img').hide()
-                            self.find('span').text("收藏")
-                            root.postSubmit({
-                                url: baseUrl + urlObj.cancleSc,
-                                source: '取消收藏',
-                                data: {
-                                    id: id
-                                },
-                                elem: self
-                            })
-                        }
+                    return false
+                } else { // 未登录 不可收藏 评论 点赞
+                    // 收藏操作
+                    $('.shoucang').each(function () {
+                        var self = $(this)
+                        // 当前用户是否收藏
+                        self.off().click(function () {
+                            var scstatus = self.attr('shou-status')
+                            var id = self.parents('li').attr('id')
+                            console.log(id)
+                            if (scstatus == '0') { // 当前用户 收藏状态
+                                self.attr('shou-status', 1) // 切换收藏状态
+                                self.find('.shou-img').hide() // 切换图标
+                                self.find('.shou-hou-img').show()
+                                self.find('span').text("已收藏")
+                                root.postSubmit({
+                                    url: baseUrl + urlObj.collecUrl,
+                                    source: 'shoucang',
+                                    data: {
+                                        id: id
+                                    },
+                                    elem: self
+                                })
+                            } else {
+                                self.attr('shou-status', 0)
+                                self.find('.shou-img').show()
+                                self.find('.shou-hou-img').hide()
+                                self.find('span').text("收藏")
+                                root.postSubmit({
+                                    url: baseUrl + urlObj.cancleSc,
+                                    source: '取消收藏',
+                                    data: {
+                                        id: id
+                                    },
+                                    elem: self
+                                })
+                            }
+                        })
                     })
-                })
-                // 点赞操作
-                $('.dianzan').each(function () {
-                    var self = $(this)
-                    // 当前用户是否点过赞
-                    self.off().click(function () {
-                        var zanstatus = self.attr('zan-status')
-                        var zantext = self.find('span').text()
-                        var tid = self.parents('li').attr('id')
-                        if (zanstatus == '0') { // 当前用户点赞状态 0 未点单赞
-                            // 发送点赞请求
-                            root.postSubmit({
-                                url: baseUrl + urlObj.dianzanUrl, // 点赞请求
-                                source: 'dianzan',
-                                data: {
-                                    tid: tid,
-                                },
-                                elem: self,
-                            })
-                            // 点赞成功后操作
-                            /*  self.attr('zan-status', 1) // 改为已经点赞
-                              self.find('.zan-img').hide() // 切换图标
-                              self.find('.zan-hou-img').show()
-                              if (self.find('span').text() == '赞') { // 数量增加方式判断
-                                  self.find('span').text('1')
-                              } else {
-                                  self.find('span').text() = Number(zantext) + 1
-                                  self.find('span').text(zantext)
-                              }
-                              self.addClass('hadzan') // 字体颜色切换蓝色
-                              */
-                        } else {
-                            layer.msg('您已点过赞了~')
-                            // self.attr('zan-status', 0)
-                            // self.find('.zan-img').show()
-                            // self.find('.zan-hou-img').hide()
-                            // if (zantext == '1') {
-                            //     self.find('span').text('赞')
-                            // } else {
-                            //     zantext = Number(zantext) - 1
-                            //     self.find('span').text(zantext)
-                            // }
-                        }
+                    // 点赞操作
+                    $('.dianzan').each(function () {
+                        var self = $(this)
+                        // 当前用户是否点过赞
+                        self.off().click(function () {
+                            var zanstatus = self.attr('zan-status')
+                            var zantext = self.find('span').text()
+                            var tid = self.parents('li').attr('id')
+                            if (zanstatus == '0') { // 当前用户点赞状态 0 未点单赞
+                                // 发送点赞请求
+                                root.postSubmit({
+                                    url: baseUrl + urlObj.dianzanUrl, // 点赞请求
+                                    source: 'dianzan',
+                                    data: {
+                                        tid: tid,
+                                    },
+                                    elem: self,
+                                })
+                                // 点赞成功后操作
+                                /*  self.attr('zan-status', 1) // 改为已经点赞
+                                self.find('.zan-img').hide() // 切换图标
+                                self.find('.zan-hou-img').show()
+                                if (self.find('span').text() == '赞') { // 数量增加方式判断
+                                    self.find('span').text('1')
+                                } else {
+                                    self.find('span').text() = Number(zantext) + 1
+                                    self.find('span').text(zantext)
+                                }
+                                self.addClass('hadzan') // 字体颜色切换蓝色
+                                */
+                            } else {
+                                layer.msg('您已点过赞了~')
+                                // self.attr('zan-status', 0)
+                                // self.find('.zan-img').show()
+                                // self.find('.zan-hou-img').hide()
+                                // if (zantext == '1') {
+                                //     self.find('span').text('赞')
+                                // } else {
+                                //     zantext = Number(zantext) - 1
+                                //     self.find('span').text(zantext)
+                                // }
+                            }
+                        })
                     })
-                })
+                }
+    
 
                 // 转发操作
                 $('.zfbtn').each(function () {
@@ -808,11 +820,11 @@ if (!isWeixin) {
                                         zhuanfa = '转发'
                                     }
                                     zhuanHtml = `
-                                <span class="zhuanfa zfbtn">
-                                    <img src="/attachment/style/src/img/zhuanfa.png">
-                                    <span>${zhuanfa}</span>
-                                </span>
-                            `
+                                        <span class="zhuanfa zfbtn">
+                                            <img src="/attachment/style/src/img/zhuanfa.png">
+                                            <span>${zhuanfa}</span>
+                                        </span>
+                                    `
 
                                     // 评论
                                     if (item.pl != 0) { // 有评论
@@ -820,14 +832,28 @@ if (!isWeixin) {
                                     } else {
                                         pinglun = '评论'
                                     }
-                                    pingHtml = `
-                                <span class="zhuanfa">
-                                    <a href="${tiezilink}">
-                                        <img src="/attachment/style/src/img/pinlgun.png">
-                                        <span>${pinglun}</span>
-                                    </a>
-                                </span>
-                            `
+                                    if (localStorage.getItem('lhtIsLogin') == 'false') {
+                                        // 未登录情况 阻止进入评论页面
+                                        pingHtml = `
+                                            <span class="zhuanfa">
+                                                <a href="javascript:void(0);">
+                                                    <img src="/attachment/style/src/img/pinlgun.png">
+                                                    <span>${pinglun}</span>
+                                                </a>
+                                            </span>
+                                        `
+                                    } else {
+                                        pingHtml = `
+                                        <span class="zhuanfa">
+                                            <a href="${tiezilink}">
+                                                <img src="/attachment/style/src/img/pinlgun.png">
+                                                <span>${pinglun}</span>
+                                            </a>
+                                        </span>
+                                    `
+                                    }
+
+                                   
                                     // 点赞
                                     dz = item.zan
                                     if (!item.dianzan) { // 用户未点赞
@@ -987,12 +1013,6 @@ if (!isWeixin) {
                                 } else {
                                     pages = 20000
                                 }
-                                //假设你的列表返回在data集合中
-                                // layui.each(res.data, function (index, item) {
-                                //     console.log(item)
-                                // });
-                                //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
-                                //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
                                 next(lis.join(''), page < pages);
                                 // 实例 视频
                                 // console.log(newVideoArr)
@@ -1003,58 +1023,9 @@ if (!isWeixin) {
                                 root.showAdmin()
 
                                 // 调试模式 直接再编辑 帖子
-                                // $('.xiala').off().on('click', function () {
-                                //     // 获取到帖子的id
-                                //     var thread_id = $(this).parents('li').attr('id')
-                                //     // 弹出再编辑
-                                //     // $('#newListShow').hide()
-                                //     // $('.my-nav-bx').hide()
-                                //     // $('#newFatie').show('fast')
-                                //     // 进入重新编辑发帖模式
-                                //     root.reeditor = {}
-                                //     root.reeditor.thread_id = thread_id // 缓存被再编辑帖子id
-                                //     root.reeditor.islink = $(this).parents('li').attr('islink') // 缓存状态
-                                //     root.reeditor.elem = $(this).parents('li') // 缓存被再编辑帖子再编辑帖子elem
-                                //     // root.newInsertTz ({
-                                //     //     elem: root.reeditor.elem,
-                                //     // })
-                                //     var thread_id = root.reeditor.thread_id
-                                //     console.log(1111)
-                                //     if (root.reeditor.islink == '1') {
-                                //         // 弹出再编辑
-                                //         $('#newListShow').hide()
-                                //         $('.my-nav-bx').hide()
-                                //         $('#newFatie').show('fast')
-                                //         $('#newFatie .main-form').hide()
-                                //         $('#newFatie .link-bx').show()
-                                //         // $('.main-form').hide()
-                                //         // $('.link-bx').show().off()
-                                //         // // 外链取消按钮
-                                //         // $('.link-bx .cancelBtn').click(function () {
-                                //         //     return false
-                                //         // })
-                                //     } else {
-                                //         $('#newListShow').hide()
-                                //         $('.my-nav-bx').hide()
-                                //         $('#newFatie').show('fast')
-                                //         $('#newFatie .main-form').show()
-                                //         $('#newFatie .link-bx').hide()
-                                //     }
-                                //     // 
-                                //     root.postSubmit({
-                                //         url: baseUrl + urlObj.reEditorGet,
-                                //         data: {
-                                //             thread_id: thread_id,
-                                //         },
-                                //         source: 'reEditorGet',
-                                //     })
 
-                                //     // root.formTijiao ()
-                                //     // window.location.href = 'http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&action=fatie&do=Index&m=wyt_luntan&thread_id=' + thread_id
-
-                                // })
-                                // 收藏转发点赞
-                                root.mainPageEvent()
+                                 // 收藏转发点赞
+                                 root.mainPageEvent() 
                             });
                         }
                     });
@@ -1713,7 +1684,7 @@ if (!isWeixin) {
 
                     var confirmMsg = layer.confirm('是否删除此好友？', {
                         btn: ['确认', '取消'],
-                        title: '蓝海豚卡车之家',
+                        title: '蓝海豚卡车之声',
                         closeBtn: 0,
                     }, function () {
                         root.postSubmit({
@@ -1939,6 +1910,8 @@ if (!isWeixin) {
                                 if (res.data.code == 1) {
                                     // 登陆成功
                                     layer.msg(res.data.msg)
+                                    // 记录到缓存内
+                                    localStorage.setItem('lhtIsLogin', true)
                                     // 去首页
                                     root.navToHome()
                                 } else {
@@ -1949,6 +1922,7 @@ if (!isWeixin) {
                                 if (res.data.code == 1) {
                                     // 注册成功
                                     layer.msg(res.data.msg)
+                                    localStorage.setItem('lhtIsLogin', true)
                                     // 回登陆页面
                                     root.navToLive()
                                 } else {
@@ -2113,26 +2087,6 @@ if (!isWeixin) {
                             } else {}
                         }
 
-                        // // 发帖
-                        // if (obj.source === 'sendTiezi') {
-                        //     // console.log(JSON.stringify(res))
-                        //     if (res.code == 1) {
-                        //         layer.msg(res.msg)
-                        //         // root.navToHome()
-                        //         setTimeout(() => {
-                        //             $('#newListShow').show()
-                        //             $('.my-nav-bx').show()
-                        //             $('#newFatie').hide('fast')
-                        //             window.location.reload()
-                        //         }, 1000);
-
-
-                        //     } else if (res.code == 2) {
-                        //         layer.msg(res.msg)
-                        //         root.navToLogin()
-                        //     }
-                        // }
-
                         // 首页置顶帖子
                         if (obj.source === 'zhiding') {
                             // console.log(JSON.stringify(res))
@@ -2294,6 +2248,9 @@ if (!isWeixin) {
                                 window.location.reload()
                             } else {
                                 layer.msg(res.msg)
+                                if (res.msg == '未登录') {
+                                    root.navToLogin()
+                                }
                             }
                             return false;
                         } else if (obj.source == 'dianzan') { // 点赞帖子操作
@@ -2313,7 +2270,8 @@ if (!isWeixin) {
                                 }
                                 self.addClass('hadzan') // 字体颜色切换蓝色
                             } else {
-                                layer.msg('点赞失败')
+                                layer.msg('未登录')
+                                root.navToLogin()
                             }
                             return false;
                         } else if (obj.source == 'shoucang') { // 收藏帖子操作
@@ -2937,13 +2895,11 @@ if (!isWeixin) {
             }
 
             if (document.getElementById('indexWrap')) {
-                // 通过缓存判断是否刷新页面
                 // console.log(localStorage.getItem('ifReload'))
                 if (localStorage.getItem('ifReload') == 'true') {
                     window.location.reload()
                     localStorage.setItem('ifReload', false)
                 }
-
                 /**
                  * 回到顶部
                  */
@@ -2961,37 +2917,8 @@ if (!isWeixin) {
                 $('#refresh').click(function () {
                     window.location.reload()
                 })
-                // // 切换帖子分类加载
-                // $(".jiazai").click(function () {
-                //     jiazai($(this).data('id'))
-                // })
 
-                // function jiazai(fenlei) {
-                //     console.log(fenlei)
-                //     cid = fenlei;
-                //     page = 1;
-                //     var str = ''
-                //     var index = layer.load(1, {
-                //         shade: [0.1, '#fff'] //0.1透明度的白色背景
-                //     });
-                //     $("#zhengwen").html(str);
-                //     load_data(root.showAdmin);
-                // }
-                // 滚动加载帖子
-                // $(window).scroll(function () {
-                //     var srollPos = $(window).scrollTop(); //滚动条距顶部距离(页面超出窗口的高度)
-                //     totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
-                //     if (($(document).height()) <= totalheight) {
-                //         if (sroltop == 0) {
-                //             //alert(totalheight);
-                //             page += 1
-                //             var index = layer.load(1, {
-                //                 shade: [0.1, '#fff'] //0.1透明度的白色背景
-                //             });
-                //             load_data(root.showAdmin);
-                //         }
-                //     }
-                // });
+                
             }
 
             // 新 帖子详情
@@ -3134,465 +3061,230 @@ if (!isWeixin) {
 
             }
 
-            // 直播页面
-            // if (document.getElementById('videoMode')) {
-            //     $('.TAstate li').click(function () {
-            //         $('.TAstate li').toggleClass('currentli')
-            //         if ($(this).index() === 0) {
-            //             $('.chat-bx').show()
-            //             $('#showList').hide()
-            //         } else {
-            //             $('.chat-bx').hide()
-            //             $('#showList').show()
-            //             var zhiboList = document.getElementById('showList')
-            //             // 要滚动的高度
-            //             zhiboList.scrollTop = ($('.zhibo-bx').position().top) - 353
-            //         }
-            //     })
-            //     // 直播聊天和节目列表切换
-            //     function plusReady() {
-            //         // root.radioWait = plus.nativeUI.showWaiting("加载中...");
-            //         var src = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
-            //         if (!root.radioPlayer) {
-            //             root.radioPlayer = new plus.video.VideoPlayer('myVideo', {
-            //                 src: src,
-            //             });
-            //         }
-            //         // 播放
-            //         $('.play-img').off().click(function () {
-            //             $(this).hide()
-            //             $('.pause-img').show()
-            //             root.radioPlayer.play()
-            //         })
-            //         // 暂停
-            //         $('.pause-img').off().click(function () {
-            //             $(this).hide()
-            //             $('.play-img').show()
-            //             root.radioPlayer.pause()
-            //         })
-
-            //         // setInterval(() => {
-            //         //     root.radioWait.close()
-            //         // }, 500);
-            //         $('.my-nav').click(function () {
-            //             root.radioPlayer.stop()
-            //         })
-            //     }
-            //     document.addEventListener('plusready', plusReady, false);
-            //     // 聊天获取，滚动加载
-            //     setTimeout(() => {
-            //         // 滚动到最底部
-            //         var my_scroll = document.getElementsByClassName('chat_title')[0]
-            //         my_scroll.scrollTop = 20000000
-            //         // 获取rid
-            //         var timer = setInterval(() => {
-            //             // 获取rid
-            //             var rid = root.getQueryString('rid')
-            //             // 获取最后一条留言时间
-            //             var lastTime = $('.chat_title li:last .char_name span').text()
-            //             // 请求最新留言 发送最近留言时间
-            //             var huifuUrl = "/app/index.php?i=2&c=entry&m=wxz_wzb&do=GetComment"
-            //             var huifuData = {
-            //                 rid: rid,
-            //                 last_time: lastTime
-            //             }
-            //             $.ajax({
-            //                 url: huifuUrl,
-            //                 type: 'POST',
-            //                 data: huifuData,
-            //                 dataType: 'JSON',
-            //                 success(res) {
-            //                     var newData = res.data
-            //                     // console.log(res)
-            //                     if (newData) {
-            //                         // 清除定时器
-            //                         var htmlLt = ''
-            //                         newData.forEach(item => {
-            //                             if (item.ispic == 0) {
-            //                                 // 如果是图片评论
-            //                                 htmlLt += `
-            //                                 <li data-id=${item.id}>
-            //                                 <div class="chat_left">
-            //                                     <div class="head_portrait">
-            //                                     <img src="${item.headimgurl}">
-            //                                     </div>
-            //                                     </div>
-            //                                     <div class="chat_right">
-            //                                     <div class="char_name">${item.nickname}
-            //                                     <span style="display:block;color:gray;font-size:12px;">${item.time}</span>
-            //                                     </div>
-            //                                     <div class="char_message">${item.content}
-            //                                     </div>
-            //                                 </div>
-            //                                 </li>`
-            //                             } else {
-            //                                 // 非图片评论
-            //                                 htmlLt += `
-            //                                 <li data-id=${item.id}>
-            //                                 <div class="chat_left">
-            //                                     <div class="head_portrait">
-            //                                     <img src="${item.headimgurl}">
-            //                                     </div>
-            //                                     </div>
-            //                                     <div class="chat_right">
-            //                                     <div class="char_name">${item.nickname}
-            //                                     <span style="display:block;color:gray;font-size:12px;">${item.time}</span>
-            //                                     </div>
-            //                                     <div class="char_message">
-            //                                     <img src="${item.content}" style="CURSOR: hand" id="215" bigimgurl="http://lanhaitun.kachezhisheng.com/attachment/images/2/2019/03/X3AgFggxqy0vU3vLQrzLZ0Ax6VVrqF.jpg" onclick="imageClick(this)">
-            //                                     <div class="send">
-            //                                     </div>
-            //                                     </div>
-            //                                 </div>
-            //                                 </li>`
-            //                             }
-            //                         });
-            //                         $('.chat_title').append(htmlLt)
-            //                         setTimeout(() => {
-            //                             my_scroll.scrollTop = 2000000000
-            //                         }, 200);
-            //                     } else {
-            //                         return
-            //                     }
-            //                 },
-            //                 error(res) {
-            //                     clearInterval(timer)
-            //                     layer.msg("链接超时，重新刷新尝试！")
-            //                 }
-            //             })
-            //         }, 1000);
-            //         setTimeout(() => {
-            //             $('.chat_title').css('opacity', "1")
-            //         }, 1000);
-            //     }, 100);
-            //     // 点赞数增加
-            //     $('.zan-box').click(function () {
-            //         var curNum = Number($(this).find('.zan-num').text()) + 1
-            //         $(this).find('.zan-num').text(curNum)
-            //     })
-
-            //     // 回听功能
-            //     // http://live.xmcdn.com/history/2485/24.m3u8?start=1553616000000&end=1553623200000&transcode=ts
-            //     $('.pass').click(function () {
-            //         var $self = $(this)
-            //         var startTime = $self.attr('start')
-            //         var endTime = $self.attr('end')
-            //         $('.zhibo-bx').removeClass('zhibo-bx')
-            //         $self.addClass('zhibo-bx')
-
-            //         var reListenSrc = 'http://live.xmcdn.com/history/2485/24.m3u8?start=' + startTime + "&end=" + endTime + "&transcode=ts"
-            //         if (root.radioPlayer) {
-            //             root.radioPlayer.setStyles({
-            //                 src: reListenSrc
-            //             })
-            //             $('.play-img').hide()
-            //             $('.pause-img').show()
-            //             root.radioPlayer.play()
-            //             var title = $self.find('.left .title').text()
-            //             console.log(title)
-            //             $('.video-bx .video-title').text(title)
-            //             $('#videoMode .video-zhibo').text('回听中')
-            //         }
-            //     })
-            //     // 回到直播
-            //     $('.current-jiemu').click(function () {
-            //         $('.zhibo-bx').removeClass('zhibo-bx')
-            //         $(this).addClass('zhibo-bx')
-            //         var $self = $(this)
-            //         var curSrc = 'http://live.xmcdn.com/live/2485/64.m3u8?transcode=ts'
-            //         if (root.radioPlayer) {
-            //             root.radioPlayer.setStyles({
-            //                 src: curSrc
-            //             })
-            //             $('.play-img').hide()
-            //             $('.pause-img').show()
-            //             root.radioPlayer.play()
-            //             var title = $self.find('.left .title').text()
-            //             $('.video-bx .video-title').text(title)
-            //             $('#videoMode .video-zhibo').text('直播中')
-            //         }
-            //     })
-
-            //     // 直播发送图片
-            //     $('#chatImgUpload').click(function () {
-            //         $(".showfunction").hide();
-
-            //         function uploadOnePic() {
-            //             plus.gallery.pick(function (path) {
-            //                 // 提示等待
-            //                 // alert(JSON.stringify(path))
-            //                 // root.imgW = plus.nativeUI.showWaiting()
-            //                 // root.uploadServerImg(e.files, true)
-            //                 plus.zip.compressImage({
-            //                     src: path,
-            //                     dst: "_doc/chat/gallery//" + path,
-            //                     quality: 20,
-            //                     overwrite: true,
-            //                 }, function (e) {
-            //                     // layer.msg(JSON.stringify(e.target))
-            //                     var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=UploadImg&m=wyt_luntan", {
-            //                             method: "POST",
-            //                         },
-            //                         function (res) {
-            //                             var imgUrl = 'http://lanhaitun.kachezhisheng.com/' + JSON.parse(res.responseText).data.file_path
-            //                             root.postSubmit({
-            //                                 url: baseUrl + urlObj.sentTzChat,
-            //                                 data: {
-            //                                     ispic: 1,
-            //                                     content: imgUrl
-            //                                 },
-            //                                 source: 'sentTzChat'
-            //                             })
-            //                         }
-            //                     );
-            //                     task.addFile(e.target, {
-            //                         key: "file"
-            //                     });
-            //                     task.start();
-            //                 }, function (error) {
-            //                     layer.msg('图片上传失败~')
-            //                 });
-            //             }, function () {}, {
-            //                 system: false
-            //             })
-            //         }
-            //         uploadOnePic()
-            //     })
-            //     // 刷新页面
-            //     $('#refreshBtnmy').click(function () {
-            //         root.radioPlayer.stop()
-            //         window.location.reload()
-            //     })
-            // }
-
             if (document.getElementById('userCenter')) {
                 // 添加好友
                 root.addFriendCenter()
-
-
             }
             // 新首页
             if (document.getElementById('newListShow')) {
-
-                /**
-                 * 回到顶部
-                 */
-                function scrollToTop(anchorId) {
-                    $(anchorId).on('click', function () {
-                        var dis = $(window).scrollTop();
-                        $('html,body').animate({
-                            scrollTop: '0px'
-                        }, 300);
-                    })
-                }
-                root.scrollToTop = scrollToTop
-                root.scrollToTop('#goTop')
-                // 刷新
-                $('#refresh').click(function () {
-                    window.location.reload()
-                })
-
-                if (document.getElementsByClassName('my-newindex')[0]) { // 我的帖子引用主页帖子列表
                     /**
-                     * 流加载
-                     * url 请求地址
-                     * elem 指定容器 #id
-                     * fenlei 请求分类
-                     * load_style （index首页 mine我的帖子 part我参与的 collection收藏）
-                     * sou 搜索关键字
+                     * 回到顶部
                      */
-                    root.showListFlow(mainurl, {
-                        elem: "#tieziList",
-                        fenlei: '',
-                        load_style: 'mine',
-                        sou: ''
+                    function scrollToTop(anchorId) {
+                        $(anchorId).on('click', function () {
+                            var dis = $(window).scrollTop();
+                            $('html,body').animate({
+                                scrollTop: '0px'
+                            }, 300);
+                        })
+                    }
+
+                    root.scrollToTop = scrollToTop
+                    root.scrollToTop('#goTop')
+                    // 刷新
+                    $('#refresh').click(function () {
+                        window.location.reload()
                     })
 
-                    // 分类切换
-                    $('.tag-bx .tag-item').click(function () {
-                        $('.tag-bx .active').removeClass('active')
-                        $(this).addClass('active')
-                        var textCon = $.trim($(this).text()) // 获取标签
-                        if (textCon == "全 部") {
-                            textCon = ''
-                        }
+                    if (document.getElementsByClassName('my-newindex')[0]) { // 我的帖子引用主页帖子列表
+                        /**
+                         * 流加载
+                         * url 请求地址
+                         * elem 指定容器 #id
+                         * fenlei 请求分类
+                         * load_style （index首页 mine我的帖子 part我参与的 collection收藏）
+                         * sou 搜索关键字
+                         */
                         root.showListFlow(mainurl, {
                             elem: "#tieziList",
-                            fenlei: textCon,
+                            fenlei: '',
                             load_style: 'mine',
+                            sou: ''
                         })
-                    })
 
-                } else if (document.getElementsByClassName('my-newpartake')[0]) { // 我参与的帖子
-                    root.showListFlow(mainurl, {
-                        elem: "#tieziList",
-                        fenlei: '',
-                        load_style: 'part',
-                        sou: ''
-                    })
-
-                    // 分类切换
-                    $('.tag-bx .tag-item').click(function () {
-                        $('.tag-bx .active').removeClass('active')
-                        $(this).addClass('active')
-                        var textCon = $.trim($(this).text()) // 获取标签
-                        if (textCon == "全 部") {
-                            textCon = ''
-                        }
-                        root.showListFlow(mainurl, {
-                            elem: "#tieziList",
-                            fenlei: textCon,
-                            load_style: 'part',
-                        })
-                    })
-
-                } else if (document.getElementsByClassName('my-newcollection')[0]) {
-                    root.showListFlow(mainurl, {
-                        elem: "#tieziList",
-                        fenlei: '',
-                        load_style: 'collection',
-                        sou: ''
-                    })
-
-                    // 分类切换
-                    $('.tag-bx .tag-item').click(function () {
-                        $('.tag-bx .active').removeClass('active')
-                        $(this).addClass('active')
-                        var textCon = $.trim($(this).text()) // 获取标签
-                        if (textCon == "全 部") {
-                            textCon = ''
-                        }
-                        root.showListFlow(mainurl, {
-                            elem: "#tieziList",
-                            fenlei: textCon,
-                            load_style: 'collection',
-                        })
-                    })
-                } else if (document.getElementsByClassName('other-center')[0]) {
-                    // 首页帖子列表分页加载
-                    var uid = root.getQueryString('uid')
-                    root.showListFlow(mainurl, {
-                        elem: "#tieziList",
-                        uid: uid
-                    })
-
-                    // 分类切换
-                    $('.tag-bx .tag-item').click(function () {
-                        $('.tag-bx .active').removeClass('active')
-                        $(this).addClass('active')
-                        var textCon = $.trim($(this).text()) // 获取标签
-                        if (textCon == "全 部") {
-                            textCon = ''
-                        }
-                        root.showListFlow(mainurl, {
-                            elem: "#tieziList",
-                            fenlei: textCon,
-                            uid: uid,
-                        })
-                    })
-                } else { // 首页帖子列表分页加载
-                    root.showListFlow(mainurl, {
-                        elem: "#tieziList",
-                        fenlei: '',
-                        load_style: 'index',
-                        sou: ''
-                    })
-                    // 实例 轮播
-                    var swiper = new Swiper('.swiper-container', {
-                        pagination: {
-                            el: '.swiper-pagination',
-                            clickable: true,
-                        },
-                    });
-                    // 分类切换
-                    $('.tag-bx .tag-item').click(function () {
-                        $('.tag-bx .active').removeClass('active')
-                        $(this).addClass('active')
-                        var textCon = $.trim($(this).text()) // 获取标签
-                        if (textCon == "全 部") {
-                            textCon = ''
-                        }
-                        root.showListFlow(mainurl, {
-                            elem: "#tieziList",
-                            fenlei: textCon,
-                        })
-                    })
-
-                    // alert(23)
-                    function myBrowser() {
-                        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-                        var isOpera = userAgent.indexOf("Opera") > -1;
-                        if (isOpera) {
-                            return "Opera"
-                        }; //判断是否Opera浏览器
-                        if (userAgent.indexOf("Firefox") > -1) {
-                            return "FF";
-                        } //判断是否Firefox浏览器
-                        if (userAgent.indexOf("Chrome") > -1) {
-                            return "Chrome";
-                        }
-                        if (userAgent.indexOf("Safari") > -1) {
-                            return "Safari";
-                        } //判断是否Safari浏览器
-                        if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
-                            return "IE";
-                        }; //判断是否IE浏览器
-
-                        return false
-                    }
-                    //以下是调用上面的函数
-                    var mb = myBrowser();
-                    console.log(mb)
-                    if (mb) {
-
-                        var html = `
-                    <ul id="dian" class="my-nav-bx ">
-                    <li class="my-nav active">
-                        <a href="./index.php?i=2&c=entry&do=index&m=wyt_luntan">
-                            <img src="/attachment/style/src/img/home_icon_selected@2x.png">
-                            <span class="lht-home ">海豚之家</span>
-                        </a>
-                    </li>
-                    <li class="my-nav ">
-                        <a href="http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=index2&rid=9">
-                            <img src="/attachment/style/src/img/radio_icon_default@2x.png">
-                            <span class="lht-home">海豚电台</span>
-                        </a>
-                    </li>
-                    <li class="my-nav">
-                        <a class="active" href="./index.php?i=2&c=entry&action=user&do=Index&m=wyt_luntan">
-                            <img src="/attachment/style/src/img/me_icon_default@2x.png">
-                            <span class="lht-home ">个人中心</span>
-                        </a>
-                    </li>
-                </ul>
-                    `
-                        // $('#newListShow').append(html)
-                    }
-                }
-
-                // 搜索
-                $('.search-item input').on('focus', function () {
-                    $(this).on('input', function () {
-                        // 实时获取val值
-                        var self = $(this)
-                        var sou = self.val()
-                        if (root.serTimer) {
-                            clearTimeout(root.serTimer)
-                        }
-                        root.serTimer = setTimeout(() => {
-                            if (sou) {
-                                root.showListFlow(mainurl, {
-                                    elem: "#tieziList",
-                                    sou: sou,
-                                })
+                        // 分类切换
+                        $('.tag-bx .tag-item').click(function () {
+                            $('.tag-bx .active').removeClass('active')
+                            $(this).addClass('active')
+                            var textCon = $.trim($(this).text()) // 获取标签
+                            if (textCon == "全 部") {
+                                textCon = ''
                             }
-                        }, 1500);
-                        return false
-                    })
-                })
-            }
+                            root.showListFlow(mainurl, {
+                                elem: "#tieziList",
+                                fenlei: textCon,
+                                load_style: 'mine',
+                            })
+                        })
 
+                    } else if (document.getElementsByClassName('my-newpartake')[0]) { // 我参与的帖子
+                        root.showListFlow(mainurl, {
+                            elem: "#tieziList",
+                            fenlei: '',
+                            load_style: 'part',
+                            sou: ''
+                        })
+
+                        // 分类切换
+                        $('.tag-bx .tag-item').click(function () {
+                            $('.tag-bx .active').removeClass('active')
+                            $(this).addClass('active')
+                            var textCon = $.trim($(this).text()) // 获取标签
+                            if (textCon == "全 部") {
+                                textCon = ''
+                            }
+                            root.showListFlow(mainurl, {
+                                elem: "#tieziList",
+                                fenlei: textCon,
+                                load_style: 'part',
+                            })
+                        })
+
+                    } else if (document.getElementsByClassName('my-newcollection')[0]) {
+                        root.showListFlow(mainurl, {
+                            elem: "#tieziList",
+                            fenlei: '',
+                            load_style: 'collection',
+                            sou: ''
+                        })
+
+                        // 分类切换
+                        $('.tag-bx .tag-item').click(function () {
+                            $('.tag-bx .active').removeClass('active')
+                            $(this).addClass('active')
+                            var textCon = $.trim($(this).text()) // 获取标签
+                            if (textCon == "全 部") {
+                                textCon = ''
+                            }
+                            root.showListFlow(mainurl, {
+                                elem: "#tieziList",
+                                fenlei: textCon,
+                                load_style: 'collection',
+                            })
+                        })
+                    } else if (document.getElementsByClassName('other-center')[0]) {
+                        // 首页帖子列表分页加载
+                        var uid = root.getQueryString('uid')
+                        root.showListFlow(mainurl, {
+                            elem: "#tieziList",
+                            uid: uid
+                        })
+
+                        // 分类切换
+                        $('.tag-bx .tag-item').click(function () {
+                            $('.tag-bx .active').removeClass('active')
+                            $(this).addClass('active')
+                            var textCon = $.trim($(this).text()) // 获取标签
+                            if (textCon == "全 部") {
+                                textCon = ''
+                            }
+                            root.showListFlow(mainurl, {
+                                elem: "#tieziList",
+                                fenlei: textCon,
+                                uid: uid,
+                            })
+                        })
+                    } else { // 首页帖子列表分页加载
+                        root.showListFlow(mainurl, {
+                            elem: "#tieziList",
+                            fenlei: '',
+                            load_style: 'index',
+                            sou: ''
+                        })
+                        // 实例 轮播
+                        var swiper = new Swiper('.swiper-container', {
+                            pagination: {
+                                el: '.swiper-pagination',
+                                clickable: true,
+                            },
+                        });
+                        // 分类切换
+                        $('.tag-bx .tag-item').click(function () {
+                            $('.tag-bx .active').removeClass('active')
+                            $(this).addClass('active')
+                            var textCon = $.trim($(this).text()) // 获取标签
+                            if (textCon == "全 部") {
+                                textCon = ''
+                            }
+                            root.showListFlow(mainurl, {
+                                elem: "#tieziList",
+                                fenlei: textCon,
+                            })
+                        })
+
+                        // alert(23)
+                        function myBrowser() {
+                            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+                            var isOpera = userAgent.indexOf("Opera") > -1;
+                            if (isOpera) {
+                                return "Opera"
+                            }; //判断是否Opera浏览器
+                            if (userAgent.indexOf("Firefox") > -1) {
+                                return "FF";
+                            } //判断是否Firefox浏览器
+                            if (userAgent.indexOf("Chrome") > -1) {
+                                return "Chrome";
+                            }
+                            if (userAgent.indexOf("Safari") > -1) {
+                                return "Safari";
+                            } //判断是否Safari浏览器
+                            if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+                                return "IE";
+                            }; //判断是否IE浏览器
+
+                            return false
+                        }
+                        //以下是调用上面的函数
+                        var mb = myBrowser();
+                        console.log(mb)
+                        if (mb) {
+                            var html = `
+                                <ul id="dian" class="my-nav-bx ">
+                                <li class="my-nav active">
+                                    <a href="./index.php?i=2&c=entry&do=index&m=wyt_luntan">
+                                        <img src="/attachment/style/src/img/home_icon_selected@2x.png">
+                                        <span class="lht-home ">海豚之家</span>
+                                    </a>
+                                </li>
+                                <li class="my-nav ">
+                                    <a href="http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&m=wxz_wzb&do=index2&rid=9">
+                                        <img src="/attachment/style/src/img/radio_icon_default@2x.png">
+                                        <span class="lht-home">海豚电台</span>
+                                    </a>
+                                </li>
+                                <li class="my-nav">
+                                    <a class="active" href="./index.php?i=2&c=entry&action=user&do=Index&m=wyt_luntan">
+                                        <img src="/attachment/style/src/img/me_icon_default@2x.png">
+                                        <span class="lht-home ">个人中心</span>
+                                    </a>
+                                </li>
+                            </ul>
+                    `
+                            // $('#newListShow').append(html)
+                        }
+                    }
+
+                    // 搜索
+                    $('.search-item input').on('focus', function () {
+                        $(this).on('input', function () {
+                            // 实时获取val值
+                            var self = $(this)
+                            var sou = self.val()
+                            if (root.serTimer) {
+                                clearTimeout(root.serTimer)
+                            }
+                            root.serTimer = setTimeout(() => {
+                                if (sou) {
+                                    root.showListFlow(mainurl, {
+                                        elem: "#tieziList",
+                                        sou: sou,
+                                    })
+                                }
+                            }, 1500);
+                            return false
+                        })
+                    })
+                }
             // 新 审核帖子 
             if (document.getElementById('newshlist')) {
                 // 获取审核列表
@@ -3620,7 +3312,7 @@ if (!isWeixin) {
             } else if (document.getElementById('friendList')) { //好友列表 
                 // 删除好友操作
                 root.delFriend()
-                 // 搜索框防抖
+                // 搜索框防抖
                 // 搜索好友
                 var timer
                 $('.ser-input').keydown(function () {
@@ -3643,6 +3335,29 @@ if (!isWeixin) {
                 })
             }
 
+            // 个人中心页面
+            if (document.getElementById('userWrap')) {
+                // 退出登录
+                $('.layoutBtn').click(function () {
+                    $.ajax({
+                        url: baseUrl + urlObj.layoutUrl,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (res) {
+                            console.log(res.msg)
+                            if (res.code == 1) {
+                                layer.msg(res.msg)
+                                localStorage.setItem('lhtIsLogin', false)
+                                setTimeout(function () {
+                                    window.location.href = '/app/index.php?i=2&c=entry&do=index&m=wyt_luntan'
+                                }, 1000)
+                            } else {
+                                layer.msg(res.msg)
+                            }
+                        }
+                    })
+                })
+            }
         }(window.$, window.myLib || (window.myLib = {})));
     }())
 }

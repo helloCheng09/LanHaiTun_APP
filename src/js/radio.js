@@ -11,6 +11,14 @@
         jinyan: "/index.php?i=2&c=entry&m=wxz_wzb&do=Isshutup", // 禁言接口
         lastMsg: "/index.php?i=2&c=entry&m=wxz_wzb&do=LastComment", // 最后一条信息 请求参 last_time
     }
+    // 跳转回登陆页面
+    let navToLogin = () => {
+        setTimeout(() => {
+            window.location.href = baseUrl + 'index.php?i=2&c=entry&do=login&m=wyt_luntan&action=login'
+        }, 1000);
+    }
+
+    root.navToLogin = navToLogin
 
     function getNewMsg() {
         // 定时获取最新

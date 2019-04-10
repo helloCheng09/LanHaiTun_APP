@@ -17,7 +17,6 @@
         $('#videoPoster .btn-video').off()
         if (!root.videoPlayer) {
             $('#video2').show()
-
             function creatVideo() {
                 root.videoPlayer = new plus.video.VideoPlayer('video2', {
                     src: videoSrc,
@@ -539,13 +538,12 @@
             timeout: 120
         }, function (res, status) {
             
-            // alert(JSON.stringify(res))
+            alert(JSON.stringify(res))
             // alert(res.msg)
             // 关闭图片上传 相机只能录像
             root.showCamera('video')
             // 关闭等待
             w.close()
-            
             var res = JSON.parse(res.responseText)
             var videoSrc = res.data
             if (res.code == 1) {
