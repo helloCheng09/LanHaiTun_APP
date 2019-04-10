@@ -732,18 +732,24 @@ if (!isWeixin) {
                                 /** 循环帖子列表数组 */
                                 layui.each(data, function (index, item) {
                                     var html = ''
-                                    var userlink = './index.php?i=2&c=entry&action=other&do=Index&m=wyt_luntan&uid=' + item.uid // 用户个人中心链接地址 // 个人中心连接拼接 个人uid
-                                    var tiezilink = './index.php?i=2&c=entry&action=info&do=Index&m=wyt_luntan&id=' + item.id // 帖子地址链接 拼接帖子id
+                                    if (localStorage.getItem('lhtIsLogin') == 'true') { // 登录
+                                        var userlink = './index.php?i=2&c=entry&action=other&do=Index&m=wyt_luntan&uid=' + item.uid // 用户个人中心链接地址 // 个人中心连接拼接 个人uid
+                                        var tiezilink = './index.php?i=2&c=entry&action=info&do=Index&m=wyt_luntan&id=' + item.id // 帖子地址链接 拼接帖子id
+                                    } else { // 未登录
+                                        var userlink = 'javascript:void(0);'
+                                        var tiezilink = 'javascript:void(0);'
+                                    }
+                                   
                                     // 定位
                                     if (item.address) {
                                         locHtml = `
-                                <span class="loc-bx">
-                                    <span class="loc-img">
-                                        <img src="/attachment/style/src//img/location.png">
-                                    </span>
-                                    <span class="loc-text">${item.address}</span>        
-                                </span>
-                                `
+                                        <span class="loc-bx">
+                                            <span class="loc-img">
+                                                <img src="/attachment/style/src//img/location.png">
+                                            </span>
+                                            <span class="loc-text">${item.address}</span>        
+                                        </span>
+                                        `
                                     } else {
                                         locHtml = `
                                 `
@@ -1349,97 +1355,6 @@ if (!isWeixin) {
             }
             root.getQueryString = getQueryString
             // // 执行视频生成 
-            // function showfsVideo(videoSrc, type) {
-            //     // h5 生成video 播放器
-            //     $('#videoPoster .btn-video').off()
-            //     if (!root.videoPlayer) {
-            //         $('#video2').show()
-
-            //         function creatVideo() {
-            //             root.videoPlayer = new plus.video.VideoPlayer('video2', {
-            //                 src: videoSrc,
-            //                 direction: '',
-            //             });
-            //             $('#video2').hide()
-            //             root.videoPlayer.hide()
-            //             // 默认是竖屏
-            //             // 竖屏
-            //             // $('#videoPoster').addClass('shuping').removeClass('hengping')
-            //             // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
-            //             // 显示视频
-            //             $('#videoPoster').show()
-            //             $('.set-poster').show()
-            //             root.videoPlayer.addEventListener("fullscreenchange", function (e) {
-            //                 if (!e.detail.fullScreen) {
-            //                     $('#video2').hide()
-            //                     root.videoPlayer.pause()
-            //                     root.videoPlayer.hide()
-            //                     $('#videoPoster .btn-video').show()
-            //                 }
-            //                 // 判断视频比例 
-            //                 // if (e.detail.direction == 'horizontal') {
-            //                 //     // 如果不是竖屏 而是横屏
-            //                 //     // 横屏
-            //                 //     $('#videoPoster').addClass('hengping').removeClass('shuping')
-            //                 //     $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/morenvideo1.png')
-            //                 // }
-            //             })
-            //         }
-            //         if (type == 'newfatie') {
-            //             creatVideo()
-            //         } else {
-            //             // 再编辑 苹果手机直接执行  安卓手机 plusready
-            //             var u = navigator.userAgent;
-            //             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-            //             var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); 
-            //             console.log(isAndroid, isiOS)
-            //             //ios终端
-            //             // if (isAndroid) {
-            //             //     document.addEventListener('plusready', creatVideo, false);
-            //             // }
-            //             // if (isiOS) {
-            //             //     creatVideo()
-            //             // }
-            //             creatVideo()
-            //         }
-            //         document.addEventListener('plusready', creatVideo, false);
-
-            //     } else {
-            //         root.videoPlayer.setStyles({
-            //             src: videoSrc
-            //         })
-            //     }
-
-            //     // 视频操作
-            //     $('#videoPoster .btn-video').on('click', function () {
-            //         // 关闭视频点击按钮
-            //         $(this).hide()
-            //         // 如果已经有video实例
-            //         // 全屏 播放
-            //         root.videoPlayer.show()
-            //         root.videoPlayer.play()
-            //         root.videoPlayer.requestFullScreen(0)
-            //         return false
-            //     })
-
-            //     // 点击删除视频
-            //     $('#videoPoster .del-icon').on('click', function () {
-            //         // 删除上传的值
-            //         $("input[name='video']").val('')
-            //         $('#videoPoster').hide()
-            //         $('.set-poster').hide()
-            //         // 恢复图片上传 相机拍照
-            //         root.showCamera('')
-            //     })
-            //     return false
-            // }
-            // root.showfsVideo = showfsVideo
-
-            // function closeVideoFs(videoEle) {
-            //     // 展示封面点击按钮
-            //     $('#videoPoster .btn-video').show()
-            // }
-            // root.closeVideoFs = closeVideoFs
             // 获取视频第一帧方法
             function getFirstVideoImg(videIdName, posterIdName) {
                 var video, output;
@@ -1854,31 +1769,6 @@ if (!isWeixin) {
          */
         (function ($, root) {
             // // 修改帖子 或 新帖子 提交
-            // function reSubmitFn(myData) {
-            //     // if (!root.getQueryString('thread_id')) { // 发新的帖子 提交后台
-            //     if (!root.reeditor) { // 发新的帖子 提交后台
-            //         console.log(111)
-            //         root.postSubmit({
-            //             url: baseUrl + urlObj.sendTiezi,
-            //             data: myData,
-            //             source: 'sendTiezi'
-            //         })
-            //         return false
-            //     } else {
-            //         // var thread_id = root.getQueryString('thread_id')
-            //         var thread_id = root.reeditor.thread_id
-            //         myData.thread_id = thread_id
-            //         // layer.msg(myData)
-            //         // 修改帖子
-            //         root.postSubmit({
-            //             url: baseUrl + urlObj.reEditorSub,
-            //             data: myData,
-            //             source: 'reEditorSub'
-            //         })
-            //         root.reeditor = {}
-            //         return false
-            //     }
-            // }
             // root.reSubmitFn = reSubmitFn
             var loginAni
             // obj => {url, data, source}
@@ -2116,108 +2006,6 @@ if (!isWeixin) {
                             }
                         }
 
-                        // 获取要修改帖子内容
-                        // if (obj.source == 'reEditorGet') {
-                        //     console.log(1111)
-                        //     layui.use('form', function () {
-                        //         console.log(22222222)
-                        //         var data = res.data
-                        //         var form = layui.form;
-                        //         console.log(JSON.stringify(data))
-
-                        //         form.val("formFatie", {
-                        //             // 标题
-                        //             'title': data.title,
-                        //         })
-
-                        //         if (data.link_url) {
-                        //             // 外链
-                        //             form.val("formLink", {
-                        //                 // 内容
-                        //                 'link_adress': data.link_url,
-                        //                 'link_title': data.link_title,
-                        //                 // 'link_des': data.link_info,
-                        //             })
-                        //         }
-
-                        //         // 内容
-                        //         // if (data.info) {
-                        //         //     form.val("formFatie", {
-                        //         //         // 内容
-                        //         //         'info': data.info,
-                        //         //     })
-                        //         // }
-                        //         //  分类
-                        //         if (data.fenlei) {
-                        //             form.val("formFatie", {
-                        //                 // 分类
-                        //                 'fenlei': data.fenlei,
-                        //             })
-                        //         }
-                        //         // 视频封面
-                        //         if (data.fengmian) {
-                        //             $('#videoPoster .poster-img').attr('src', data.fengmian)
-                        //             form.val("formFatie", {
-                        //                 // 视频封面
-                        //                 'fengmian': data.fengmian
-                        //             })
-                        //         }
-                        //         //   图片
-                        //         if (data.images) {
-                        //             var html
-                        //             data.images.forEach(function (item, index) {
-                        //                 form.val("formFatie", {
-                        //                     // 视频封面
-                        //                     "imgVal": item
-                        //                 })
-                        //                 html += `
-                        //                     <li  class='uped-pic'>
-                        //                         <img class="main-pic" src="${item}">
-                        //                         <img class="del-icon" src="/attachment/style/src/img/shanchu.png">
-                        //                         <input name="images[]" value="${item}" hidden>
-                        //                     </li>
-                        //                 `
-                        //             })
-
-                        //             $('.img-show-bx ul ').prepend(html)
-                        //             if ($('.img-show-bx ul li').length = !6) {
-                        //                 $('.add-img').show()
-                        //             }
-                        //             $('.img-show-bx ul .add-img').click(function () {
-                        //                 // 增加图片
-                        //                 root.getimg()
-                        //             })
-                        //             // 增加图片删除事件
-                        //             $('ul li .del-icon').click(function () {
-                        //                 $(this).parents('li').remove()
-                        //                 // 上传按钮
-                        //                 root.hideUpBtn()
-                        //             })
-
-                        //             // 隐藏相机拍照和视频上传
-                        //             $('#upVideo').hide()
-                        //             root.showCamera('photo')
-                        //         }
-
-                        //         // 视频
-                        //         if (data.video) {
-                        //             // 视频封面img
-                        //             form.val("formFatie", {
-                        //                 // 视频
-                        //                 'video': data.video,
-                        //             })
-
-                        //             // 实例化 视频对象
-                        //             root.showfsVideo(data.video, 'reEdit')
-                        //             // 隐藏相机录像和图片上传
-                        //             $('#upImg').hide()
-                        //             root.showCamera('video')
-                        //         }
-
-                        //     })
-
-
-                        // }  
                         if (obj.source == 'reEditorSub') { // 提交修改的帖子
                             // // alert(JSON.stringify(res))
                             // // console.log(JSON.stringify(res))
@@ -2896,10 +2684,10 @@ if (!isWeixin) {
 
             if (document.getElementById('indexWrap')) {
                 // console.log(localStorage.getItem('ifReload'))
-                if (localStorage.getItem('ifReload') == 'true') {
-                    window.location.reload()
-                    localStorage.setItem('ifReload', false)
-                }
+                // if (localStorage.getItem('ifReload') == 'true') {
+                //     window.location.reload()
+                //     localStorage.setItem('ifReload', false)
+                // }
                 /**
                  * 回到顶部
                  */
