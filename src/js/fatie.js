@@ -24,10 +24,12 @@
                 });
                 $('#video2').hide()
                 root.videoPlayer.hide()
-                // 默认是竖屏
-                // 竖屏
+                // 七牛云 取视频第一针
                 // $('#videoPoster').addClass('shuping').removeClass('hengping')
-                // $('#videoPoster .poster-img').attr('src', 'http://lanhaitun.kachezhisheng.com/addons/wyt_luntan/assets/style_new/img/shupingposter1.png')
+                // alert(videoSrc + '?vframe/png/offset/1')
+                // $('#videoPoster .poster-img').attr('src', videoSrc + '?vframe/png/offset/1')
+                $("input[name='fengmian']").val(videoSrc + '?vframe/png/offset/1')
+
                 // 显示视频
                 $('#videoPoster').show()
                 $('.set-poster').show()
@@ -70,6 +72,12 @@
             root.videoPlayer.setStyles({
                 src: videoSrc
             })
+            // 七牛云 取视频第一针
+            // $('#videoPoster').addClass('shuping').removeClass('hengping')
+            // alert(videoSrc + '?vframe/png/offset/1')
+            // $('#videoPoster .poster-img').attr('src', videoSrc + '?vframe/png/offset/1')
+            $("input[name='fengmian']").val(videoSrc + '?vframe/png/offset/1')
+
         }
 
         // 视频操作
@@ -112,7 +120,7 @@
             var res = JSON.parse(res)
             // 发帖
             if (obj.source === 'sendTiezi') {
-                // console.log(JSON.stringify(res))
+                // alert(JSON.stringify(res))
                 if (res.code == 1) {
                     layer.msg(res.msg)
                     // root.navToHome()
@@ -123,8 +131,6 @@
                     //     window.location.reload()
                     // }, 1000);
                     root.navToHome()
-
-
                 } else if (res.code == 2) {
                     layer.msg(res.msg)
                     root.navToLogin()
@@ -234,8 +240,6 @@
                     }
 
                 })
-
-
             }
 
         })
@@ -335,9 +339,6 @@
                 // }
             })
 
-
-
-
             return false;
         });
 
@@ -405,7 +406,7 @@
         var fmt = cmr.supportedVideoFormats[0];
 
         cmr.startVideoCapture(function (path) {
-            layer.msg(JSON.stringify(path))
+            // layer.msg(JSON.stringify(path))
                 // console.log("录像成功：" + path);
                 root.uploadMyVideo(path)
             },
@@ -531,20 +532,22 @@
     // 上传视频方法 
     function uploadMyVideo(videoPath) {
         //  开等待提示
-        var w = plus.nativeUI.showWaiting();
+        var w = plus.nativeUI.showWaiting("视频上传中~请耐心等待哦~");
         // 新建上传任务 视频
         var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=upload_video", {
             method: "POST",
             timeout: 120
         }, function (res, status) {
             
-            alert(JSON.stringify(res))
+            // alert(JSON.stringify(res))
             // alert(res.msg)
             // 关闭图片上传 相机只能录像
             root.showCamera('video')
             // 关闭等待
             w.close()
+            // alert(res.responseText)
             var res = JSON.parse(res.responseText)
+            
             var videoSrc = res.data
             if (res.code == 1) {
                 //  赋值给input

@@ -452,6 +452,7 @@ if (!isWeixin) {
                 var isLink = obj.isLink
                 var zdStatus = 1
                 var btnArr = null
+                var liElem = obj.liElem
                 if (obj.isadmin == 'true') {
                     if (obj.iszhiding == "1") {
                         // 是管理员 此贴已经置顶了
@@ -535,6 +536,7 @@ if (!isWeixin) {
                                             thread_id: thread_id,
                                         },
                                         source: 'deletTz',
+                                        liElem: liElem,
                                     })
                                 }, function () {
                                     layer.close(confirmMsg)
@@ -570,6 +572,8 @@ if (!isWeixin) {
 
             function showAdmin() {
                 $('.xiala').off().on('click', function () {
+                    // 选中的li
+                    var liElem = $(this).parents('li')
                     // 是否是管理员
                     var isadmin = $(this).attr('isadmin')
                     // 是否是自己的帖子
@@ -587,6 +591,7 @@ if (!isWeixin) {
                         thread_id: thread_id,
                         iszhiding: iszhiding,
                         isLink: isLink,
+                        liElem: liElem,
                     }), false);
                 })
             }
@@ -1997,9 +2002,10 @@ if (!isWeixin) {
                             // layer.msg(JSON.stringify(res))
                             if (res.code == 1) {
                                 layer.msg(res.msg)
-                                setTimeout(function () {
-                                    window.location.reload()
-                                }, 1000);
+                                obj.liElem.remove()
+                                // setTimeout(function () {
+                                //     window.location.reload()
+                                // }, 1000);
                             } else {
                                 layer.msg(res.msg)
                                 return false
