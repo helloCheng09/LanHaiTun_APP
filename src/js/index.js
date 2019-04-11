@@ -14,8 +14,6 @@
  * root.reSubmitFn(myData) 发帖和重新编辑后发帖
  * root.formTijiao 提交表单验证
  * 
- * 
- * 
  */
 
 // 下载app链接
@@ -43,18 +41,6 @@ if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "functi
             $('html,body').click(function () {
                 loadApp()
             })
-            // $('.tz-hf-item ul li ').click(function () {
-            //     root.loadApp()
-            // })
-            // $('#gohome').click(function () {
-            //     root.loadApp()
-            // })
-            // $('.footer').click(function () {
-            //     root.loadApp()
-            // })
-            // $('.zhuanfa').click(function () {
-            //     root.loadApp()
-            // })
         }, false);
     } else if (document.attachEvent) {
         document.attachEvent("WeixinJSBridgeReady", function () {});
@@ -110,6 +96,32 @@ if (!isWeixin) {
          */
 
         (function ($, root) {
+            // 获取当前手机网络状态 返回3为wifi
+            function showNet () {
+                root.myNetInfo  = plus.networkinfo.getCurrentType()
+            } 
+            root.showNet = showNet
+
+            //  全屏滚动 元素是否在可见范围内
+            function elemVisible (elem, scrollPn) {   
+                // 可视区域上边界限 $(window).scrollTop()
+                // 下边界 $(window).scrollTop() + $(window).height()
+                // 元素 顶边距离顶部距离要大于上边界 elem.offset().top
+                // 元素 底边距离底部距离要小于下边界 elem.offset().top + elem.height()
+                var midHeight = $(scrollPn) / 2
+                var winTop = $(scrollPn).scrollTop()
+                var winBot = $(scrollPn).scrollTop() + $(scrollPn).height() - 50
+                var elemTop =  elem.offset().top
+                var elemBot = elem.offset().top + elem.height()
+
+                // 在可视范围内
+                if (elemTop > winTop && elemBot < winBot) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+            root.elemVisible =elemVisible
             // 清空表单内容
             function clearContent() {
                 layui.use('form', function () {
@@ -604,6 +616,12 @@ if (!isWeixin) {
                 // 遍历新增加的video内容
                 newVideoArr.forEach(function (item) {
                     aliPlayer(item)
+                     // 3为连接  wifi
+                     if(window.plus){
+                        root.showNet();
+                    }else{
+                        document.addEventListener("plusready", root.showNet, false);
+                    }
                     // console.log(item)
                 })
 
@@ -612,7 +630,6 @@ if (!isWeixin) {
                     var src = videoData.src
                     var poster = videoData.fengmian
                     // console.log(id)
-
                     var player = new Aliplayer({
                         "id": id,
                         "source": src,
@@ -622,10 +639,10 @@ if (!isWeixin) {
                         "autoplay": false,
                         "isLive": false,
                         "rePlay": false,
-                        "playsinline": false,
-                        "preload": true,
+                        "playsinline": true,
+                        "preload": false,
                         "controlBarVisibility": "click",
-                        "showBarTime": 5000,
+                        "showBarTime": 3000,
                         "useH5Prism": true,
                         "skinLayout": [{
                                 "name": "bigPlayButton",
@@ -673,6 +690,25 @@ if (!isWeixin) {
                             }
                         ]
                     }, function (player) {
+                        var $elem = $('#' + id).parents('.video-bx')
+                        // 是否滚动自动播放
+                        $elem.attr('data-autoplay', 'true')
+                        // $elem = 
+                        $(window).scroll(function () {
+                            var eleIsVisible = root.elemVisible($elem, window)
+                            if (eleIsVisible) {
+                                // 3为连接  wifi
+                                if ( root.myNetInfo == 3) {
+                                    // player.play()
+                                } 
+                                // console.log((id), "可见")
+                            } else {
+                                // console.log((id), "不可见")
+                                $elem.attr('data-autoplay', 'true')
+                                player.pause()
+                            }
+                        })
+                      
                         player._switchLevel = 0;
 
                         $('#' + id).parents('.video-bx').attr('data-status', 'done')
@@ -680,6 +716,8 @@ if (!isWeixin) {
                     });
                 }
             }
+          
+
             root.newVideos = newVideos
             /**
              * 流加载
