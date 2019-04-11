@@ -96,6 +96,40 @@ if (!isWeixin) {
          */
 
         (function ($, root) {
+
+            // ele $input 显示清除按钮
+            function showFormClose() {
+                $('.layui-form-item').each(function () {
+                    var _self = $(this)
+                    var _input = _self.find('input')
+                    var _textarea = _self.find('textarea')
+                    if (_input.length) {
+                        _input.focus(function () {
+                            _self.find('.layui-input-block img').show()
+                        }).blur(function () {
+                            setTimeout(() => {
+                                _self.find('.layui-input-block img').hide()
+                            }, 500);
+                        })
+                        _self.find('.layui-input-block img').click(function () {
+                            _input.val('')
+                            console.log(1)
+                        })
+                    } else if (_textarea.length) {
+                        _textarea.focus(function () {
+                            _self.find('.layui-input-block img').show()
+                        }).blur(function () {
+                            setTimeout(() => {
+                                _self.find('.layui-input-block img').hide()
+                            }, 500);
+                        })
+                        _self.find('.layui-input-block img').click(function () {
+                            _textarea.val('')
+                        })
+                    }
+                })
+            }
+        root.showFormClose = showFormClose
             // 获取当前手机网络状态 返回3为wifi
             function showNet () {
                 root.myNetInfo  = plus.networkinfo.getCurrentType()
@@ -2531,6 +2565,8 @@ if (!isWeixin) {
                 $(this).removeClass('layui-form-danger')
             })
             if (document.getElementById('login')) {
+                // 清除input内容
+                root.showFormClose ()
                 //Demo
                 layui.use('form', function () {
                     var form = layui.form;

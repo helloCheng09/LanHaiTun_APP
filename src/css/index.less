@@ -394,13 +394,52 @@
     // font-family: PingFang Medium;
     // min-height: calc(~"100vh - 48px");
     min-height: 100vh;
-    padding-top: 40px;
+    // padding-top: 40px;
     padding-bottom: 32px;
     background-size: cover;
     background-position: 50%;
     background-repeat: no-repeat;
     color: #fff;
+    
+    .img-code {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
+        .code-bx {
+            width: 120px;
+            height: 46px;
+
+            img {
+                width: 120px;
+                height: 46px;
+            }
+        }
+    }
+
+    .tel-code {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .layui-input-block {
+            width: 213px;
+        }
+    }
+
+    .get-tel-code {
+        height: 54px;
+        width: 112px;
+        text-align: center;
+        line-height: 54px;
+        border-radius: 27px;
+        // padding: 0 16px;
+        border: none;
+        margin: 0 5px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #1690e5;
+        cursor: pointer;
+    }
     .login-head {
         display: flex;
         align-items: center;
@@ -446,7 +485,7 @@
     }
 
     .layui-form {
-        padding: 0 30px;
+        padding: 0 15px;
 
         .my-input {
             .layui-input-block {
@@ -456,6 +495,8 @@
                 vertical-align: middle;
                 border-radius: 27px;
                 padding: 0 16px;
+                display: flex;
+                align-items: center;
                 background-color: #1690e5;
             }
 
@@ -475,6 +516,13 @@
                 /* Mozilla Firefox 4 to 18 */
                 color: #fff;
             }
+
+            .closebtn-input {
+                width: 24px;
+                height: 24px;
+                display: none;
+
+            }
         }
     }
 
@@ -489,252 +537,252 @@
 }
 
 // 忘记密码
-#forget {
-    // font-family: PingFang Medium;
-    padding-top: 76px;
-    padding-bottom: 32px;
-    min-height: 100vh;
+// #forget {
+//     // font-family: PingFang Medium;
+//     padding-top: 76px;
+//     padding-bottom: 32px;
+//     min-height: 100vh;
 
-    .my-input {
-        padding: 0 30px;
-    }
+//     .my-input {
+//         padding: 0 30px;
+//     }
 
-    .back-login {
-        padding: 0 10px;
-        line-height: 20px;
+//     .back-login {
+//         padding: 0 10px;
+//         line-height: 20px;
 
-        a {
-            color: #6ec7ff;
-        }
-    }
+//         a {
+//             color: #6ec7ff;
+//         }
+//     }
 
-    .my-input {
-        flex: 1;
+//     .my-input {
+//         flex: 1;
 
-        .layui-form-label {
-            display: inline-block;
-            margin-top: 12px;
-            padding: 0;
-            font-size: 14px;
-            width: 100%;
-            // font-family: PingFang-SC-Bold;
-        }
+//         .layui-form-label {
+//             display: inline-block;
+//             margin-top: 12px;
+//             padding: 0;
+//             font-size: 14px;
+//             width: 100%;
+//             // font-family: PingFang-SC-Bold;
+//         }
 
-        input {
-            border: none;
-            height: auto;
-            line-height: 1em;
-            padding: 10px 0;
-            padding-left: 0;
-        }
+//         input {
+//             border: none;
+//             height: auto;
+//             line-height: 1em;
+//             padding: 10px 0;
+//             padding-left: 0;
+//         }
 
-        input:placeholder {
-            color: #999;
-        }
+//         input:placeholder {
+//             color: #999;
+//         }
 
-        .layui-input-block::after {
-            border-color: #c6cacc;
-        }
-    }
+//         .layui-input-block::after {
+//             border-color: #c6cacc;
+//         }
+//     }
 
-    .yz-bx {
-        display: flex;
-        align-items: flex-end;
-        padding: 0 30px;
+//     .yz-bx {
+//         display: flex;
+//         align-items: flex-end;
+//         padding: 0 30px;
 
-        .my-input {
-            padding: 0;
-        }
-    }
+//         .my-input {
+//             padding: 0;
+//         }
+//     }
 
-    .img-code {
-        width: 120px;
-        height: 46px;
-        margin-left: 10px;
-        margin-bottom: 15px;
-        background-color: #ddd;
+//     .img-code {
+//         width: 120px;
+//         height: 46px;
+//         margin-left: 10px;
+//         margin-bottom: 15px;
+//         background-color: #ddd;
 
-        img {
-            width: 120px;
-            height: 46px;
-        }
-    }
+//         img {
+//             width: 120px;
+//             height: 46px;
+//         }
+//     }
 
-    .get-tel-code {
-        width: 85px;
-        margin-bottom: 15px;
-        line-height: 2.6em;
-        padding: 0 12px;
-        margin-left: 10px;
-        border: 0.5px solid #1690e5;
-        background-color: #1690e5;
-        border-radius: 18px;
-        margin: 0 5px;
-        text-align: center;
-        font-size: 12px;
-        color: #fff;
-    }
-}
+//     .get-tel-code {
+//         width: 85px;
+//         margin-bottom: 15px;
+//         line-height: 2.6em;
+//         padding: 0 12px;
+//         margin-left: 10px;
+//         border: 0.5px solid #1690e5;
+//         background-color: #1690e5;
+//         border-radius: 18px;
+//         margin: 0 5px;
+//         text-align: center;
+//         font-size: 12px;
+//         color: #fff;
+//     }
+// }
 
 // 注册
-#register {
-    // font-family: PingFang Medium;
-    min-height: 100vh;
-    padding-top: 40px;
-    padding-bottom: 32px;
-    background-size: cover;
-    background-position: 50%;
-    background-repeat: no-repeat;
-    color: #fff;
+// #register {
+//     // font-family: PingFang Medium;
+//     min-height: 100vh;
+//     padding-top: 40px;
+//     padding-bottom: 32px;
+//     background-size: cover;
+//     background-position: 50%;
+//     background-repeat: no-repeat;
+//     color: #fff;
 
-    .login-head {
-        padding-bottom: 30px;
-    }
+//     .login-head {
+//         padding-bottom: 30px;
+//     }
 
-    .left-icon {
-        width: 20px;
-        height: 20px;
+//     .left-icon {
+//         width: 20px;
+//         height: 20px;
 
-        img {
-            width: 20px;
-            height: 20px;
-        }
-    }
+//         img {
+//             width: 20px;
+//             height: 20px;
+//         }
+//     }
 
-    .right-link {
-        a {
-            // font-family: PingFang-SC-Bold;
-            font-weight: bold;
-            color: #fff;
-        }
-    }
+//     .right-link {
+//         a {
+//             // font-family: PingFang-SC-Bold;
+//             font-weight: bold;
+//             color: #fff;
+//         }
+//     }
 
-    .layui-form {
-        padding: 0 30px;
+//     .layui-form {
+//         padding: 0 30px;
 
-        .my-input {
-            .layui-input-block {
-                // margin-left: 0;
-                height: 54px;
-                line-height: 54px;
-                vertical-align: middle;
-                border-radius: 27px;
-                padding: 0 16px;
-                background-color: #1690e5;
-            }
+//         .my-input {
+//             .layui-input-block {
+//                 // margin-left: 0;
+//                 height: 54px;
+//                 line-height: 54px;
+//                 vertical-align: middle;
+//                 border-radius: 27px;
+//                 padding: 0 16px;
+//                 background-color: #1690e5;
+//             }
 
-            input {
-                display: inline-block;
-                -webkit-appearance: none;
-                border: none;
-                color: #fff;
-                background-color: #1690e5;
-            }
+//             input {
+//                 display: inline-block;
+//                 -webkit-appearance: none;
+//                 border: none;
+//                 color: #fff;
+//                 background-color: #1690e5;
+//             }
 
-            input::placeholder {
-                color: #fff;
-            }
-        }
-    }
+//             input::placeholder {
+//                 color: #fff;
+//             }
+//         }
+//     }
 
-    .tiaokuan-link {
-        padding-top: 12px;
-        text-align: center;
-        cursor: pointer;
-        font-size: 12px;
+//     .tiaokuan-link {
+//         padding-top: 12px;
+//         text-align: center;
+//         cursor: pointer;
+//         font-size: 12px;
 
-        .xuanzhong-icon {
-            width: 12px;
-            height: 12px;
-        }
+//         .xuanzhong-icon {
+//             width: 12px;
+//             height: 12px;
+//         }
 
-        a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
+//         a {
+//             display: flex;
+//             align-items: center;
+//             justify-content: center;
+//             color: #fff;
 
-            em {
-                margin: 0 4px;
-                line-height: 1.4em;
-                // text-decoration: underline;
-                font-style: normal;
-            }
+//             em {
+//                 margin: 0 4px;
+//                 line-height: 1.4em;
+//                 // text-decoration: underline;
+//                 font-style: normal;
+//             }
 
-            em::after {
-                border-color: #fff;
-            }
-        }
-    }
+//             em::after {
+//                 border-color: #fff;
+//             }
+//         }
+//     }
 
-    .img-code {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+//     .img-code {
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
 
-        .code-bx {
-            width: 120px;
-            height: 46px;
-            margin: 0 5px;
+//         .code-bx {
+//             width: 120px;
+//             height: 46px;
+//             margin: 0 5px;
 
-            img {
-                width: 120px;
-                height: 46px;
-            }
-        }
-    }
+//             img {
+//                 width: 120px;
+//                 height: 46px;
+//             }
+//         }
+//     }
 
-    .tel-code {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+//     .tel-code {
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+//     }
 
-    .get-tel-code {
-        height: 54px;
-        width: 112px;
-        text-align: center;
-        line-height: 54px;
-        border-radius: 27px;
-        padding: 0 16px;
-        border: none;
-        margin: 0 5px;
-        color: #fff;
-        background-color: #1690e5;
-        cursor: pointer;
-    }
-}
+//     .get-tel-code {
+//         height: 54px;
+//         width: 112px;
+//         text-align: center;
+//         line-height: 54px;
+//         border-radius: 27px;
+//         padding: 0 16px;
+//         border: none;
+//         margin: 0 5px;
+//         color: #fff;
+//         background-color: #1690e5;
+//         cursor: pointer;
+//     }
+// }
 
 // 注册协议
-#registerText {
-    position: relative;
-    padding-bottom: 30px;
+// #registerText {
+//     position: relative;
+//     padding-bottom: 30px;
 
-    .close-btn {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        width: 20px;
-        height: 20px;
-    }
+//     .close-btn {
+//         position: absolute;
+//         right: 20px;
+//         top: 20px;
+//         width: 20px;
+//         height: 20px;
+//     }
 
-    h1 {
-        padding: 30px 30px 0;
-        text-align: center;
-        font-weight: bold;
-        // font-family: PingFang-SC-Bold;
-        font-size: 20px;
-        color: #000;
-    }
+//     h1 {
+//         padding: 30px 30px 0;
+//         text-align: center;
+//         font-weight: bold;
+//         // font-family: PingFang-SC-Bold;
+//         font-size: 20px;
+//         color: #000;
+//     }
 
-    p {
-        padding: 0 30px;
-        margin-top: 30px;
-        line-height: 1.4em;
-        text-indent: 2em;
-        color: #000;
-    }
-}
+//     p {
+//         padding: 0 30px;
+//         margin-top: 30px;
+//         line-height: 1.4em;
+//         text-indent: 2em;
+//         color: #000;
+//     }
+// }
 
 // 主页头部 
 .top-head {

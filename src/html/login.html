@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>蓝海豚-登陆</title>
+    <title>本地-蓝海豚-登陆</title>
     <!-- css -->
     <link rel="stylesheet" href="../js/JsDepend/layui/css/layui.css">
     <link rel="stylesheet" href="../css/StyleDepend/mReset.css">
@@ -19,7 +19,7 @@
 <body>
 
     <div id="login" style="background-image:url(../img/bg@2x.png)">
-        <div class="login-head">
+        <!-- <div class="login-head">
             <div class="left-icon">
                 <img src="../img/close@2x.png">
             </div>
@@ -27,37 +27,81 @@
                 <a href="./register.html">
                     注册账号
                 </a>
-            </div>
-        </div>
+            </div> 
+        </div> -->
         <a class="logo-img">
             <h1 title="蓝海豚 卡车之声">
-                <img src="../img/ht@2x.png" alt="蓝海豚 卡车之声">
+                <img src="../img/ht@2x1.png" alt="蓝海豚 卡车之声">
             </h1>
         </a>
         <div class="form-bx">
             <form class="layui-form" action="">
-                <div class="layui-form-item my-input">
+                <!-- <div class="layui-form-item my-input">
                     <div class="layui-input-block">
-                        <input type="text" name="telephone" required lay-verify="required|phone|number" placeholder="请输入手机号码"
+                        <input type="text" name="telephone" required lay-verify="required|phone|number" placeholder="输入手机号码"
                             autocomplete="off" class="layui-input">
+                        <img src="../img/closebtn.png"  class="closebtn-input">
                     </div>
                 </div>
                 <div class="layui-form-item my-input">
+                    <div class="layui-input-block">
+                        <input type="text" name="telephone" required lay-verify="required|phone|number" placeholder="输入图形验证码"
+                            autocomplete="off" class="layui-input">
+                        <img src="../img/closebtn.png"  class="closebtn-input">
+                    </div>
+                    <img src="../img/yzmimg.png">
+                </div>
+                <div class="layui-form-item my-input">
+                    <div class="layui-input-block">
+                        <input type="text" name="telephone" required lay-verify="required|phone|number" placeholder="输入短信验证码"
+                            autocomplete="off" class="layui-input">
+                        <img src="../img/closebtn.png"  class="closebtn-input">
+                    </div>
+                  
+                </div> -->
+                <!-- <div class="layui-form-item my-input">
                     <div class="layui-input-block">
                         <input type="password" name="psw" required lay-verify="require|pass" placeholder="请输入密码"
                             autocomplete="off" class="layui-input">
                     </div>
+                </div> -->
+                <div class="layui-form-item my-input">
+                    <div class="layui-input-block">
+                        <input type="text" name="telephone" required lay-verify="required|phone|number" placeholder="输入手机号码"
+                            autocomplete="off" class="layui-input" value="">
+                        <img src="../img/closebtn.png"  class="closebtn-input">
+                    </div>
+                </div>
+                <div class="layui-form-item my-input img-code">
+                    <div class="layui-input-block">
+                        <input type="text" name="tx_code" required lay-verify="required" placeholder="输入图形验证码"
+                            autocomplete="off" class="layui-input" value="">
+                            <img src="../img/closebtn.png"  class="closebtn-input">
+                    </div>
+                    <div class="code-bx">
+                        <img src="../img/yzmimg.png">
+                    </div>
+                </div>
+                <div class="layui-form-item my-input tel-code">
+                    <div class="layui-input-block">
+                        <input type="text" name="tel_code" required lay-verify="required" placeholder="输入手机验证码"
+                            autocomplete="off" class="layui-input" value="">
+                            <img src="../img/closebtn.png"  class="closebtn-input">
+                    </div>
+                    <div class="get-tel-code">
+                        获取验证码
+                    </div>
                 </div>
                 <div class="layui-form-item my-submit">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">登 陆</button>
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">登 录</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="forget-link">
+        <!-- <div class="forget-link">
             <a href="./forget.html">忘记密码</a>
-        </div>
+        </div> -->
     </div>
 
 </body>

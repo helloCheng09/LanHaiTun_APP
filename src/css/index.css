@@ -332,12 +332,45 @@
 }
 #login {
   min-height: 100vh;
-  padding-top: 40px;
   padding-bottom: 32px;
   background-size: cover;
   background-position: 50%;
   background-repeat: no-repeat;
   color: #fff;
+}
+#login .img-code {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#login .img-code .code-bx {
+  width: 120px;
+  height: 46px;
+}
+#login .img-code .code-bx img {
+  width: 120px;
+  height: 46px;
+}
+#login .tel-code {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#login .tel-code .layui-input-block {
+  width: 213px;
+}
+#login .get-tel-code {
+  height: 54px;
+  width: 112px;
+  text-align: center;
+  line-height: 54px;
+  border-radius: 27px;
+  border: none;
+  margin: 0 5px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #1690e5;
+  cursor: pointer;
 }
 #login .login-head {
   display: flex;
@@ -374,7 +407,7 @@
   height: 170px;
 }
 #login .layui-form {
-  padding: 0 30px;
+  padding: 0 15px;
 }
 #login .layui-form .my-input .layui-input-block {
   height: 54px;
@@ -382,6 +415,8 @@
   vertical-align: middle;
   border-radius: 27px;
   padding: 0 16px;
+  display: flex;
+  align-items: center;
   background-color: #1690e5;
 }
 #login .layui-form .my-input input {
@@ -398,209 +433,17 @@
   /* Mozilla Firefox 4 to 18 */
   color: #fff;
 }
+#login .layui-form .my-input .closebtn-input {
+  width: 24px;
+  height: 24px;
+  display: none;
+}
 #login .forget-link {
   padding-top: 12px;
   text-align: center;
 }
 #login .forget-link a {
   color: #fff;
-}
-#forget {
-  padding-top: 76px;
-  padding-bottom: 32px;
-  min-height: 100vh;
-}
-#forget .my-input {
-  padding: 0 30px;
-}
-#forget .back-login {
-  padding: 0 10px;
-  line-height: 20px;
-}
-#forget .back-login a {
-  color: #6ec7ff;
-}
-#forget .my-input {
-  flex: 1;
-}
-#forget .my-input .layui-form-label {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 0;
-  font-size: 14px;
-  width: 100%;
-}
-#forget .my-input input {
-  border: none;
-  height: auto;
-  line-height: 1em;
-  padding: 10px 0;
-  padding-left: 0;
-}
-#forget .my-input input:placeholder {
-  color: #999;
-}
-#forget .my-input .layui-input-block::after {
-  border-color: #c6cacc;
-}
-#forget .yz-bx {
-  display: flex;
-  align-items: flex-end;
-  padding: 0 30px;
-}
-#forget .yz-bx .my-input {
-  padding: 0;
-}
-#forget .img-code {
-  width: 120px;
-  height: 46px;
-  margin-left: 10px;
-  margin-bottom: 15px;
-  background-color: #ddd;
-}
-#forget .img-code img {
-  width: 120px;
-  height: 46px;
-}
-#forget .get-tel-code {
-  width: 85px;
-  margin-bottom: 15px;
-  line-height: 2.6em;
-  padding: 0 12px;
-  margin-left: 10px;
-  border: 0.5px solid #1690e5;
-  background-color: #1690e5;
-  border-radius: 18px;
-  margin: 0 5px;
-  text-align: center;
-  font-size: 12px;
-  color: #fff;
-}
-#register {
-  min-height: 100vh;
-  padding-top: 40px;
-  padding-bottom: 32px;
-  background-size: cover;
-  background-position: 50%;
-  background-repeat: no-repeat;
-  color: #fff;
-}
-#register .login-head {
-  padding-bottom: 30px;
-}
-#register .left-icon {
-  width: 20px;
-  height: 20px;
-}
-#register .left-icon img {
-  width: 20px;
-  height: 20px;
-}
-#register .right-link a {
-  font-weight: bold;
-  color: #fff;
-}
-#register .layui-form {
-  padding: 0 30px;
-}
-#register .layui-form .my-input .layui-input-block {
-  height: 54px;
-  line-height: 54px;
-  vertical-align: middle;
-  border-radius: 27px;
-  padding: 0 16px;
-  background-color: #1690e5;
-}
-#register .layui-form .my-input input {
-  display: inline-block;
-  -webkit-appearance: none;
-  border: none;
-  color: #fff;
-  background-color: #1690e5;
-}
-#register .layui-form .my-input input::placeholder {
-  color: #fff;
-}
-#register .tiaokuan-link {
-  padding-top: 12px;
-  text-align: center;
-  cursor: pointer;
-  font-size: 12px;
-}
-#register .tiaokuan-link .xuanzhong-icon {
-  width: 12px;
-  height: 12px;
-}
-#register .tiaokuan-link a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-}
-#register .tiaokuan-link a em {
-  margin: 0 4px;
-  line-height: 1.4em;
-  font-style: normal;
-}
-#register .tiaokuan-link a em::after {
-  border-color: #fff;
-}
-#register .img-code {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#register .img-code .code-bx {
-  width: 120px;
-  height: 46px;
-  margin: 0 5px;
-}
-#register .img-code .code-bx img {
-  width: 120px;
-  height: 46px;
-}
-#register .tel-code {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#register .get-tel-code {
-  height: 54px;
-  width: 112px;
-  text-align: center;
-  line-height: 54px;
-  border-radius: 27px;
-  padding: 0 16px;
-  border: none;
-  margin: 0 5px;
-  color: #fff;
-  background-color: #1690e5;
-  cursor: pointer;
-}
-#registerText {
-  position: relative;
-  padding-bottom: 30px;
-}
-#registerText .close-btn {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  width: 20px;
-  height: 20px;
-}
-#registerText h1 {
-  padding: 30px 30px 0;
-  text-align: center;
-  font-weight: bold;
-  font-size: 20px;
-  color: #000;
-}
-#registerText p {
-  padding: 0 30px;
-  margin-top: 30px;
-  line-height: 1.4em;
-  text-indent: 2em;
-  color: #000;
 }
 .top-head {
   height: 128px;
