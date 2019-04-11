@@ -532,7 +532,7 @@
     // 上传视频方法 
     function uploadMyVideo(videoPath) {
         //  开等待提示
-        var w = plus.nativeUI.showWaiting("视频上传中~请耐心等待哦~");
+        var w = plus.nativeUI.showWaiting("视频上传中~");
         // 新建上传任务 视频
         var task = plus.uploader.createUpload("http://lanhaitun.kachezhisheng.com/app/index.php?i=2&c=entry&do=Index&m=wyt_luntan&action=upload_video", {
             method: "POST",
