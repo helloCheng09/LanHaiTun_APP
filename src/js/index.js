@@ -18,16 +18,14 @@
 
 // 下载app链接
 function loadApp() {
-    var confirmMsg = layer.confirm('您还没有下载蓝海豚App,是否立即去下载？', {
+    var confirmMsg = layer.alert('您还没有下载蓝海豚App,是否立即去下载？', {
         btn: ['确认'],
         title: '蓝海豚卡车之声',
         closeBtn: 0,
     }, function () {
-        window.location.href = "https://www.pgyer.com/yUyw"
-        layer.close(confirmMsg)
-    }, function () {
-        layer.close(confirmMsg)
-        return false;
+        $('html').off()
+        window.location.href = "https://www.pgyer.com/YYCp"
+        return false
     })
 }
 // 判断用户来源，来源分享提示去下载App
@@ -38,8 +36,10 @@ if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "functi
             isWeixin = true;
             //在微信中打开 提示下载app
             // root.loadApp ()
-            $('html,body').click(function () {
+            $('.zhuanfa').off() // 解除点赞 收藏 转发点击事件
+            $('html').click(function () {
                 loadApp()
+                return false
             })
         }, false);
     } else if (document.attachEvent) {
@@ -287,8 +287,6 @@ if (!isWeixin) {
                         layer.msg('未登录')
                         root.navToLogin()
                     })
-                    
-
                     return false
                 } else { // 未登录 不可收藏 评论 点赞
                     // 收藏操作
@@ -378,8 +376,8 @@ if (!isWeixin) {
                 // 转发操作
                 $('.zfbtn').each(function () {
                     var self = $(this)
-                    var shareUrl = baseUrl + self.parents('li').find('.conten-detail').attr('href').split('./')[1]
-                    var sharText = $.trim(self.parents('li').find('.main-content').text())
+                    var shareUrl = baseUrl + self.parents('li').find('.conten-detail').data('href').split('./')[1]
+                    var sharText = $.trim(self.parents('li').find('.main-content').text()).slice(0,50)
                     // console.log(shareUrl, sharText)
                     self.off().click(function () {
 
@@ -389,7 +387,7 @@ if (!isWeixin) {
 
                             //5+ 原生分享  
                             window.plusShare({
-                                title: "【蓝海豚卡车之家App】", //应用名字  
+                                title: "【蓝海豚卡车之声App】", //应用名字  
                                 content: sharText,
                                 href: shareUrl, //分享出去后，点击跳转地址  
                                 thumbs: ["http://lanhaitun.kachezhisheng.com/attachment/style/src/img/linkcover.png"] //分享缩略图  
@@ -573,7 +571,7 @@ if (!isWeixin) {
                             case "删除":
                                 var confirmMsg = layer.confirm('确认删除吗？', {
                                     btn: ['确认', '取消'],
-                                    title: '蓝海豚卡车之家',
+                                    title: '蓝海豚卡车之声',
                                     closeBtn: 0,
                                 }, function () {
                                     root.postSubmit({
@@ -808,6 +806,7 @@ if (!isWeixin) {
                                 var xialaHtml
                                 /** 循环帖子列表数组 */
                                 layui.each(data, function (index, item) {
+
                                     var html = ''
                                     if (localStorage.getItem('lhtIsLogin') == 'true') { // 登录
                                         var userlink = './index.php?i=2&c=entry&action=other&do=Index&m=wyt_luntan&uid=' + item.uid // 用户个人中心链接地址 // 个人中心连接拼接 个人uid
@@ -1066,7 +1065,7 @@ if (!isWeixin) {
                                         </a>
                                         ${xialaHtml}
                                     </div>
-                                    <a class="conten-detail" href="${tiezilink}">
+                                    <a class="conten-detail" href="${tiezilink}" data-href="${tiezilink}">
                                         <dd>
                                             <span class="main-content three-ellipsis">
                                                 ${zhidingHtml}
@@ -1140,7 +1139,7 @@ if (!isWeixin) {
                     var isself // 是否当前用户的帖子 string true false
                     var locHtml // 定位
                     var newVideoArr = [] // 存储新的video内容
-
+                    var titleContent
                     /** 循环帖子列表数组 */
                     var html = ''
                     var userlink = './index.php?i=2&c=entry&action=other&do=Index&m=wyt_luntan&uid=' + item.uid // 用户个人中心链接地址 // 个人中心连接拼接 个人uid
@@ -1342,7 +1341,7 @@ if (!isWeixin) {
                     } else {
                         var itemHtml = ''
                     }
-
+                    titleContent = item.title.replace(/\n/g,"<br/>")
                     html = `
                     <li class="listshow-item" uid="${item.uid}" id="${item.id}" islink="${item.islink}" iszhiding="${item.zdstate}">
                         <div class="item-bx">
@@ -1371,11 +1370,11 @@ if (!isWeixin) {
                                 </div>
                             </a>
                         </div>
-                        <a class="conten-detail" href="javascript:;">
+                        <a class="conten-detail" href="javascript:;" data-href="${tiezilink}">
                             <dd>
-                                <span class="main-content three-ellipsis">
+                                <span class="main-content">
                                     ${zhidingHtml}
-                                    ${item.title}
+                                    ${titleContent}
                                 </span>
                             </dd>
                               ${itemHtml}
@@ -1615,7 +1614,7 @@ if (!isWeixin) {
                     $('.cancle-btn').click(function (e) {
                         var confirmMsg = layer.confirm('确认取消吗？', {
                             btn: ['确认', '取消'],
-                            title: '蓝海豚卡车之家',
+                            title: '蓝海豚卡车之声',
                             closeBtn: 0,
                         }, function () {
                             $('#newListShow').show()
@@ -1833,7 +1832,19 @@ if (!isWeixin) {
             // 验证图形验证码 并获取短信验证码
             let sendCode = () => {
                 $('.get-tel-code').click(function () {
-                    root.yzImgCode()
+                    // 判断手机号是否正确
+                    var telVal = $("input[name='telephone']").val()
+                    var regTel = /^1[34578]\d{9}$/
+                    if (!regTel.test(telVal)) { // 手机号验证不通过
+                        $("input[name='telephone']").addClass('layui-form-danger')
+                        layer.msg("获取失败，输入手机号",{
+                            icon: 2,
+                        })
+                        return false
+                    } else {
+                         root.yzImgCode()
+                    }
+                   
                 })
             }
             root.sendCode = sendCode
@@ -2494,7 +2505,7 @@ if (!isWeixin) {
                                     </div>
                                 </a>
                             </div>
-                            <a class="conten-detail" href="${tiezilink}">
+                            <a class="conten-detail" href="${tiezilink}" data-href="${tiezilink}">
                                 <dd>
                                     <span class="main-content three-ellipsis">
                                         ${zhidingHtml}
@@ -2569,6 +2580,8 @@ if (!isWeixin) {
                 root.showFormClose ()
                 //Demo
                 layui.use('form', function () {
+                    // 验证图形验证码 并获取短信验证码
+                    root.sendCode()
                     var form = layui.form;
                     // form.verify({
                     //     pass: [

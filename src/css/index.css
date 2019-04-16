@@ -343,6 +343,9 @@
   justify-content: space-between;
   align-items: center;
 }
+#login .img-code .layui-input-block {
+  width: 213px;
+}
 #login .img-code .code-bx {
   width: 120px;
   height: 46px;
