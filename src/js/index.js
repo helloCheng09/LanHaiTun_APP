@@ -41,6 +41,7 @@ if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "functi
                 loadApp()
                 return false
             })
+            $('#dian').remove()
         }, false);
     } else if (document.attachEvent) {
         document.attachEvent("WeixinJSBridgeReady", function () {});
@@ -2806,6 +2807,7 @@ if (!isWeixin) {
             if (document.getElementById('guide')) {
                 // 获取帖子id
                 var tid = root.getQueryString('id')
+                console.log(tid)
                 // var tid = $('.listshow-item').attr('id')
                 var thread_id = tid
                 // 获取帖子详情

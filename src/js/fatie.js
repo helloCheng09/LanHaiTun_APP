@@ -323,18 +323,15 @@
                     // if (!reg.test(value)) {
                     //     layer.msg('请填写正确的链接地址')
                     //     return false
-                    // } else {
-                    if (!myData.link_title || !myData.link_adress) {
-                        layer.msg('发送失败~请完善外链信息')
-                        return false
-                    } else {
+                    // } else { 
+                    
                         console.log('验证链接地址');
                         // layer.msg(JSON.stringify(myData))
                         // 判断 发新外链、 修改外链
                         myData.title = "分享链接"
                         root.reSubmitFn(myData)
                         $('.link-bx .layui-btn:last-child').removeAttr('lay-submit').addClass("layui-btn-disabled")
-                    }
+                    
                 }
                 // }
             })
